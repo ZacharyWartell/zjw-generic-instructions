@@ -82,7 +82,7 @@ enum Category
     READ,
     TODO,
     OVERVIEW
-};
+}
 /*
 const Category = Object.freeze({
     QUESTION: Symbol("Question"),
@@ -172,7 +172,7 @@ class Instructions
         this.instructions.push(i);
     }
 }
-var instructions = new Instructions();
+const instructions = new Instructions();
 
 function roman_lower (n)
 {
@@ -270,7 +270,7 @@ function collectionInstructions(section : HTMLElement, sectionLabel : string) {
 export
 function Visibility_Toggle(Class : string, visible: boolean)
 {
-    var list = document.querySelectorAll("." + Class);
+    const list = document.querySelectorAll("." + Class);
     for (let n of list)
     {
         const el : HTMLElement = <HTMLElement>n;
