@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="zjw-generic-instructinos" type="JavascriptDebugType" uri="http://localhost:63342/zjw-generic-instructions/Site Root/index.html" useBuiltInWebServerPort="true">
+    <method v="2">
+      <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="true" CONFIG_PATH="C:\Users\zwartell\Dropbox (UNC Charlotte)\classes\wartell tutorials\zjw-generic-instructions\Site Root\tsconfig.json" />
+    </method>
+  </configuration>
+</component>
