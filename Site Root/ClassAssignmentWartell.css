@@ -531,16 +531,6 @@ del:hover ~ span.Updated_Text_Popup_Note:before {
     font-weight: bold;
 }
 
-ins {
-    background-color: greenyellow;
-    text-decoration-line: underline;
-}
-
-ins:hover ~ span.Updated_Text_Popup_Note:before {
-    content: "\2196  INSERT: ";
-    font-weight: bold;
-}
-
 del {
     text-decoration: line-through;
     color: red;
@@ -550,6 +540,20 @@ del {
 del:hover ~ span.Updated_Text_Popup_Note {
     display: block;
 }
+
+ins:hover + span.Updated_Text_Popup_Note:before {
+    content: "\2196  INSERT: ";
+    font-weight: bold;
+}
+ins {
+    background-color: greenyellow;
+    text-decoration-line: underline;
+}
+
+ins:hover + span.Updated_Text_Popup_Note {
+    display: block;
+}
+
 
 span.Updated_Text_Popup_Note {
     position: absolute;

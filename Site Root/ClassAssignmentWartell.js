@@ -64,7 +64,6 @@ var Category;
     Category[Category["TODO"] = 3] = "TODO";
     Category[Category["OVERVIEW"] = 4] = "OVERVIEW";
 })(Category || (Category = {}));
-;
 /*
 const Category = Object.freeze({
     QUESTION: Symbol("Question"),
@@ -128,7 +127,7 @@ class Instructions {
         this.instructions.push(i);
     }
 }
-var instructions = new Instructions();
+const instructions = new Instructions();
 function roman_lower(n) {
     console.assert(n < 10);
     const roman = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
@@ -203,7 +202,7 @@ function collectionInstructions(section, sectionLabel) {
  *  @param {String} - name of class
  */
 export function Visibility_Toggle(Class, visible) {
-    var list = document.querySelectorAll("." + Class);
+    const list = document.querySelectorAll("." + Class);
     for (let n of list) {
         const el = n;
         /*
