@@ -556,9 +556,9 @@ ins:hover + span.Updated_Text_Popup_Note {
 
 
 span.Updated_Text_Popup_Note {
-    position: absolute;
+    position: relative;
     /* top: -2em; */
-    /* left: 50em; */
+    /* left: 250em; */
     display: none;
     background-color: lightblue;
     border: black solid 1px;
