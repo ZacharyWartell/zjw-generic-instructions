@@ -527,7 +527,7 @@ figcaption:before
          - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del
      */
 del:hover ~ span.Updated_Text_Popup_Note:before {
-    content: "\2196  DELETE: ";
+    content: "\2196";
     font-weight: bold;
 }
 
@@ -537,14 +537,25 @@ del {
     background-color: white;
 }
 
+del:hover:before {
+    content: "DELETE [" attr(datetime) "]: ";
+    background-color: lightblue;
+    text-decoration: none !important;
+}
 del:hover ~ span.Updated_Text_Popup_Note {
     display: block;
 }
 
 ins:hover + span.Updated_Text_Popup_Note:before {
-    content: "\2196  INSERT: ";
+    content: "\2196";
     font-weight: bold;
 }
+
+ins:hover:before {
+    content: "INSERT [" attr(datetime) "]: ";
+    background-color: lightblue;
+}
+
 ins {
     background-color: greenyellow;
     text-decoration-line: underline;
