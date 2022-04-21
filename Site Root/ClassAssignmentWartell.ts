@@ -504,6 +504,7 @@ function onLoad_idea2() {
                  <td></td>
                  <td><input type="text"></td>`;
         prevSection = instruction.section;
+        total += instruction.points;
         row.querySelector('input[type="text"]').addEventListener('input',
             (e : InputEvent ) =>
             {

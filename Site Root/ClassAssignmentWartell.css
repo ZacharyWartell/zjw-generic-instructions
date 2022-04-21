@@ -45,6 +45,11 @@ table.SectionRubric
     border: solid 1px black;
     border-collapse: collapse;
 }
+
+table.SectionRubric > tbody > tr > th
+{
+    border: solid 2px black;
+}
 table.SectionRubric > tbody > tr > td
 {
     border: solid 1px black;

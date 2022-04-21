@@ -417,6 +417,7 @@ function onLoad_idea2() {
                  <td></td>
                  <td><input type="text"></td>`;
         prevSection = instruction.section;
+        total += instruction.points;
         row.querySelector('input[type="text"]').addEventListener('input', (e) => {
             const itemID = e.currentTarget.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
             const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
