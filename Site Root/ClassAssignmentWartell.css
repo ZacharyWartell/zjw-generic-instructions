@@ -52,6 +52,7 @@ table.SectionRubric > tbody > tr > td
 table.SectionRubric > tbody > tr:first-child > td
 {
     color: gray;
+    width: auto;
 }
 
 table.SectionRubric > tbody > tr:nth-child(2) > td

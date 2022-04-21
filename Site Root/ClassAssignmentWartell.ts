@@ -91,7 +91,7 @@ function itemString(...args: number[])
         case 2:
             return args[0].toString() + "." + String.fromCharCode(aCode+args[1]-1);
         case 3:
-            return args[0].toString() + "." + String.fromCharCode(aCode+args[1]-1) + "." + roman_lower(args[3]);
+            return args[0].toString() + "." + String.fromCharCode(aCode+args[1]-1) + "." + roman_lower(args[2]);
     }
 }
 
@@ -489,8 +489,8 @@ function onLoad_idea2() {
                  <td>${instruction.number}</td>
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
 				 <td><a href="#${instruction.id}">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
+				 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
+                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>                 
                  <td></td>
                  <td><input type="text"></td>`;
         else
@@ -498,9 +498,9 @@ function onLoad_idea2() {
                 `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
-				 <td><a href="#${instruction.id}">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+				 <td><a href="#${instruction.id}">${instruction.short}</a></td>                 
                  <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
+                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td></td>
                  <td><input type="text"></td>`;
         prevSection = instruction.section;
