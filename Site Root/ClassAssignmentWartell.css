@@ -312,9 +312,15 @@ ol.Instruction > li > ol > li > ol > li::marker {
     content: counter(instructionLevel3, lower-roman) " ";
 }
 
+/* experimental */
 ol.Instruction li.Git_Commit
 {
     margin-top: 1em;
+}
+
+span.Instruction_Tool
+{
+
 }
 
 /*
@@ -440,27 +446,29 @@ span.MDN_h2
 Heading Numbering (Resource [R2])
 */
 body {
-    counter-reset: h1
+    counter-reset: h1;
 }
 
 h1 {
-    counter-reset: h2
+    counter-reset: h2;
+    font-size: larger;
 }
 
 h2 {
-    counter-reset: h3
+    counter-reset: h3;
+    font-size: medium;
 }
 
 h3 {
-    counter-reset: h4
+    counter-reset: h4;
 }
 
 h4 {
-    counter-reset: h5
+    counter-reset: h5;
 }
 
 h5 {
-    counter-reset: h6
+    counter-reset: h6;
 }
 
 h1:before {

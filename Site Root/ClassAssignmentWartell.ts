@@ -9,6 +9,7 @@
 import "./libs/jquery-3.5.1.min.js";
 import "./libs/toc.min.js";
 import * as Rubric from "./Rubric.js";
+import * as Inst from "./Instructions.js";
 
 
 /**
@@ -72,107 +73,7 @@ class AssignmentName
         }        
     }
 }
-/*
- * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
- */
-enum Category
-{
-    QUESTION,
-    GENERAL,
-    READ,
-    TODO,
-    OVERVIEW
-}
-/*
-const Category = Object.freeze({
-    QUESTION: Symbol("Question"),
-    GENERAL: Symbol("General"),
-    READ: Symbol("Read"),
-    TODO: Symbol("Todo"),
-    OVERVIEW: Symbol("Overview")
-})
-*/
 
-function getCategoryFromClass(element, returnNull) {
-    if (element.className.includes("Instruction_Question"))
-        return Category.QUESTION;
-    if (element.className.includes("Instruction_Read"))
-        return Category.READ;
-    if (element.className.includes("Instruction_Todo"))
-        return Category.TODO;
-    if (element.className.includes("Instruction_Overview"))
-        return Category.OVERVIEW;
-    if (element.className.includes("Instruction_General"))
-        return Category.GENERAL;
-    if (returnNull)
-        return null;
-    else
-        return Category.GENERAL;
-}
-
-
-
-class OptionSet
-{
-    name : string;
-    options : Array<any>;
-    constructor(n)
-    {
-        this.name = n;
-        this.options = [];
-    }
-}
-
-/*class Category
-    {
-        constructor(e)
-        {
-            this.value=e;
-        }
-        static QUESTION = 0;
-        static GENERAL = 1;
-        static READ = 2;
-           static TODO = 3;
-    };*/
-class Instruction {
-
-    section : string;
-    number : string;
-    id : string;
-    points : number;
-    comment : string;
-    short : string;
-    category : Category;
-
-    constructor(s : string, n : string  , sh : string , c) {
-        this.section = s;
-        this.number = n;
-        this.short = sh;
-        this.category = c;
-        this.id = "Section_"+(s + "_Item_" + n).replace(/\./g,'_');
-        this.points = 0;
-        this.comment="";
-    }
-}
-
-class Instructions
-{
-    instructions : Array<Instruction>;
-    optionSets : Array<OptionSet>;
-
-    constructor()
-    {
-        this.instructions = [];
-        this.optionSets = [];
-    }
-
-    push(i)
-    {
-        console.assert (i instanceof Instruction);  // \todo rewrite all in TypeScript
-        this.instructions.push(i);
-    }
-}
-const instructions = new Instructions();
 
 function roman_lower (n)
 {
@@ -212,44 +113,58 @@ function collectionInstructions(section : HTMLElement, sectionLabel : string) {
     if (olList !== null && olList.length !== 0) {
         for (let ol of olList) {
             let li1List = ol.querySelectorAll(":scope > li");
-            let category = getCategoryFromClass(ol, false);
+            let category = Inst.getCategoryFromClass(ol, false);
 
             l1c = 1;
             li1List.forEach(
                 (n1)=>
                 {
                     const li1 : HTMLElement = <HTMLElement>n1;
-                    let tmp, cat = (tmp = getCategoryFromClass(li1, true)) !== null ? tmp : category;
+                    let tmp, cat = (tmp = Inst.getCategoryFromClass(li1, true)) !== null ? tmp : category;
 
-                    instructions.push(new Instruction(sectionLabel, itemString(l1c),
-                        li1.innerText.trimStart().slice(0, 10) + " ...", cat));
-                    li1.id = instructions.instructions [instructions.instructions.length-1].id;
+                    const gp : HTMLElement = li1.querySelector(":scope > span.Grade_Points");
+                    let points : number = 0;
+                    if (gp !== null)
+                        points = parseInt(gp.dataset.points);
+
+                    Inst.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c),
+                        li1.innerText.trimStart().slice(0, 10) + " ...", cat, points));
+                    li1.id = Inst.instructions.instructions[Inst.instructions.instructions.length-1].id;
                     let ol1 = li1.querySelector(":scope > ol");
                     if (ol1 !== null) {
-                        let category1 = getCategoryFromClass(ol1, false);
+                        let category1 = Inst.getCategoryFromClass(ol1, false);
 
                         let li2List = ol1.querySelectorAll(":scope > li"); // only children, no nested descendants
                         l2c = 1;
                         for (let nli2 of li2List) {
                             const li2 : HTMLOListElement = <HTMLOListElement>nli2;
-                            let tmp, cat = (tmp = getCategoryFromClass(li2, true)) !== null ? tmp : category1;
+                            let tmp, cat = (tmp = Inst.getCategoryFromClass(li2, true)) !== null ? tmp : category1;
 
-                            instructions.instructions.push(new Instruction(sectionLabel, itemString(l1c ,l2c),
-                                li2.innerText.trimStart().slice(0, 10) + " ...",  cat));
-                            li2.id = instructions.instructions[instructions.instructions.length-1].id;
+                            const gp : HTMLElement = li2.querySelector(":scope > span.Grade_Points");
+                            let points : number = 0;
+                            if (gp !== null)
+                                points = parseInt(gp.dataset.points);
+
+                            Inst.instructions.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c ,l2c),
+                                li2.innerText.trimStart().slice(0, 10) + " ...",  cat,points));
+                            li2.id = Inst.instructions.instructions[Inst.instructions.instructions.length-1].id;
                             let ol2 = li2.querySelector(":scope > ol");
                             if (ol2 !== null) {
-                                let category2 = getCategoryFromClass(ol2, false);
+                                let category2 = Inst.getCategoryFromClass(ol2, false);
 
                                 let li3List = ol2.querySelectorAll(":scope > li"); // only children, no nested descendants
                                 l3c = 1;
                                 for (let nli3 of li3List) {
                                     const li3 : HTMLOListElement = <HTMLOListElement>nli3;
-                                    let tmp, cat = (tmp = getCategoryFromClass(li3, true)) !== null ? tmp : category2;
+                                    let tmp, cat = (tmp = Inst.getCategoryFromClass(li3, true)) !== null ? tmp : category2;
+                                    const gp : HTMLElement = li3.querySelector(":scope > span.Grade_Points");
+                                    let points : number = 0;
+                                    if (gp !== null)
+                                        points = parseInt(gp.dataset.points);
 
-                                    instructions.instructions.push(new Instruction(sectionLabel, itemString(l1c , l2c ,l3c),
-                                        li3.innerText.trimStart().slice(0, 10) + " ...", cat));
-                                    li3.id = instructions.instructions[instructions.instructions.length-1].id;
+                                    Inst.instructions.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c , l2c ,l3c),
+                                        li3.innerText.trimStart().slice(0, 10) + " ...", cat,points));
+                                    li3.id = Inst.instructions.instructions[Inst.instructions.instructions.length-1].id;
                                     l3c++;
                                 }
                             }
@@ -419,7 +334,7 @@ export function main()
                 document.body.appendChild(a);
                 const url = URL.createObjectURL(new Blob([htmlOut], {type: 'plain/text'}));
                 a.href = url;
-                a.download = "zjw-instructions-bak.html";
+                a.download = "zjw-Inst.instructions.bak.html";
                 a.click();
                 document.body.removeChild(a);
 
@@ -443,7 +358,7 @@ export function main()
             reader.addEventListener('loadend', (event : ProgressEvent<FileReader> ) =>
             {
                 /**
-                 * Load the instructions content Html Fragment into DOM
+                 * Load the Inst.instructions.content Html Fragment into DOM
                  *
                  * - https://developer.mozilla.org/en-US/docs/Web/API/Window/frames
                  */
@@ -514,9 +429,9 @@ export function main()
  **/
 function onLoad_idea2() {
     // [STATUS=not deployed] work-in-progress
-    {
-        Global.studentDirectory = localStorage.getItem('studentDirectory') || "";
-    }
+    // {
+    //     Global.studentDirectory = localStorage.getItem('studentDirectory') || "";
+    // }
 
 
     // Note this traversal assumes every <h1>, <h2> etc. is immediately preceded by a <section> element
@@ -553,11 +468,11 @@ function onLoad_idea2() {
         if (h1.className !== "nocount")
             h1c++;
     }
-    console.log(instructions);
-    //console.log("instructions.length:"+instructions.length);
+    console.log(Inst.instructions);
+    //console.log("Inst.instructions.length:"+Inst.instructions.length);
 
     /*
-     * construct <tbody> for <table> (#RubricTable) using instructions array and add
+     * construct <tbody> for <table> (#RubricTable) using Inst.instructions.array and add
      * various <input> HTML elements to certain <table> columns
      */
     let rubric = document.querySelector("#RubricTable > tbody");
@@ -565,7 +480,7 @@ function onLoad_idea2() {
     let total=0;
     const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
     let ri=0;
-    for (let instruction of instructions.instructions) {
+    for (let instruction of Inst.instructions.instructions) {
         let row = document.createElement("tr");
         row.setAttribute("data-ri",ri.toString());
         if (instruction.section === prevSection)
@@ -575,7 +490,7 @@ function onLoad_idea2() {
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
 				 <td><a href="#${instruction.id}">${instruction.short}</a></td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td></td>
+                 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td></td>
                  <td><input type="text"></td>`;
         else
@@ -585,7 +500,7 @@ function onLoad_idea2() {
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
 				 <td><a href="#${instruction.id}">${instruction.short}</a></td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td></td>
+                 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td></td>
                  <td><input type="text"></td>`;
         prevSection = instruction.section;
@@ -595,8 +510,8 @@ function onLoad_idea2() {
                 const itemID=(<HTMLElement>e.currentTarget).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
                 const rowIndex=parseInt((<HTMLElement>e.srcElement).parentElement.parentElement.getAttribute("data-ri"));
                 console.log(itemID.slice(1) + ":" + rowIndex + ":" + e);
-                console.log(instructions.instructions[rowIndex]);
-                instructions.instructions[rowIndex].comment = (<HTMLInputElement>e.currentTarget).value;
+                console.log(Inst.instructions.instructions[rowIndex]);
+                Inst.instructions.instructions[rowIndex].comment = (<HTMLInputElement>e.currentTarget).value;
             });
         rubric.append(row);
         ri++;
@@ -631,7 +546,7 @@ function onLoad_idea2() {
      *  serialize DOM created Rubric table to .json
      */
     {
-        let rubricTable_json = JSON.stringify(instructions);
+        let rubricTable_json = JSON.stringify(Inst.instructions);
         let url = URL.createObjectURL(new Blob([rubricTable_json], {type: 'text/plain; charset=UTF-16'}));
 
         // create button to open new browser tab with .json file
@@ -738,5 +653,6 @@ function onload_InstructionsFile()
     /**
      ***  Initialize <table id="RubricTable">
      **/
-    Rubric.main();
+    onLoad_idea2();
+    //Rubric.main();
 }

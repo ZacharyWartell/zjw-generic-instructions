@@ -13,6 +13,7 @@
     "node_modules"
   ],
   "files": [
+    "Instructions.ts",
     "ClassAssignmentWartell.ts",
     "GradingScript.ts",
     "Rubric.ts"
