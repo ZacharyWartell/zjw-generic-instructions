@@ -10,6 +10,7 @@ import "./libs/jquery-3.5.1.min.js";
 import "./libs/toc.min.js";
 import * as Rubric from "./Rubric.js";
 import * as Inst from "./Instructions.js";
+import {cssNumber} from "jquery";
 
 
 /**
@@ -75,12 +76,53 @@ class AssignmentName
 }
 
 
-function roman_lower (n)
+const ROMAN_VALUE = Uint16Array.from(
+    [
+        1000,
+        900,
+        500,
+        400,
+        100,
+        90,
+        50,
+        40,
+        10,
+        9,
+        5,
+        4,
+        1
+    ]);
+
+const ROMAN_SYMBOL =
+    [
+        "m",
+        "cm",
+        "d",
+        "cd",
+        "c",
+        "xc",
+        "l",
+        "xl",
+        "x",
+        "ix",
+        "v",
+        "iv",
+        "i"
+    ];
+
+function roman_lower (n) : string
 {
-    console.assert(n<10);
-    const roman = [ 'i','ii','iii','iv','v','vi','vii','viii','ix','x'];
-    return roman[n-1];
+    let str = "";
+    for (let i = 0;i<13;i++)
+    {
+        const v = ROMAN_VALUE[i];
+        let q = Math.floor(n / v);
+        n -= q * v;
+        str += ROMAN_SYMBOL[i].repeat(q);
+    }
+    return str;
 }
+
 function itemString(...args: number[])
 {
     const aCode = "a".charCodeAt(0);
