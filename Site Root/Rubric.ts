@@ -40,7 +40,7 @@ const Category = Object.freeze({
 })
 
 
-export function getCategoryFromClass(element, returnNull) {
+function getCategoryFromClass(element, returnNull) {
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;
     if (element.className.includes("Instruction_Read"))
