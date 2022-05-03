@@ -1,3 +1,15 @@
+/**
+ * \author Zachary Wartell
+ * \copyright Copyright 2015. Zachary Wartell.
+ * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+ * http://creativecommons.org/licenses/by-nc-sa/4.0/
+ */
+
+/**
+ **
+ **  EXPORTED FUNCTIONS, CLASSES, ETC.
+ **
+ */
 /*
  * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
  */
@@ -315,22 +327,27 @@ export function itemString(...args: number[])
     }
 }
 
-    const ROMAN_VALUE = Uint16Array.from(
-    [
-        1000,
-        900,
-        500,
-        400,
-        100,
-        90,
-        50,
-        40,
-        10,
-        9,
-        5,
-        4,
-        1
-    ]);
+/**
+ **
+ **  INTERNAL FUNCTIONS
+ **
+ */
+const ROMAN_VALUE = Uint16Array.from(
+[
+    1000,
+    900,
+    500,
+    400,
+    100,
+    90,
+    50,
+    40,
+    10,
+    9,
+    5,
+    4,
+    1
+]);
 
 const ROMAN_SYMBOL =
     [
