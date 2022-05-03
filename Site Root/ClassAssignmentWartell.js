@@ -267,9 +267,9 @@ export function main() {
         const options = {
             types: [
                 {
-                    description: 'Html Files',
+                    description: 'json files',
                     accept: {
-                        'text/html': ['.html'],
+                        'text/json': ['.json'],
                     },
                 },
             ],
@@ -277,7 +277,8 @@ export function main() {
         window.showSaveFilePicker(options).
             then((handle) => {
             console.log("Save " + handle);
-            return writeFile(handle, document.querySelector('section.SlidesWindow').innerHTML);
+            //return writeFile(handle,document.getElementById("RubricTable").outerHTML);
+            return writeFile(handle, JSON.stringify(Inst.instructions));
         }).
             catch((e) => { throw e; });
         e.target.parentElement.parentElement.hidden = true;
@@ -287,7 +288,7 @@ export function main() {
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    input = document.getElementById("exportAll");
+    input = document.getElementById("Download");
     input.addEventListener("click", (e) => {
         try {
             let htmlOut = "";
@@ -436,23 +437,32 @@ function onLoad_idea2() {
                 `<td class="Empty"></td>
                  <td>${instruction.number}</td>
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
-				 <td><a href="#${instruction.id}">${instruction.short}</a></td>
+				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>
 				 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>                 
-                 <td></td>
+                 <td><input type="number"></td>
                  <td><input type="text"></td>`;
         else
             row.innerHTML =
                 `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
-				 <td><a href="#${instruction.id}">${instruction.short}</a></td>                 
+				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>                 
                  <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td></td>
+                 <td><input type="number"></td>
                  <td><input type="text"></td>`;
         prevSection = instruction.section;
         total += instruction.points;
+        rubric.append(row);
+        row.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+            const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
+            if (e.currentTarget.checked)
+                Inst.instructions.instructions[rowIndex].marks = Inst.instructions.instructions[rowIndex].points;
+            else
+                Inst.instructions.instructions[rowIndex].marks = 0;
+            e.currentTarget.parentElement.nextElementSibling.firstChild.value = Inst.instructions.instructions[rowIndex].marks.toString();
+        });
         row.querySelector('input[type="text"]').addEventListener('input', (e) => {
             const itemID = e.currentTarget.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
             const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
@@ -460,15 +470,19 @@ function onLoad_idea2() {
             console.log(Inst.instructions.instructions[rowIndex]);
             Inst.instructions.instructions[rowIndex].comment = e.currentTarget.value;
         });
-        rubric.append(row);
+        row.querySelector('input[type="number"]').addEventListener('change', (e) => {
+            const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
+            console.log(Inst.instructions.instructions[rowIndex]);
+            Inst.instructions.instructions[rowIndex].marks = parseInt(e.currentTarget.value);
+        });
         ri++;
     }
     let ttd = document.getElementById("Total");
     ttd.nextElementSibling.innerText = total.toString();
     /*
-     *  serialize DOM created Rubric table to .xml
+     *  serialize the DOM of the created Rubric Table to .xml
      */
-    {
+    document.querySelector("#Download").onclick = () => {
         let XMLS = new XMLSerializer();
         let rubricTable_xmls = XMLS.serializeToString(document.querySelector("#RubricTable"));
         let url = URL.createObjectURL(new Blob([rubricTable_xmls], { type: 'application/xml; charset=UTF-16' }));
@@ -483,8 +497,8 @@ function onLoad_idea2() {
         link.download = "Rubric.xml";
         //link.textContent =  "xmlfile.xml";
         //document.querySelector("#RubricButton").onclick = () => {location.href='"' + url + '"';};
-        document.querySelector("#RubricDownloadXML").append(link);
-    }
+        document.querySelector("#Download").append(link);
+    };
     /*
      *  serialize DOM created Rubric table to .json
      */
@@ -500,15 +514,19 @@ function onLoad_idea2() {
         link.href = url;
         link.innerText = "Download JSON";
         link.download = "Rubric.json";
-        document.querySelector("#RubricDownloadJSON").append(link);
+        //document.querySelector("#RubricDownloadJSON").append(link);
     }
     // create <input> element to select studentDirectory
-    document.querySelector("#StudentDirectory").addEventListener('change', (e) => {
-        console.log(e);
-        Global.studentDirectory = e.target.value; //files[0].match(/(.*)[\/\\]/)[1] || '';
-        localStorage.setItem('studentDirectory', Global.studentDirectory);
-        console.log(Global.studentDirectory);
-    });
+    /*
+    document.querySelector("#StudentDirectory").addEventListener('change',
+        (e : InputEvent ) =>
+        {
+            console.log(e);
+            Global.studentDirectory = (<HTMLInputElement>e.target).value;//files[0].match(/(.*)[\/\\]/)[1] || '';
+            localStorage.setItem('studentDirectory', Global.studentDirectory);
+            console.log(Global.studentDirectory);
+        });
+    */
     return;
 }
 export function onload_InstructionsFile() {

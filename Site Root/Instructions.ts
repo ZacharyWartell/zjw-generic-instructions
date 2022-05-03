@@ -75,6 +75,7 @@ export class Instruction {
     number : string;
     id : string;
     points : number;
+    marks : number;
     comment : string;
     short : string;
     category : typeof Category;
@@ -86,6 +87,7 @@ export class Instruction {
         this.category = c;
         this.id = "Section_"+(s + "_Item_" + n).replace(/\./g,'_');
         this.points = points;
+        this.marks = 0;
         this.comment="";
     }
 }
