@@ -53,122 +53,6 @@ export class AssignmentName {
         }
     }
 }
-const ROMAN_VALUE = Uint16Array.from([
-    1000,
-    900,
-    500,
-    400,
-    100,
-    90,
-    50,
-    40,
-    10,
-    9,
-    5,
-    4,
-    1
-]);
-const ROMAN_SYMBOL = [
-    "m",
-    "cm",
-    "d",
-    "cd",
-    "c",
-    "xc",
-    "l",
-    "xl",
-    "x",
-    "ix",
-    "v",
-    "iv",
-    "i"
-];
-function roman_lower(n) {
-    let str = "";
-    for (let i = 0; i < 13; i++) {
-        const v = ROMAN_VALUE[i];
-        let q = Math.floor(n / v);
-        n -= q * v;
-        str += ROMAN_SYMBOL[i].repeat(q);
-    }
-    return str;
-}
-function itemString(...args) {
-    const aCode = "a".charCodeAt(0);
-    switch (arguments.length) {
-        case 1:
-            return args[0].toString();
-        case 2:
-            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1);
-        case 3:
-            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman_lower(args[2]);
-    }
-}
-function itemID(sectionLabel, L1, L2, L3) {
-    let id;
-    id = sectionLabel.replace('.', '_');
-    id += itemString(L1, L2, L3).replace('.', '_');
-    return id;
-}
-function collectionInstructions(section, sectionLabel) {
-    let l1c = 1, l2c = 1, l3c = 1;
-    const temp = "self" + Date.now().toString();
-    section.id = temp;
-    let olList = section.querySelectorAll(":scope > ol.Instruction");
-    //section.id = "";
-    if (olList !== null && olList.length !== 0) {
-        for (let ol of olList) {
-            let li1List = ol.querySelectorAll(":scope > li");
-            let category = Inst.getCategoryFromClass(ol, false);
-            l1c = 1;
-            li1List.forEach((n1) => {
-                const li1 = n1;
-                let tmp, cat = (tmp = Inst.getCategoryFromClass(li1, true)) !== null ? tmp : category;
-                const gp = li1.querySelector(":scope > span.Grade_Points");
-                let points = 0;
-                if (gp !== null)
-                    points = parseInt(gp.dataset.points);
-                Inst.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c), li1.innerText.trimStart().slice(0, 10) + " ...", cat, points));
-                li1.id = Inst.instructions.instructions[Inst.instructions.instructions.length - 1].id;
-                let ol1 = li1.querySelector(":scope > ol");
-                if (ol1 !== null) {
-                    let category1 = Inst.getCategoryFromClass(ol1, false);
-                    let li2List = ol1.querySelectorAll(":scope > li"); // only children, no nested descendants
-                    l2c = 1;
-                    for (let nli2 of li2List) {
-                        const li2 = nli2;
-                        let tmp, cat = (tmp = Inst.getCategoryFromClass(li2, true)) !== null ? tmp : category1;
-                        const gp = li2.querySelector(":scope > span.Grade_Points");
-                        let points = 0;
-                        if (gp !== null)
-                            points = parseInt(gp.dataset.points);
-                        Inst.instructions.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c, l2c), li2.innerText.trimStart().slice(0, 10) + " ...", cat, points));
-                        li2.id = Inst.instructions.instructions[Inst.instructions.instructions.length - 1].id;
-                        let ol2 = li2.querySelector(":scope > ol");
-                        if (ol2 !== null) {
-                            let category2 = Inst.getCategoryFromClass(ol2, false);
-                            let li3List = ol2.querySelectorAll(":scope > li"); // only children, no nested descendants
-                            l3c = 1;
-                            for (let nli3 of li3List) {
-                                const li3 = nli3;
-                                let tmp, cat = (tmp = Inst.getCategoryFromClass(li3, true)) !== null ? tmp : category2;
-                                const gp = li3.querySelector(":scope > span.Grade_Points");
-                                let points = 0;
-                                if (gp !== null)
-                                    points = parseInt(gp.dataset.points);
-                                Inst.instructions.instructions.push(new Inst.Instruction(sectionLabel, itemString(l1c, l2c, l3c), li3.innerText.trimStart().slice(0, 10) + " ...", cat, points));
-                                li3.id = Inst.instructions.instructions[Inst.instructions.instructions.length - 1].id;
-                                l3c++;
-                            }
-                        }
-                        l2c++;
-                    }
-                }
-                l1c++;
-            });
-        }
-    }
-}
 /*  \author Zachary Wartell
  *  \brief toggle the "hidden" attribute of all elements of class "Class"
  *  @param {String} - name of class
@@ -325,7 +209,9 @@ export function main() {
             /**
              * Update JS Objects
              */
-            onload_InstructionsFile();
+            //init_rubric();
+            Inst.instructions.createRubric();
+            //onload_InstructionsFile();
         });
         reader.readAsText(e.target.files[0]);
         //console.log((<HTMLInputElement>e.currentTarget).value);
@@ -373,161 +259,6 @@ export function main() {
     xhr.responseType = "document";
     xhr.send();
      */
-}
-/**
- ******  [STATUS: NOT DEPLOYED] *******
- ******  [work-in-progress]     *******
- 
- 
- Currently the <script> in the .html does an approximation of some of what the code below will eventually do.
- **/
-function onLoad_idea2() {
-    // [STATUS=not deployed] work-in-progress
-    // {
-    //     Global.studentDirectory = localStorage.getItem('studentDirectory') || "";
-    // }
-    // Note this traversal assumes every <h1>, <h2> etc. is immediately preceded by a <section> element
-    let h1List = document.querySelectorAll("section > h1");
-    let h1c, h2c, h3c;
-    h1c = 1;
-    for (let h1 of h1List) {
-        console.assert(h1.parentElement.tagName === "SECTION");
-        collectionInstructions(h1.parentElement, h1c.toString());
-        let parent = h1.parentElement;
-        let selfIndex = [].slice.call(parent.children).indexOf(h1) + 1;
-        let h2List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h2");
-        if (h2List !== null && h2List.length !== 0) {
-            h2c = 1;
-            for (let h2 of h2List) {
-                console.assert(h2.parentElement.tagName === "SECTION");
-                collectionInstructions(h2.parentElement, h1c.toString() + "." + h2c.toString());
-                let parent = h2.parentElement;
-                let selfIndex = [].slice.call(parent.children).indexOf(h2) + 1;
-                let h3List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h3");
-                if (h3List !== null && h3List.length !== 0) {
-                    h3c = 1;
-                    for (let h3 of h3List) {
-                        console.assert(h3.parentElement.tagName === "SECTION");
-                        collectionInstructions(h3.parentElement, h1c.toString() + "." + h2c.toString() + "." + h3c.toString());
-                        h3c++;
-                    }
-                }
-                h2c++;
-            }
-        }
-        if (h1.className !== "nocount")
-            h1c++;
-    }
-    console.log(Inst.instructions);
-    //console.log("Inst.instructions.length:"+Inst.instructions.length);
-    /*
-     * construct <tbody> for <table> (#RubricTable) using Inst.instructions.array and add
-     * various <input> HTML elements to certain <table> columns
-     */
-    let rubric = document.querySelector("#RubricTable > tbody");
-    let prevSection = "";
-    let total = 0;
-    const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
-    let ri = 0;
-    for (let instruction of Inst.instructions.instructions) {
-        let row = document.createElement("tr");
-        row.setAttribute("data-ri", ri.toString());
-        if (instruction.section === prevSection)
-            row.innerHTML =
-                `<td class="Empty"></td>
-                 <td>${instruction.number}</td>
-				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
-				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>
-				 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>                 
-                 <td><input type="number"></td>
-                 <td><input type="text"></td>`;
-        else
-            row.innerHTML =
-                `<td>${instruction.section}</td>
-				 <td>${instruction.number}</td>
-				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
-				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>                 
-                 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td><input type="number"></td>
-                 <td><input type="text"></td>`;
-        prevSection = instruction.section;
-        total += instruction.points;
-        rubric.append(row);
-        row.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
-            const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
-            if (e.currentTarget.checked)
-                Inst.instructions.instructions[rowIndex].marks = Inst.instructions.instructions[rowIndex].points;
-            else
-                Inst.instructions.instructions[rowIndex].marks = 0;
-            e.currentTarget.parentElement.nextElementSibling.firstChild.value = Inst.instructions.instructions[rowIndex].marks.toString();
-        });
-        row.querySelector('input[type="text"]').addEventListener('input', (e) => {
-            const itemID = e.currentTarget.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
-            const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
-            console.log(itemID.slice(1) + ":" + rowIndex + ":" + e);
-            console.log(Inst.instructions.instructions[rowIndex]);
-            Inst.instructions.instructions[rowIndex].comment = e.currentTarget.value;
-        });
-        row.querySelector('input[type="number"]').addEventListener('change', (e) => {
-            const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
-            console.log(Inst.instructions.instructions[rowIndex]);
-            Inst.instructions.instructions[rowIndex].marks = parseInt(e.currentTarget.value);
-        });
-        ri++;
-    }
-    let ttd = document.getElementById("Total");
-    ttd.nextElementSibling.innerText = total.toString();
-    /*
-     *  serialize the DOM of the created Rubric Table to .xml
-     */
-    document.querySelector("#Download").onclick = () => {
-        let XMLS = new XMLSerializer();
-        let rubricTable_xmls = XMLS.serializeToString(document.querySelector("#RubricTable"));
-        let url = URL.createObjectURL(new Blob([rubricTable_xmls], { type: 'application/xml; charset=UTF-16' }));
-        // create button to open new browser tab with .xml file
-        document.querySelector("#CreateGradingRubricXML").onclick = () => {
-            window.open(url);
-        };
-        // create button to download .xml file
-        const link = document.createElement('a');
-        link.href = url;
-        link.innerText = "Download XML";
-        link.download = "Rubric.xml";
-        //link.textContent =  "xmlfile.xml";
-        //document.querySelector("#RubricButton").onclick = () => {location.href='"' + url + '"';};
-        document.querySelector("#Download").append(link);
-    };
-    /*
-     *  serialize DOM created Rubric table to .json
-     */
-    {
-        let rubricTable_json = JSON.stringify(Inst.instructions);
-        let url = URL.createObjectURL(new Blob([rubricTable_json], { type: 'text/plain; charset=UTF-16' }));
-        // create button to open new browser tab with .json file
-        document.querySelector("#CreateGradingRubricJSON").onclick = () => {
-            window.open(url);
-        };
-        // create button to download .json file
-        const link = document.createElement('a');
-        link.href = url;
-        link.innerText = "Download JSON";
-        link.download = "Rubric.json";
-        //document.querySelector("#RubricDownloadJSON").append(link);
-    }
-    // create <input> element to select studentDirectory
-    /*
-    document.querySelector("#StudentDirectory").addEventListener('change',
-        (e : InputEvent ) =>
-        {
-            console.log(e);
-            Global.studentDirectory = (<HTMLInputElement>e.target).value;//files[0].match(/(.*)[\/\\]/)[1] || '';
-            localStorage.setItem('studentDirectory', Global.studentDirectory);
-            console.log(Global.studentDirectory);
-        });
-    */
-    return;
 }
 export function onload_InstructionsFile() {
     /**
@@ -592,7 +323,8 @@ export function onload_InstructionsFile() {
     /**
      ***  Initialize <table id="RubricTable">
      **/
-    onLoad_idea2();
+    //init_rubric();
+    Inst.instructions.createRubric();
     //Rubric.main();
 }
 //# sourceMappingURL=ClassAssignmentWartell.js.map
