@@ -313,7 +313,13 @@ export class Instructions
 }
 export const instructions = new Instructions();
 
-export function itemString(...args: number[])
+/**
+ **
+ **  INTERNAL FUNCTIONS
+ **
+ */
+
+function itemString(...args: number[])
 {
     const aCode = "a".charCodeAt(0);
     switch(arguments.length)
@@ -327,11 +333,6 @@ export function itemString(...args: number[])
     }
 }
 
-/**
- **
- **  INTERNAL FUNCTIONS
- **
- */
 const ROMAN_VALUE = Uint16Array.from(
 [
     1000,
