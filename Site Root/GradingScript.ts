@@ -7,7 +7,7 @@
  \status [STATUS=not deployed] work-in-progress
  */
 
-/**** UNUSED CLASS     ****
+/**** UNUSED/UNDEPLOYED CLASS     ****
  **** WORK IN PROGRESS *****/
 
 /**

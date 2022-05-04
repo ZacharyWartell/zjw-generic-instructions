@@ -8,8 +8,7 @@
  */
 import "./libs/jquery-3.5.1.min.js";
 import "./libs/toc.min.js";
-import * as Rubric from "./Rubric.js";
-import * as Inst from "./Instructions.js";
+import * as Inst from "./Rubric.js";
 import {cssNumber} from "jquery";
 
 
@@ -321,7 +320,7 @@ export function main()
 }
 
 export
-function onload_InstructionsFile()
+function onload()
 {
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.

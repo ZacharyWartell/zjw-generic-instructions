@@ -8,7 +8,7 @@
  */
 import "./libs/jquery-3.5.1.min.js";
 import "./libs/toc.min.js";
-import * as Inst from "./Instructions.js";
+import * as Inst from "./Rubric.js";
 /**
  ** \brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
  *
@@ -260,7 +260,7 @@ export function main() {
     xhr.send();
      */
 }
-export function onload_InstructionsFile() {
+export function onload() {
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/
