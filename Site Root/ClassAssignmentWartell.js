@@ -168,30 +168,6 @@ export function main() {
             catch((e) => { throw e; });
         e.target.parentElement.parentElement.hidden = true;
     });
-    /*
-    *  Menu#File Download button
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
-    */
-    input = document.getElementById("Download");
-    input.addEventListener("click", (e) => {
-        try {
-            let htmlOut = "";
-            const scs = document.querySelectorAll(`div.SlideContainer`);
-            scs.forEach((sc) => { htmlOut += sc.outerHTML; });
-            const a = document.createElement("a");
-            document.body.appendChild(a);
-            const url = URL.createObjectURL(new Blob([htmlOut], { type: 'plain/text' }));
-            a.href = url;
-            a.download = "zjw-Inst.instructions.bak.html";
-            a.click();
-            document.body.removeChild(a);
-            e.target.parentElement.parentElement.hidden = true;
-        }
-        catch (err) {
-            throw err;
-        }
-    });
     const inputFile = document.getElementById("loadFile");
     inputFile.addEventListener('change', (e) => {
         const reader = new FileReader();
@@ -227,6 +203,94 @@ export function main() {
         (<HTMLElement>e.target).parentElement.parentElement.hidden = true;
         */
     });
+    input = document.getElementById("ExportGradedRubric");
+    input.addEventListener('click', (e) => {
+        const options = {
+            types: [
+                {
+                    description: 'html file',
+                    accept: {
+                        'text/html': ['.html'],
+                    },
+                },
+            ],
+        };
+        window.showSaveFilePicker(options).
+            then((handle) => {
+            console.log("Save " + handle);
+            return writeFile(handle, `<html>
+                        <head>
+                        <style>                            
+                            table.Rubric {
+                                border: solid 2px black;
+                                border-collapse: collapse;
+                            }
+                            
+                            table.Rubric > thead > tr > th
+                            {
+                                border: solid 2px black;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+                            
+                            table.Rubric td
+                            {
+                                border: solid 1px;
+                            }
+                            
+                            table.Rubric tr td:nth-child(3)
+                            {
+                                /* align-content: center; */
+                                text-align: center;
+                            }
+                            
+                            table.Rubric td.Empty
+                            {
+                                border: 0px;
+                            }    
+                        </style>
+                        </head>
+                        <body>
+                            Assignment: <a href="https://zwartell.gitlab.io/Unity_XR_Tutorial_1">Unity_XR_Tutorial_1</a>
+                            ${document.getElementById("RubricTable").outerHTML}
+                        </body>
+                        </html>`);
+            //return writeFile(handle,JSON.stringify(Inst.instructions));
+        }).
+            catch((e) => { throw e; });
+        e.target.parentElement.parentElement.hidden = true;
+    });
+    /*
+    *  Menu#File Download button
+    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
+    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
+    */
+    /*
+    input = document.getElementById("Download");
+    input.addEventListener("click",
+        ( e: InputEvent )=>
+        {
+            try{
+                let htmlOut : string = "";
+                const scs = document.querySelectorAll(`div.SlideContainer`);
+                scs.forEach((sc)=>{htmlOut += sc.outerHTML;});
+
+                const a = document.createElement("a");
+                document.body.appendChild(a);
+                const url = URL.createObjectURL(new Blob([htmlOut], {type: 'plain/text'}));
+                a.href = url;
+                a.download = "zjw-Inst.instructions.bak.html";
+                a.click();
+                document.body.removeChild(a);
+
+                (<HTMLElement>e.target).parentElement.parentElement.hidden = true;
+            }
+            catch(err)
+            {
+                throw err;
+            }
+        });
+    */
     /*
      *   Use XHR to load Chapter4.html
      *   \todo extend to allow user to choose a chapter available from the server
