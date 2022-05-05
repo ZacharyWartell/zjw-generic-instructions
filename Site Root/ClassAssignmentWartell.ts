@@ -260,20 +260,21 @@ export function main()
                  *
                  * - https://developer.mozilla.org/en-US/docs/Web/API/Window/frames
                  */
-                const instructions = Array<Object> (JSON.parse(event.target.result.toString()));
-                Inst.instructions.instructions.splice(0);
-                for (let ji of instructions)
+                const instructions = JSON.parse(event.target.result.toString());
+                Inst.instructions.instructions.splice(0,Inst.instructions.instructions.length);
+                for (let ji of instructions.instructions)
                 {
                     const i = new Instruction();
                     i.assign(ji);
                     Inst.instructions.push(i);
                 }
+                console.log(Inst.instructions);
 
 
                 /**
                  * Update JS Objects
                  */
-                Inst.instructions.displayRubric();
+                Inst.instructions.displayRubric(true);
                 //init_rubric();
 
                 //onload_InstructionsFile();

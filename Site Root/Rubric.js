@@ -81,7 +81,7 @@ export class Instruction {
         this.comment = "";
     }
     assign(jsonObject) {
-        for (let p in Object)
+        for (let p in jsonObject)
             if (p in this)
                 this[p] = jsonObject[p];
     }
@@ -94,6 +94,12 @@ export class Instructions {
     push(i) {
         console.assert(i instanceof Instruction); // \todo rewrite all in TypeScript
         this.instructions.push(i);
+    }
+    totalMarksUpdate() {
+        let tm = 0; // 'totalMarks'
+        for (let i of this.instructions)
+            tm += i.marks;
+        document.getElementById("TotalMarks").innerText = tm.toString();
     }
     /**
      * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
@@ -198,7 +204,7 @@ export class Instructions {
         this.displayRubric();
     }
     //console.log("instructions.length:"+instructions.length);
-    displayRubric() {
+    displayRubric(displayMarks = false) {
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions.array and add
          * various <input> HTML elements to certain <table> columns
@@ -208,6 +214,7 @@ export class Instructions {
         let total = 0;
         const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
         let ri = 0;
+        rubric.innerHTML = "";
         for (let instruction of this.instructions) {
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString());
@@ -218,9 +225,9 @@ export class Instructions {
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
 				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>
 				 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>                 
-                 <td><input type="number" min="0" max="100"></td>
-                 <td><input type="text"></td>`;
+                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${instruction.points != 0 && instruction.marks == instruction.points ? 'checked="true"' : ''}"></td>                 
+                 <td><input type="number" min="0" max="100" value=${displayMarks && instruction.points != 0 ? instruction.marks : ""}></td>
+                 <td><input type="text" value="${instruction.comment}"></td>`;
             else
                 row.innerHTML =
                     `<td>${instruction.section}</td>
@@ -228,9 +235,9 @@ export class Instructions {
 				 <td>${instruction.category.toString().replace(REGEX, '$1')}</td>
 				 <td><a href="#${instruction.id}" onclick="document.getElementById('${instruction.id}').scrollIntoView();">${instruction.short}</a></td>                 
                  <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td><input type="number" min="0" max="100"></td>
-                 <td><input type="text"></td>`;
+                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${instruction.points != 0 && instruction.marks == instruction.points ? 'checked="true"' : ''}"></td>
+                 <td><input type="number" min="0" max="100" value=${displayMarks && instruction.points != 0 ? instruction.marks : ""}></td>
+                 <td><input type="text" value="${instruction.comment}"></td>`;
             prevSection = instruction.section;
             total += instruction.points;
             rubric.append(row);
@@ -241,6 +248,7 @@ export class Instructions {
                 else
                     this.instructions[rowIndex].marks = 0;
                 e.currentTarget.parentElement.nextElementSibling.firstChild.value = this.instructions[rowIndex].marks.toString();
+                this.totalMarksUpdate();
             });
             row.querySelector('input[type="text"]').addEventListener('input', (e) => {
                 const itemID = e.currentTarget.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
@@ -253,11 +261,14 @@ export class Instructions {
                 const rowIndex = parseInt(e.srcElement.parentElement.parentElement.getAttribute("data-ri"));
                 console.log(this.instructions[rowIndex]);
                 this.instructions[rowIndex].marks = parseInt(e.currentTarget.value);
+                this.totalMarksUpdate();
             });
             ri++;
         }
+        // update display of total points
         let ttd = document.getElementById("Total");
         ttd.nextElementSibling.innerText = total.toString();
+        this.totalMarksUpdate();
     }
 }
 export const instructions = new Instructions();
