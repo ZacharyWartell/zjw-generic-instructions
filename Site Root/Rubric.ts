@@ -283,7 +283,7 @@ export class Instructions
 				 <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${instruction.points != 0 && instruction.marks == instruction.points ? 'checked="true"' : ''}"></td>                 
                  <td><input type="number" min="0" max="100" value=${displayMarks && instruction.points != 0 ? instruction.marks :""}></td>
-                 <td><input type="text" value="${instruction.comment}"></td>`;
+                 <td><textarea rows="1" cols="30" >${instruction.comment}</textarea></td>`;
         else
             row.innerHTML =
                 `<td>${instruction.section}</td>
@@ -293,7 +293,7 @@ export class Instructions
                  <td>${instruction.points == 0 ? "" : instruction.points.toString()}</td>
                  <td><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${instruction.points != 0 && instruction.marks == instruction.points ? 'checked="true"' : ''}"></td>
                  <td><input type="number" min="0" max="100" value=${displayMarks && instruction.points != 0 ? instruction.marks :""}></td>
-                 <td><input type="text" value="${instruction.comment}"></td>`;
+                 <td><textarea rows="1" cols="30" >${instruction.comment}</textarea></td>`;
         prevSection = instruction.section;
         total += instruction.points;
         rubric.append(row);
@@ -308,7 +308,7 @@ export class Instructions
                 (<HTMLInputElement>(<HTMLInputElement>e.currentTarget).parentElement.nextElementSibling.firstChild).value = this.instructions[rowIndex].marks.toString();
                 this.totalMarksUpdate();
             });
-        row.querySelector('input[type="text"]').addEventListener('input',
+        row.querySelector('textarea').addEventListener('input',
             (e : InputEvent ) =>
             {
                 const itemID=(<HTMLElement>e.currentTarget).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
