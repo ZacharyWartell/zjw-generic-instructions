@@ -10,6 +10,7 @@ import "./libs/jquery-3.5.1.min.js";
 import "./libs/toc.min.js";
 import * as Inst from "./Rubric.js";
 import {cssNumber} from "jquery";
+import {Instruction, Instructions} from "./Rubric.js";
 
 
 /**
@@ -259,14 +260,22 @@ export function main()
                  *
                  * - https://developer.mozilla.org/en-US/docs/Web/API/Window/frames
                  */
-                const mw : HTMLElement = document.getElementById("MainWindow");
-                mw.innerHTML = event.target.result.toString();
+                const instructions = Array<Object> (JSON.parse(event.target.result.toString()));
+                Inst.instructions.instructions.splice(0);
+                for (let ji of instructions)
+                {
+                    const i = new Instruction();
+                    i.assign(ji);
+                    Inst.instructions.push(i);
+                }
+
 
                 /**
                  * Update JS Objects
                  */
+                Inst.instructions.displayRubric();
                 //init_rubric();
-                Inst.instructions.createRubric();
+
                 //onload_InstructionsFile();
             });
             reader.readAsText((<HTMLInputElement>e.target).files[0]);
@@ -398,6 +407,6 @@ function onload()
      ***  Initialize <table id="RubricTable">
      **/
     //init_rubric();
-    Inst.instructions.createRubric()
+    Inst.instructions.extractRubric()
     //Rubric.main();
 }

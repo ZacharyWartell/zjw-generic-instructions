@@ -13,24 +13,25 @@
 /*
  * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
  */
-// enum Category
-// {
-//     QUESTION,
-//     GENERAL,
-//     READ,
-//     TODO,
-//     OVERVIEW
-// }
-//
-// export const CategoryToString =
-//     [
-//         "QUESTION",
-//         "GENERAL",
-//         "READ",
-//         "TODO",
-//         "OVERVIEW"
-//     ];
+enum Category
+ {
+     QUESTION= "QUESTION",
+     GENERAL = "GENERAL",
+     READ = "READ",
+     TODO = "TODO",
+     OVERVIEW = "OVERVIEW"
+ }
 
+ export const CategoryToString =
+     [
+         "QUESTION",
+         "GENERAL",
+         "READ",
+         "TODO",
+         "OVERVIEW"
+     ];
+
+/*
 const Category = Object.freeze({
     QUESTION: Symbol("Question"),
     GENERAL: Symbol("General"),
@@ -38,6 +39,7 @@ const Category = Object.freeze({
     TODO: Symbol("Todo"),
     OVERVIEW: Symbol("Overview")
 })
+*/
 
 
 function getCategoryFromClass(element, returnNull) {
@@ -90,9 +92,9 @@ export class Instruction {
     marks : number;
     comment : string;
     short : string;
-    category : typeof Category;
+    category : Category;
 
-    constructor(s : string, n : string  , sh : string , c, points : number=0) {
+    constructor(s : string = "", n : string = "", sh : string = "", c : Category = Category.GENERAL, points : number=0) {
         this.section = s;
         this.number = n;
         this.short = sh;
@@ -101,6 +103,12 @@ export class Instruction {
         this.points = points;
         this.marks = 0;
         this.comment="";
+    }
+    assign(jsonObject : Object)
+    {
+        for (let p in Object)
+            if (p in this)
+                this[p] = jsonObject[p]
     }
 }
 
@@ -205,44 +213,47 @@ export class Instructions
      *
      - Lost track of history of this relative to Rubric.js.  I suspect Rubric.js is 'old' since it is not .ts code.
      **/
-    createRubric()
-    {
-    // Note this traversal assumes every <h1>, <h2> etc. is immediately preceded by a <section> element
-    let h1List = document.querySelectorAll("section > h1");
-    let h1c, h2c, h3c;
-    h1c = 1;
-    for (let h1 of h1List) {
-        console.assert(h1.parentElement.tagName === "SECTION");
-        this.collectInstructions(h1.parentElement, h1c.toString());
-        let parent = h1.parentElement;
-        let selfIndex = [].slice.call(parent.children).indexOf(h1) + 1;
-        let h2List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h2");
+    extractRubric() {
+        // Note this traversal assumes every <h1>, <h2> etc. is immediately preceded by a <section> element
+        let h1List = document.querySelectorAll("section > h1");
+        let h1c, h2c, h3c;
+        h1c = 1;
+        for (let h1 of h1List) {
+            console.assert(h1.parentElement.tagName === "SECTION");
+            this.collectInstructions(h1.parentElement, h1c.toString());
+            let parent = h1.parentElement;
+            let selfIndex = [].slice.call(parent.children).indexOf(h1) + 1;
+            let h2List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h2");
 
-        if (h2List !== null && h2List.length !== 0) {
-            h2c = 1;
-            for (let h2 of h2List) {
-                console.assert(h2.parentElement.tagName === "SECTION");
-                this.collectInstructions(h2.parentElement, h1c.toString() + "." + h2c.toString());
-                let parent = h2.parentElement;
-                let selfIndex = [].slice.call(parent.children).indexOf(h2) + 1;
-                let h3List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h3");
-                if (h3List !== null && h3List.length !== 0) {
-                    h3c = 1;
-                    for (let h3 of h3List) {
-                        console.assert(h3.parentElement.tagName === "SECTION");
-                        this.collectInstructions(h3.parentElement, h1c.toString() + "." + h2c.toString() + "." + h3c.toString());
-                        h3c++;
+            if (h2List !== null && h2List.length !== 0) {
+                h2c = 1;
+                for (let h2 of h2List) {
+                    console.assert(h2.parentElement.tagName === "SECTION");
+                    this.collectInstructions(h2.parentElement, h1c.toString() + "." + h2c.toString());
+                    let parent = h2.parentElement;
+                    let selfIndex = [].slice.call(parent.children).indexOf(h2) + 1;
+                    let h3List = parent.querySelectorAll(":nth-child(" + selfIndex + ") ~ section > h3");
+                    if (h3List !== null && h3List.length !== 0) {
+                        h3c = 1;
+                        for (let h3 of h3List) {
+                            console.assert(h3.parentElement.tagName === "SECTION");
+                            this.collectInstructions(h3.parentElement, h1c.toString() + "." + h2c.toString() + "." + h3c.toString());
+                            h3c++;
+                        }
                     }
+                    h2c++;
                 }
-                h2c++;
             }
+            if (h1.className !== "nocount")
+                h1c++;
         }
-        if (h1.className !== "nocount")
-            h1c++;
+        console.log(this.instructions);
+        this.displayRubric();
     }
-    console.log(this.instructions);
     //console.log("instructions.length:"+instructions.length);
 
+    displayRubric()
+    {
     /*
      * construct <tbody> for <table> (#RubricTable) using instructions.array and add
      * various <input> HTML elements to certain <table> columns
