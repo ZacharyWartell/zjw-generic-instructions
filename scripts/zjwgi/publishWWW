@@ -4,7 +4,19 @@
 
 # ITCS_x120_HTML-CSS-Event_Tutorial
 
+# read config file
+CONFIG_FILE=config
+ftphost=`grep -e ftphost $CONFIG_FILE | sed 's/\(\S*\s\)\(.*\)/\2/g'`
+ftpdir=`grep -e ftpdir $CONFIG_FILE | sed 's/\(\S*\s\)\(.*\)/\2/g'`
+ftpuser=`grep -e ftpuser $CONFIG_FILE | sed 's/\(\S*\s\)\(.*\)/\2/g'`
+echo $ftphost
+echo $ftpdir
+echo $ftpuser
+exit
+
+
 # replace the string $REVISION$ with the git log's date of last revision in the file index.html
+
 #sed -i -e s/[$]REVISION[$]/"$(git log --format=format:\"%cD\" HEAD@{1}..HEAD)"/ .public/index.html
 echo -n '<span class="Revision">' > REVISION.txt
 echo -n `git show --no-patch --no-notes --pretty='%cd'` >> REVISION.txt
@@ -12,9 +24,10 @@ echo -n '<\/span>' >> REVISION.txt
 sed -i -e s/'<span class="Revision">.*<\/span>'/"$(cat REVISION.txt)"/ "../ITCS_x120_HTML-CSS-Event_Tutorial.html"
 #exit
 
-rm ftp.cmd
-echo cd 'public_html/Teaching/ITCS_x120_HTML-CSS-Event_Tutorial'  > ftp.cmd
-echo lcd '..'                                 >> ftp.cmd
-echo put -R . .                               >> ftp.cmd
+# sftp ../site contents to target
+rm ftp.cmd &2> null
+echo cd '$ftpdir'                                  > ftp.cmd
+echo lcd '../site'                                 >> ftp.cmd
+echo put -R . .                                    >> ftp.cmd
 
-sftp 'zwartell@webpages.uncc.edu' < ftp.cmd
+sftp $ftpuser@$ftphost < ftp.cmd
