@@ -10,7 +10,7 @@ import "./third-party/jquery-3.5.1.min.js";
 import "./third-party/toc.min.js";
 import * as Inst from "./Rubric.js";
 import {cssNumber} from "jquery";
-//import {Instruction, Instructions} from "./Rubric.js";
+import {Instruction, Instructions} from "./Rubric.js";
 
 
 /**
@@ -219,7 +219,7 @@ export function main()
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    input = document.getElementById("Download");
+    input = document.getElementById("exportAll");
     input.addEventListener("click",
         ( e: InputEvent )=>
         {
@@ -326,6 +326,7 @@ export function main()
     xhr.responseType = "document";
     xhr.send();    
      */
+    onload();
 }
 
 export
