@@ -6,11 +6,11 @@
 
  \status [STATUS=not deployed] work-in-progress
  */
-import "./libs/jquery-3.5.1.min.js";
-import "./libs/toc.min.js";
+import "./third-party/jquery-3.5.1.min.js";
+import "./third-party/toc.min.js";
 import * as Inst from "./Rubric.js";
 import {cssNumber} from "jquery";
-import {Instruction, Instructions} from "./Rubric.js";
+//import {Instruction, Instructions} from "./Rubric.js";
 
 
 /**
