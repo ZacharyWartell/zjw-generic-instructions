@@ -9,7 +9,7 @@
 import "./third-party/jquery-3.5.1.min.js";
 import "./third-party/toc.min.js";
 import * as Inst from "./Rubric.js";
-import { Instruction } from "./Rubric.js";
+//import {Instruction, Instructions} from "./Rubric.js";
 /**
  ** \brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
  *
