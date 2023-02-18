@@ -13,9 +13,9 @@
     "node_modules"
   ],
   "files": [
-    "Rubric.ts",
-    "ClassAssignmentWartell.ts",
-    "GradingScript.ts",
-    "Rubric.ts"
+    "scripts/zjwgi/Rubric.js",
+    "scripts/zjwgi/ClassAssignmentWartell.ts",
+    "scripts/zjwgi/GradingScript.ts",
+    "scripts/zjwgi/Rubric.ts"
   ],
 }
