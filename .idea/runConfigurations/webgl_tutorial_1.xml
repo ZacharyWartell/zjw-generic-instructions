@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="webgl-tutorial-1" type="JavascriptDebugType" uri="http://localhost:63342/webgl-tutorial-1-v2/site/index.html" useBuiltInWebServerPort="true">
+    <mapping url="http://localhost:63342/webgl-tutorial-1" local-file="$PROJECT_DIR$/site" />
+    <method v="2">
+      <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="false" CONFIG_PATH="$PROJECT_DIR$/site/tsconfig.json" />
+    </method>
+  </configuration>
+</component>
