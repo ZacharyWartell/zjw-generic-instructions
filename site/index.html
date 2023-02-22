@@ -176,25 +176,40 @@
               target="_blank">https://observablehq.com/@d3/connected-scatterplot.</a></p>
           <div>
             <ol class="Instruction">
-              <li class="Instruction_Todo">Create the following directory
-                structure on your computer.</li>
-              <li style="width: 1505px;">Git clone the WebGL book’s example code
-                from:<br>
-                <span class="File_Name">https://cci-git.uncc.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programming_Guide.git</span></li>
+              <li style="width: 1505px;">In your ITCS_<span class="DataField" data-course-number=""></span>
+                directory, Git clone the WebGL book’s example code:<br>
+                <br>
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone
+https://cci-git.uncc.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programming_Guide.git</code><br>
+                          <code class="Shell_Code_Output">Cloning into '<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
               <li class="Instruction_Todo">On cci-git, create a Git
                 repository:&nbsp;&nbsp; <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="File_Name">3120-t3-webgl-1</span><br>
                 <ol>
-                  <li class="Instruction_Todo">Make sure the x repository is
+                  <li class="Instruction_Todo">Make sure the repository is
                     Private</li>
-                  <li class="Instruction_Todo">Invite Group to your private
+                  <li class="Instruction_Todo">"Invite Group" your private
                     group, i.e. <span class="File_Name">itcs-3120-wartell/students/<span
 
-                        class="User_Input">your name</span></span> </li>
+                        class="User_Input">your name</span></span>, and give it
+                    Reporter access. </li>
                 </ol>
                 <span class="Exercise_Title"></span></li>
-              <li class="Instruction_Todo">Clone the repository:
+              <li class="Instruction_Todo">Clone the above repository:
                 <table class="Code_Example" style="width: 100%;">
                   <tbody>
                     <tr>
@@ -215,8 +230,8 @@
                   </tbody>
                 </table>
               </li>
-              <li class="Instruction_Todo">Copy the common WebGL book libraries
-                to your ITCS_3120 directory:
+              <li class="Instruction_Todo"><u>Copy</u> the common WebGL book
+                libraries to your ITCS_3120 directory:
                 <table class="Code_Example" style="width: 100%;">
                   <tbody>
                     <tr>
@@ -224,10 +239,8 @@
                       <td>
                         <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
                             ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
-                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
-
-                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
-                          <br>
+                          <code class="Shell_Code_Input">$cp -r
+                            WebGL_Programming_Guide/lib .</code> <br>
                           <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
                             warning: You appear to have cloned an empty
                             repository.<br>
@@ -237,70 +250,80 @@
                   </tbody>
                 </table>
               </li>
-              <li class="Instruction_Todo">Verify your directory structure:
+              <li class="Instruction_Todo">Verify that your directory structure
+                looks similar to this:<br>
                 <table class="Code_Example" style="width: 100%;">
                   <tbody>
                     <tr>
                       <td><button>▽</button></td>
                       <td>
-                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                        <div style="height: 200px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
                             ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
-                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
-
-                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
-                          <br>
-                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
-                            warning: You appear to have cloned an empty
-                            repository.<br>
+                          <code class="Shell_Code_Input">$ls -la</code>2 <br>
+                          <code class="Shell_Code_Output">total 12<br>
+                            drwxr-xr-x 1 zwartell Administ 4096 Sep 17 17:40 .<br>
+                            drwxr-xr-x 46 zwartell Administ 12288 Sep 17 17:02
+                            ..<br>
+                            drwxr-xr-x 3 zwartell Administ 0 Sep 17 17:34
+                            3120-t3-webgl-1<br>
+                            drwxr-xr-x 1 zwartell Administ 4096 Sep 17 17:09
+                            WebGL_Programming_Guide<br>
+                            drwxr-xr-x 6 zwartell Administ 4096 Sep 17 17:40 lib<br>
                           </code> </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </li>
-              <li class="Instruction_Todo">Copy the Chapter 2 example code to
-                T4_WebGL:
+              <li class="Instruction_Todo">Copy the Chapter 2 example code to <span
+
+                  class="File_Name">3120-t3-webgl-1</span>:
                 <table class="Code_Example" style="width: 100%;">
                   <tbody>
                     <tr>
                       <td><button>▽</button></td>
                       <td>
-                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                        <div style="height: 175px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
                             ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
-                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
-
-                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
-                          <br>
-                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
-                            warning: You appear to have cloned an empty
-                            repository.<br>
+                          <code class="Shell_Code_Input">$ cp -r
+                            WebGL_Programming_Guide/ch02/* 3120-t3-webgl-1</code>
+                          <code class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>
+                          <code class="Shell_Code_Input"><br>
+                            $ ls 3120-t3-webgl-1 &nbsp; &nbsp;&nbsp; <span class="Shell_Code_Comment">[Verify
+                              the file appears as below]</span> <br>
+                          </code> <code class="Shell_Code_Input"> <span data-project-number-long-dir=""></span></code>
+                          <code class="Shell_Code_Output">ClickedPoints.html
+                            ColoredPoints.html DrawRectangle.html
+                            HelloCanvas.html<br>
+                            HelloPoint1.html HelloPoint2.html<br>
+                            ClickedPoints.js ColoredPoints.js DrawRectangle.js
+                            HelloCanvas.js<br>
+                            HelloPoint1.js HelloPoint2.js<br>
+                            <br>
                           </code> </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </li>
-              <li class="Instruction_Git_Commit">Git add, commit and push this
-                initial code with the indicated message:
-                <table class="Code_Example" style="width: 100%;">
-                  <tbody>
-                    <tr>
-                      <td><button>▽</button></td>
-                      <td>
-                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
-                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
-
-                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
-                          <br>
-                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
-                            warning: You appear to have cloned an empty
-                            repository.<br>
-                          </code> </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <li class="Instruction_Todo"><u>Exercise</u>:&nbsp;&nbsp;
+                Questions file<br>
+                <br>
+                Create a file called Questions.&nbsp;&nbsp; The file should be
+                either a MS Word document (.docx) or an document that you can
+                export to a PDF file at the end of this
+                assignment.&nbsp;&nbsp;&nbsp; This file will contains your
+                answers to various questions that are part of this
+                assignment.&nbsp;&nbsp; Some answers will require you draw and
+                include diagrams to augment your answers.&nbsp;&nbsp;&nbsp;
+                Hence the file format you choose must support the inclusion of
+                images.<br>
+                <strong></strong></li>
+              <li class="Instruction_Git_Commit"><strong>Git</strong> add,
+                commit and push all the additions to your repo with the commit
+                message:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                "-imported WebGL Chapter 2 code and initial files"<br>
               </li>
             </ol>
           </div>
@@ -314,7 +337,7 @@
           </div>
         </section>
         <section>
-          <h1> Introduction to WebGL + HTML5 + JavaScript </h1>
+          <h1> Tutorial:&nbsp; WebGL Guide:&nbsp; Chapter 1 - 3 </h1>
           <ol class="Instruction">
             <li><u>Web Browser and Browser Development Tools</u>:<br>
               This tutorial and future class tutorials will make use of the
@@ -353,11 +376,12 @@
               directory:<br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span class="File_Name">ITCS_3120/WebGL_Programming_Guide\ch09\RotateObject.html</span></li>
-            <li class="Instruction_Todo">Read WebGL Book Chapter 2 (but read one
-              section at a time, as describe below).<br>
+            <li class="Instruction_Todo"><u>Exercises</u>:&nbsp;&nbsp; Perform
+              the exercises below while reading WebGL Book Chapter 2.&nbsp;
+              (Read one section of Chapter 2 at a time.&nbsp; Each exercise
+              below is based on one section).<br>
               <br>
-              While reading, open up each example program in a WebGL capable web
-              browser. Use the<br>
+              While reading, open up each example program in a browser. Use the
               browser’s Development Tools to examine all the HTML, JavaScript
               and WebGL shader code in the browser script viewer windows, while
               you read Chapter 2’s description of the code.<br>
@@ -365,11 +389,10 @@
                 <li class="Instruction_Todo"><u>Exercise</u> [What Is a
                   Canvas?]:<br>
                   <br>
-                  Read Chapter 2 Section “What Is a Canvas?”. Study the code.<br>
-                  Modify your copy of DrawRectangle.html (i.e. in
-                  ITCS_3120/T4_WebGL/<br>
-                  DrawRectangle.html) as follows:&nbsp; (Note, you should draw
-                  all of the following on the one canvas)<br>
+                  Read Chapter 2 Section “What Is a Canvas?”. Study the code and
+                  modify your copy of DrawRectangle.html as described
+                  below.&nbsp;&nbsp; Note, you should draw all of the following
+                  on the single HTML Canvas.<br>
                   <ol>
                     <li class="Instruction_Todo">Change the size of the original
                       rectangle to be 1.5 times bigger.</li>
@@ -381,30 +404,26 @@
                       generate a 4 by 4 array 16 small rectangles each with a<br>
                       different color. Below is a 6 x 6 array example. You use
                       any set of colors you want.<br>
-                      &lt;img&gt;<br>
-                      <u>JavaScript Hin</u>t: The WebGL book barely introduces
-                      JavaScript. Read the following section of the recommended
-                      JavaScript reference regarding JS loops:<br>
-                      <br>
-                      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
+                      <img src="./images/colored-squares.png"> <br>
+                      <u>JavaScript Hint</u>: The WebGL book superficially
+                      introduces JavaScript. Read the following section of the
+                      recommended JavaScript reference regarding JS loops:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
 
                         target="_blank">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration</a></li>
                     <li class="Instruction_Todo"><u><strong>Git</strong></u> add
-                      and commit this updated code using the message:<br>
+                      and commit this updated code using the commit message:<br>
                       <span class="File_Name">"-exercise - What Is a Canvas?"</span><br>
-                      <u>Tip</u>: It is also good practice to git push your
-                      changes occasionally so they are safely backed up on the
-                      server.</li>
+                    </li>
                   </ol>
                 </li>
                 <li class="Instruction_Todo"><u>Exercise</u> [Clear Drawing
                   Area]:<br>
                   <br>
-                  Read Chapter 2 Section “The World’s Shortest WebGL Program:
+                  Read Chapter 2 section “The World’s Shortest WebGL Program:
                   Clear Drawing Area.”<br>
                   <br>
-                  Modify your copy of HelloCanvas.html (i.e.
-                  ITCS_3120/T4_WebGL/HelloCanvas.html) as follows:<br>
+                  Modify your copy of HelloCanvas.html as follows:<br>
                   <ol>
                     <li class="Instruction_Todo">Add an additional console log
                       message when the GLContext is successfully created.</li>
@@ -419,10 +438,9 @@
                       loaded (i.e. if the user hit browser “Reload” button, she
                       should see a different, random color each time).<br>
                       <br>
-                      <u>JavaScript Hint</u>: The WebGL book barely introduces
-                      JavaScript.&nbsp; See:<br>
-                      <br>
-                      <a href="https://developer.mozilla.org/en-%20US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"
+                      <u>JavaScript Hint</u>: The WebGL book superficially
+                      introduces JavaScript.&nbsp; See:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://developer.mozilla.org/en-%20US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"
 
                         target="_blank">https://developer.mozilla.org/en-<br>
 US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
@@ -457,7 +475,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                 <li class="Instruction_Todo"><u>Exercise</u>:<br>
                   <ol>
                     <li class="Instruction_Todo">Copy the Chapter 2 extra
-                      example code to T4_WebGL:</li>
+                      example code to <span data-=""></span></li>
                     <li class="Instruction_Todo">Git add and commit this code
                       with message:</li>
                     <li class="Instruction_Read">Read "Appendix A. No Need to
@@ -468,8 +486,11 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                       to the browser, such as<br>
                       alert() or confirm(), the browser may then display the
                       contents of the color buffer to the screen."</li>
-                    <li class="Instruction_Todo">Open T4_WebGL/HelloCanvas1.html
-                      in a browser and study the js code.</li>
+                    <li class="Instruction_Todo">Open HelloCanvas1.html in a
+                      browser and study the js code.<br>
+                      <br>
+                      For the questions below, put your answers in your
+                      Questions file<span class="File_Name">.</span></li>
                     <li class="Instruction_Question">Question 1: Before
                       executing it, what do you expect to see?</li>
                     <li class="Instruction_Todo">Execute the code.</li>
@@ -499,11 +520,6 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                       Use a diagram (neat, scanned hand sketched pictures are
                       ok; or use your preferred drawing tool) to help explain
                       your answer.</li>
-                    <li class="Instruction_Question">\todo<br>
-                      Put your written answers to Questions 1 through 4 in a
-                      document and save the<br>
-                      document to file (use either PDF format or MS Word
-                      format), <span class="File_Name">Questions.pdf.</span></li>
                     <li class="Instruction_Question"><strong>Git </strong>add
                       and commit with message:<br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -517,14 +533,18 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   (Version 2)”.<br>
                   <br>
                   <ol>
-                    <li class="Instruction_Todo">Modify the vertexAttrib function call to use the 2D
-                      version of the call so you only have to pass x,y
-                      coordinates.</li>
-                    <li class="Instruction_Todo">Modify the location of the displayed point.</li>
-                    <li class="Instruction_Todo">Modify the size and color of the displayed point.</li>
-                    <li class="Instruction_Todo">As described in the Chapter modify the point size code
-                      to use another attribute shader variable.</li>
-                    <li class="Instruction_Git_Commit"><strong>Git</strong> add and commit with message:<br>
+                    <li class="Instruction_Todo">Modify the vertexAttrib
+                      function call to use the 2D version of the call so you
+                      only have to pass x,y coordinates.</li>
+                    <li class="Instruction_Todo">Modify the location of the
+                      displayed point.</li>
+                    <li class="Instruction_Todo">Modify the size and color of
+                      the displayed point.</li>
+                    <li class="Instruction_Todo">As described in the Chapter
+                      modify the point size code to use another attribute shader
+                      variable.</li>
+                    <li class="Instruction_Git_Commit"><strong>Git</strong> add
+                      and commit with message:<br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       "-exercise – Draw Point V2"</li>
                   </ol>
@@ -535,10 +555,11 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   “Draw a Point<br>
                   with a Mouse Click"<br>
                   <ol>
-                    <li class="Instruction_Todo">As your read through section “Experimenting with the
-                      Sample Program” make all the indicate changes to the
-                      program.</li>
-                    <li class="Instruction_Git_Commit"><strong>Git </strong>add and commit with message:<br>
+                    <li class="Instruction_Todo">As your read through section
+                      “Experimenting with the Sample Program” make all the
+                      indicate changes to the program.</li>
+                    <li class="Instruction_Git_Commit"><strong>Git </strong>add
+                      and commit with message:<br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       "-exercise - ClickedPoint"</li>
                   </ol>
@@ -549,14 +570,16 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   “Change the Point Color” and study the code:<br>
                   <br>
                   <ol>
-                    <li class="Instruction_Todo">Change the code to use 8 different colors. Instead of
-                      having a one color per quadrant conceptually divide the
-                      canvas up into 8 equal sized “octants” by using 2
-                      additional diagonal lines, at + and - 45 degrees as shown
-                      below:<br>
+                    <li class="Instruction_Todo">Change the code to use 8
+                      different colors. Instead of having a one color per
+                      quadrant conceptually divide the canvas up into 8 equal
+                      sized “octants” by using 2 additional diagonal lines, at +
+                      and - 45 degrees as shown below:<br>
+                      <img src="images/divided-square.png" width="200px" alt=""><br>
                       A point in each octant will have a different one of the 8
                       colors.</li>
-                    <li class="Instruction_Git_Commit"><strong>Git </strong>add and commit with message:<br>
+                    <li class="Instruction_Git_Commit"><strong>Git </strong>add
+                      and commit with message:<br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       "-exercise - ColoredPoints"</li>
                   </ol>
@@ -567,21 +590,23 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
               <ol>
                 <li class="Instruction_Todo"><u>Exercise</u> [MultiPoint]:<br>
                   <ol>
-                    <li class="Instruction_Todo">Copy the following sample code from ch03 to your
-                      T4_WebGL directory:</li>
-                    <li class="Instruction_Git_Commit"><strong>Git </strong>add and commit with message: <br>
+                    <li class="Instruction_Todo">Copy the following sample code
+                      from ch03 to your T4_WebGL directory:</li>
+                    <li class="Instruction_Git_Commit"><strong>Git </strong>add
+                      and commit with message: <br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       "-exercise MultiPoint"</li>
-                    <li class="Instruction_Todo">Open MultiPoint.html in your browser read Chapter 3
-                      through and including<br>
+                    <li class="Instruction_Todo">Open MultiPoint.html in your
+                      browser read Chapter 3 through and including<br>
                       Section “Draw Multiple Points” and read up to and
                       including sub-section “Sample Program (MultiPoint.js)”.
                       Study the code.</li>
-                    <li class="Instruction_Read">Continue reading and studying the example code until
-                      reaching sub-section<br>
+                    <li class="Instruction_Read">Continue reading and studying
+                      the example code until reaching sub-section<br>
                       “Experimenting with the Sample Program”. Now, perform the
                       experiments suggested and save the code change.</li>
-                    <li class="Instruction_Git_Commit"><strong>Git</strong> add and commit with message:<br>
+                    <li class="Instruction_Git_Commit"><strong>Git</strong> add
+                      and commit with message:<br>
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       "-exercise MultiPoint Experiment"</li>
                   </ol>
@@ -605,10 +630,16 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   "-exercise – Triangles Experiment"</li>
               </ol>
             </li>
-            <li><u>Exercise</u> [Triangle Play]:<br>
+          </ol>
+        </section>
+        <section>
+          <h1>Micro Project: &nbsp; Triangles </h1>
+          <ol class="Instruction">
+            <li><u>Exercise</u> [Triangles]:<br>
               <ol>
                 <li class="Instruction_Todo">Copy the following sample code from
-                  ch03 to your T4_WebGL directory with a new file name.</li>
+                  ch03 to your <span class="DataField" data-project-number-long-dir=""></span>
+                  directory with a new file name.</li>
                 <li><strong>Git </strong>add and commit with message:<br>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   "-added HelloTrianglePlay"</li>
@@ -631,12 +662,20 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                     <li class="Instruction_Todo">Be mildly creative…</li>
                   </ol>
                 </li>
-                <li class="Instruction_Todo">Git add and commit with message:<br>
+                <li class="Instruction_Git_Commit">Git add and commit with
+                  message:<br>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  "-exercise - Triangle Play"</li>
+                  "-exercise - Triangle Play" </li>
               </ol>
             </li>
-            <li>Remember to Git push your repo.</li>
+            <li class="Instruction_Git_Commit"><u>Exercise</u>:&nbsp;&nbsp;
+              [Final Submission]&nbsp;&nbsp; <br>
+              <ol>
+                <li>If your Questions file was not a .docx file export it to a
+                  PDF file and git add and commit the PDF.</li>
+                <li>git push your repo to cci-git.</li>
+              </ol>
+            </li>
           </ol>
         </section>
       </div>
@@ -777,7 +816,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   <code class="Shell_Code_Prompt">lucretius@Monad42 ~/ITCS_<span
 
                       class="DataField" data-course-number=""></span>/<span data-project-number-long-dir="Project_2"></span></code><br>
-                  <code class="Shell_Code_Input">$git remote add upstream
+                  <code class="Shell_Code_Input">$ git remote add upstream
                     https://cci-git.uncc.edu/UNCC_Graphics/</code><code class="Shell_Code_Input"><code
 
                       class="Shell_Code_Input">ITCS_<span class="DataField" data-course-number=""></span>_Planet_Mobile.git</code></code><br>
@@ -800,7 +839,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
                   </code> <code class="Shell_Code_Prompt">lucretius@Monad42
                     ~/ITCS_<span class="DataField" data-course-number=""></span>/<span
 
-                      data-project-number-long-dir="Project_2"></span></code><br>
+                      data-project-number-long-dir=""></span></code><br>
                   <code class="Shell_Code_Input">$git merge upstream/master</code><br>
                   <span class="Shell_Code_Comment">[... the above 2 commands
                     merge the 'upstream' remote into the local repo...]</span><br>
