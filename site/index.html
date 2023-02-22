@@ -10,12 +10,13 @@
     <link href="css/zjwgi/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
     <link href="css/zjwgi/GUI.css" rel="stylesheet" type="text/css">
     <link href="css/zjwgi/generic_instructions.css" rel="stylesheet" type="text/css">
-    <link media="print" href="css/zjwgi/generic_instructions-print.css" rel="stylesheet" type="text/css">
+    <link media="print" href="css/zjwgi/generic_instructions-print.css" rel="stylesheet"
+
+      type="text/css">
     <script type="application/json" class="js-hypothesis-config">
           {"openSidebar": false}
     </script>
     <script src="https://hypothes.is/embed.js" async=""></script>
-
     <script src="scripts/zjwgi/third-party/jquery-3.5.1.min.js"></script>
     <script src="scripts/zjwgi/third-party/toc.min.js"></script>
     <script type="module">
@@ -30,7 +31,7 @@
           (e)=>
           {
             Visibility_Toggle('Staff_Notes',e.target.checked);
-            Visibility_Toggle('Staff_Only',e.target.checked);;
+            Visibility_Toggle('Staff_Only',e.target.checked);
             document.getElementById("fileMenu").disabled = !e.target.checked;
           });
       function onload_Body()
@@ -44,30 +45,28 @@
     <!-- IF_TOC -->
     <div id="toc"> </div>
     <div id="Toolbar" class="Toolbar">
-      <div class="Menu">
-        <button id="fileMenu" disabled onclick="document.getElementById('fileSubMenu').hidden=false;">File</button>
+      <div class="Menu"> <button id="fileMenu" disabled="disabled" onclick="document.getElementById('fileSubMenu').hidden=false;">File</button>
         <ul id="fileSubMenu" class="SubMenu" hidden="">
           <li> <input id="loadFile" name="loadFile" accept="/html" type="file">
           </li>
           <li><button id="save">Save</button></li>
           <li><button id="exportAll">Download</button></li>
         </ul>
-        |
-        <button id="help" onclick='window.open("docs/help.html");'>Help</button>
-        <input name="Instructor_Mode" id="Instructor_Mode" type="checkbox">
-        <label for="Instructor_Mode">Instructor Mode</label>
-      </div>
+        | <button id="help" onclick='window.open("docs/help.html");'>Help</button>
+        <input name="Instructor_Mode" id="Instructor_Mode" type="checkbox"> <label
+
+          for="Instructor_Mode">Instructor Mode</label> </div>
     </div>
     <section id="MainWindow">
       <div id="AssignmentName" class="Data">
         <!-- AssignmentName.courseNumber -->
-        <div>5121</div>
+        <div>3120</div>
         <!-- AssignmentName.number -->
-        <div>p1</div>
+        <div>T3</div>
         <!-- AssignmentName.numberLongDir -->
-        <div>p1-d3-beginner-project</div>
+        <div>3120-t3-webgl-1</div>
         <!-- AssignmentName.name -->
-        <div>d3-beginner-project</div>
+        <div>webgl-tutorial-1</div>
       </div>
       <div style="margin-left: 250px;">
         <h2 class="nocount Title">ITCS <span class="DataField" data-course-number=""></span>:
@@ -75,9 +74,11 @@
         </h2>
         <h2 class="nocount Title">Spring 2021</h2>
         <h3 class="nocount Title">Professor: Zachary Wartell</h3>
-        <h3 class="nocount Title">Revision: <span class="Revision"></span> (<a href="https://gitlab.com/zwartell/zjw-generic-instructions/commits/master"
+        <h3 class="nocount Title">Revision: <span class="Revision"></span> (<a
 
-              target="_blank">git logs</a>) </sup><br>
+            href="https://gitlab.com/zwartell/zjw-generic-instructions/commits/master"
+
+            target="_blank">git logs</a>) <br>
         </h3>
         <hr>
         <div style="text-align: center;"><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
@@ -101,9 +102,14 @@
         <section>
           <h3 class="nocount">Objectives</h3>
           <ol>
-            <li>Apply knowledge from prior tutorials on D3 and the HTML5
-              ecosystem to understand and extend a simple D3 project.</li>
-            <li>Develop a basic development skills in D3.</li>
+            <li>Learn how WebGL integrates with HTML5 and the HTML5 Canvas</li>
+            <li>Exercise basic prior knowledge of HTML5 and JavaScript</li>
+            <li>Learn how WebGL integrates with JavaScript</li>
+            <li>Exercise basic prior knowledge of using Developer Tools with the
+              Chrome web browser</li>
+            <li>Exercise basic prior knowledge of JavaScript, HTML5 Canvas, and
+              mouse and keyboard events</li>
+            <li>Learn the basics of the WebGL shading language.</li>
           </ol>
           <!--
         Resources In the project skeleton code in the code comment's, there are        several references and hyperlinks to other specific, external resources        (comments are prefixed by "Student Note:").        				-->
@@ -114,31 +120,33 @@
           <p> Parts of this document contains notes only useful to teaching
             staff. Students should leave these parts non-visible.</p>
           <form name="System_Configuration">
-            <fieldset>
-              <legend>Display Configuration:&nbsp;</legend>
+            <fieldset> <legend>Display Configuration:&nbsp;</legend>
               <!--
-              // these are only relevant the original https://gitlab.com/zwartell/Git_Tutorial_and_Coding_Standards.git
-              <button class="Text_Button" onclick="Div_Toggle('Server_Git_Viscenter');Div_Toggle('Server_Supports_SSH');"> git-viscenter </button>           <button class="Text_Button" onclick="Div_Toggle('Server_Bitbucket');Div_Toggle('Server_Supports_SSH');"> Bitbucket </button>                 <button class="Text_Button" onclick="Div_Toggle('Server_Cci_Git');"> cci-git </button>
-              -->
+              // these are only relevant the original https://gitlab.com/zwartell/Git_Tutorial_and_Coding_Standards.git              <button class="Text_Button" onclick="Div_Toggle('Server_Git_Viscenter');Div_Toggle('Server_Supports_SSH');"> git-viscenter </button>           <button class="Text_Button" onclick="Div_Toggle('Server_Bitbucket');Div_Toggle('Server_Supports_SSH');"> Bitbucket </button>                 <button class="Text_Button" onclick="Div_Toggle('Server_Cci_Git');"> cci-git </button>              -->
             </fieldset>
           </form>
-          <hr>
-        </section>
+          <hr> </section>
         <section>
           <h1 class="toc">Overview</h1>
           Total number of points for the project is 105 (see <a href="#RubricTable">Rubric
             Table</a> for&nbsp; a tabular summary).&nbsp; <br>
-          To access the guide to reading and navigation these instructions press
-          the "Help" button in the menu bar above.<br>
+          \todo To access the guide to reading and navigation these instructions
+          press the "Help" button in the menu bar above.<br>
           <br>
-          For this project you will port <a href="https://observablehq.com/@d3/connected-scatterplot"
-
-            target="_blank">https://observablehq.com/@d3/connected-scatterplot.</a>
-          to a stand-alone HTML5 page and add multiple new features and
-          improvements to the original code. All files are submitted through
-          git..</section>
+          For this project, in the WebGL Book you will read Chapter 1, Chapter 2
+          and part of Chapter 3. You will download roughly a dozen example
+          programs. Chapter 2 walks you through all the<br>
+          fundamental components of the source code of these example programs
+          and introduces how WebGL integrates with HTML5 and JavaScript and
+          introduces the fundamentals of the WebGL<br>
+          API and the WebGL shading language. As you read through the Chapter 2
+          examples, this document will instruct you to make explicit, trivial
+          modifications for each of the example programs and to use good Git
+          practices for incrementally committing your work. The Chapter 3
+          exercises will cover just the first two sections of Chapter 3.<br>
+          .</section>
         <section>
-          <h1 class="toc">Coding Standards:</h1>
+          <h1 class="toc">Git Commit Protocol and Coding Standards</h1>
           Section: <span class="Grade_Points" data-points="10"></span> <br>
           <br>
           Part of your project grade will be based on following good programming
@@ -162,20 +170,485 @@
           </ul>
         </section>
         <section>
-          <h1 class="toc">D3 Beginner Project</h1>
+          <h1 class="toc">Project Organization</h1>
           <p>For project you will extend the Observable notebook project <a href="https://observablehq.com/@d3/connected-scatterplot"
 
               target="_blank">https://observablehq.com/@d3/connected-scatterplot.</a></p>
           <div>
             <ol class="Instruction">
+              <li class="Instruction_Todo">Create the following directory
+                structure on your computer.</li>
+              <li style="width: 1505px;">Git clone the WebGL book’s example code
+                from:<br>
+                <span class="File_Name">https://cci-git.uncc.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programming_Guide.git</span></li>
+              <li class="Instruction_Todo">On cci-git, create a Git
+                repository:&nbsp;&nbsp; <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="File_Name">3120-t3-webgl-1</span><br>
+                <ol>
+                  <li class="Instruction_Todo">Make sure the x repository is
+                    Private</li>
+                  <li class="Instruction_Todo">Invite Group to your private
+                    group, i.e. <span class="File_Name">itcs-3120-wartell/students/<span
+
+                        class="User_Input">your name</span></span> </li>
+                </ol>
+                <span class="Exercise_Title"></span></li>
+              <li class="Instruction_Todo">Clone the repository:
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
+
+                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
+                          <br>
+                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
+                            warning: You appear to have cloned an empty
+                            repository.<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li class="Instruction_Todo">Copy the common WebGL book libraries
+                to your ITCS_3120 directory:
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
+
+                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
+                          <br>
+                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
+                            warning: You appear to have cloned an empty
+                            repository.<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li class="Instruction_Todo">Verify your directory structure:
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
+
+                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
+                          <br>
+                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
+                            warning: You appear to have cloned an empty
+                            repository.<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li class="Instruction_Todo">Copy the Chapter 2 example code to
+                T4_WebGL:
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
+
+                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
+                          <br>
+                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
+                            warning: You appear to have cloned an empty
+                            repository.<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li class="Instruction_Git_Commit">Git add, commit and push this
+                initial code with the indicated message:
+                <table class="Code_Example" style="width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td><button>▽</button></td>
+                      <td>
+                        <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                            ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
+                          <code class="Shell_Code_Input">$git clone <span class="User_Input">URL-to-your-project-repo</span></code><code
+
+                            class="Shell_Code_Input"> <span data-project-number-long-dir="Project_2"></span></code>2
+                          <br>
+                          <code class="Shell_Code_Output">Cloning into '<span data-project-number-long-dir="">Project_X</span>'...<br>
+                            warning: You appear to have cloned an empty
+                            repository.<br>
+                          </code> </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+      <div style="margin-left: 250px;">
+        <section>
+          <div>
+            <ol class="Instruction">
+            </ol>
+          </div>
+        </section>
+        <section>
+          <h1> Introduction to WebGL + HTML5 + JavaScript </h1>
+          <ol class="Instruction">
+            <li><u>Web Browser and Browser Development Tools</u>:<br>
+              This tutorial and future class tutorials will make use of the
+              “Developer Tools” available in web browsers. All web browsers
+              contain developer tools. However, this tutorial and future class
+              tutorials will assume you are using the Chrome web browser and
+              Chrome’s developer tools. Further, the TA will test your
+              assignments using the Chrome web browser. <br>
+              <br>
+              In your previous tutorial your already installed Chrome and used
+              some of its developer tools.</li>
+            <li>Read the WebGL books online instructions in the sample code
+              directory which discuss<br>
+              setting up your browser to allow access to local files. Two copies
+              of these instructions are<br>
+              available:<br>
+              <ol>
+                <li>In your ITCS_3120 directory:<br>
+                  <span class="File_Name">ITCS_3120/WebGL_Programming_Guide/ITCS
+                    4120 Extra/docs/Downloads - WebGL<br>
+                    Programming Guide.html</span> </li>
+                <li>At the WebGL Guide’s www:<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://sites.google.com/site/webglbook/home/downloads"
+
+                    target="_blank">https://sites.google.com/site/webglbook/home/downloads</a></li>
+              </ol>
+            </li>
+            <li class="Instruction_Read">Skim over WebGL book Appendix H: which
+              has additional tips for Web Browser Settings<br>
+              for WebGL.</li>
+            <li class="Instruction_Read">Read WebGL Book Chapter 1. In the book,
+              any figures with example code whose URL is shown something like:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="File_Name">file:///C:/samples/ch09/RotateObject.html<br>
+              </span>can be found in your corresponding ITCS_3120 working
+              directory:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="File_Name">ITCS_3120/WebGL_Programming_Guide\ch09\RotateObject.html</span></li>
+            <li class="Instruction_Todo">Read WebGL Book Chapter 2 (but read one
+              section at a time, as describe below).<br>
+              <br>
+              While reading, open up each example program in a WebGL capable web
+              browser. Use the<br>
+              browser’s Development Tools to examine all the HTML, JavaScript
+              and WebGL shader code in the browser script viewer windows, while
+              you read Chapter 2’s description of the code.<br>
+              <ol>
+                <li class="Instruction_Todo">Exercise:<br>
+                  <br>
+                  Read Chapter 2 Section “What Is a Canvas?”. Study the code.<br>
+                  Modify your copy of DrawRectangle.html (i.e. in
+                  ITCS_3120/T4_WebGL/<br>
+                  DrawRectangle.html) as follows:&nbsp; (Note, you should draw
+                  all of the following on the one canvas)<br>
+                  <ol>
+                    <li class="Instruction_Todo">Change the size of the original
+                      rectangle to be 1.5 times bigger.</li>
+                    <li class="Instruction_Todo">Change the color of the
+                      original rectangle to any other color</li>
+                    <li class="Instruction_Todo">Add second rectangle of any
+                      color and size and position you choose.</li>
+                    <li class="Instruction_Todo">User a pair of for loops
+                      generate a 4 by 4 array 16 small rectangles each with a<br>
+                      different color. Below is a 6 x 6 array example. You use
+                      any set of colors you want.<br>
+                      &lt;img&gt;<br>
+                      <u>JavaScript Hin</u>t: The WebGL book barely introduces
+                      JavaScript. Read the following section of the recommended
+                      JavaScript reference regarding JS loops:<br>
+                      <br>
+                      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
+
+                        target="_blank">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration</a></li>
+                    <li class="Instruction_Todo"><u><strong>Git</strong></u> add
+                      and commit this updated code using the message:<br>
+                      <span class="File_Name">"-exercise - What Is a Canvas?"</span><br>
+                      <u>Tip</u>: It is also good practice to git push your
+                      changes occasionally so they are safely backed up on the
+                      server.</li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo">Exercise: <br>
+                  <br>
+                  Read Chapter 2 Section “The World’s Shortest WebGL Program:
+                  Clear Drawing Area.”<br>
+                  <br>
+                  Modify your copy of HelloCanvas.html (i.e.
+                  ITCS_3120/T4_WebGL/HelloCanvas.html) as follows:<br>
+                  <ol>
+                    <li class="Instruction_Todo">Add an additional console log
+                      message when the GLContext is successfully created.</li>
+                    <li class="Instruction_Todo">Change the Canvas size to 800
+                      by 800</li>
+                    <li class="Instruction_Todo">Modify the clear color is red.</li>
+                    <li class="Instruction_Todo"><u><strong>Git</strong></u> add
+                      all the updated code. git commit all the changed files
+                      with a single commit using the message:</li>
+                    <li class="Instruction_Todo">Modify the code so that the
+                      clear color is randomly chosen every time the page is<br>
+                      loaded (i.e. if the user hit browser “Reload” button, she
+                      should see a different, random color each time).<br>
+                      <br>
+                      <u>JavaScript Hint</u>: The WebGL book barely introduces
+                      JavaScript.&nbsp; See:<br>
+                      <br>
+                      <a href="https://developer.mozilla.org/en-%20US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"
+
+                        target="_blank">https://developer.mozilla.org/en-<br>
+US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a></li>
+                    <li class="Instruction_Todo"><u><strong>Git</strong></u>
+                      add, commit with a single commit using the message:<br>
+                      <br>
+                      <span class="File_Name">"-added random coloring"</span> </li>
+                  </ol>
+                  <ol>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo"><u>Exercise</u>:<br>
+                  <br>
+                  Open HelloPoint1.html Read Chapter 2 Section ”Draw a Point
+                  (Version 1)”<br>
+                  <ol>
+                    <li class="Instruction_Todo">Modify the program to draw the
+                      point<br>
+                      <ol>
+                        <li class="Instruction_Todo">in a different color.</li>
+                        <li class="Instruction_Todo">at a different position</li>
+                        <li class="Instruction_Todo">in a different size</li>
+                      </ol>
+                    </li>
+                    <li class="Instruction_Git_Commit"><u><strong>Git</strong></u>
+                      add, commit with a single commit using the message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+
+                        class="File_Name">"-exercise - Draw a Point"</span> </li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo"><u>Exercise</u>:<br>
+                  <ol>
+                    <li class="Instruction_Todo">Copy the Chapter 2 extra
+                      example code to T4_WebGL:</li>
+                    <li class="Instruction_Todo">Git add and commit this code
+                      with message:</li>
+                    <li class="Instruction_Read">Read "Appendix A. No Need to
+                      Swap Buffers in WebGL". Pay attention to the<br>
+                      discussion on alert and confirm; note the wording:<br>
+                      <br>
+                      "This implies that if you call methods that return control
+                      to the browser, such as<br>
+                      alert() or confirm(), the browser may then display the
+                      contents of the color buffer to the screen."</li>
+                    <li class="Instruction_Todo">Open T4_WebGL/HelloCanvas1.html
+                      in a browser and study the js code.</li>
+                    <li class="Instruction_Question">Question 1: Before
+                      executing it, what do you expect to see?</li>
+                    <li class="Instruction_Todo">Execute the code.</li>
+                    <li class="Instruction_Question">Question 2: What do you
+                      see?</li>
+                    <li>Change enableAlert to true and save the file. Execute
+                      the code again.</li>
+                    <li class="Instruction_Question">Question 3: What do you
+                      see?</li>
+                    <li class="Instruction_Question">Question 4:<br>
+                      Regarding Question 3, you may see different behavior in
+                      different browsers and even different versions of the same
+                      browser (Chrome’s behavior changed between 2015 and
+                      2016!). In some browsers’ the “may” in the earlier quote,
+                      turns out to be “does&nbsp; not” and in others it turns
+                      out to be “does”. Assume, that in a particular browser in
+                      the second case (ix), you do see all 4 different colors.
+                      For such as browser, answer the following question: Using
+                      you knowledge of how double buffering works (discussed in
+                      class) and using the discussion in WebGL book Appendix A,
+                      explain in writing why, in the first case (vii), you only
+                      see a black square, but in the second case (ix) you see 4
+                      different colored squares -- even though in the first case
+                      there is a delay loop that should allow you to see the
+                      other 4 colors, each for a brief moment.<br>
+                      <br>
+                      Use a diagram (neat, scanned hand sketched pictures are
+                      ok; or use your preferred drawing tool) to help explain
+                      your answer.</li>
+                    <li class="Instruction_Question">\todo<br>
+                      Put your written answers to Questions 1 through 4 in a
+                      document and save the<br>
+                      document to file (use either PDF format or MS Word
+                      format):<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="File_Name">ITCS_3120/T4_WebGL/T4_WebGL_Report.pdf</span></li>
+                    <li class="Instruction_Question"><strong>Git </strong>add
+                      and commit with message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-answered swap buffers questions"</li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo"><u>Exercise</u>:<br>
+                  <br>
+                  Open HelloPoint2.html in a browser and read Chapter 2 Section
+                  “Draw a Point<br>
+                  (Version 2)”.<br>
+                  <br>
+                  <ol>
+                    <li>Modify the vertexAttrib function call to use the 2D
+                      version of the call so you only have to pass x,y
+                      coordinates.</li>
+                    <li>Modify the location of the displayed point.</li>
+                    <li>Modify the size and color of the displayed point.</li>
+                    <li>As described in the Chapter modify the point size code
+                      to use another attribute shader variable.</li>
+                    <li><strong>Git</strong> add and commit with message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-exercise – Draw Point V2"</li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo"><u>Exercise</u>:<br>
+                  <br>
+                  Open ClickedPoint.html in a browser and read Chapter 2 Section
+                  “Draw a Point<br>
+                  with a Mouse Click"<br>
+                  <ol>
+                    <li>As your read through section “Experimenting with the
+                      Sample Program” make all the indicate changes to the
+                      program.</li>
+                    <li><strong>Git </strong>add and commit with message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-exercise - ClickedPoint"</li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo"><u>Exercise</u>:<br>
+                  <br>
+                  Open ColoredPoints.html in your browser read Chapter 2 Section
+                  “Change the Point Color” and study the code:<br>
+                  <br>
+                  <ol>
+                    <li>Change the code to use 8 different colors. Instead of
+                      having a one color per quadrant conceptually divide the
+                      canvas up into 8 equal sized “octants” by using 2
+                      additional diagonal lines, at + and - 45 degrees as shown
+                      below:<br>
+                      A point in each octant will have a different one of the 8
+                      colors.</li>
+                    <li><strong>Git </strong>add and commit with message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-exercise - ColoredPoints"</li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>Read the first few sections of Chapter 3.<br>
+              <ol>
+                <li><u>Exercise</u>:<br>
+                  <ol>
+                    <li>Copy the following sample code from ch03 to your
+                      T4_WebGL directory:</li>
+                    <li><strong>Git </strong>add and commit with message: <br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-exercise MultiPoint"</li>
+                    <li>Open MultiPoint.html in your browser read Chapter 3
+                      through and including<br>
+                      Section “Draw Multiple Points” and read up to and
+                      including sub-section “Sample Program (MultiPoint.js)”.
+                      Study the code.</li>
+                    <li>Continue reading and studying the example code until
+                      reaching sub-section<br>
+                      “Experimenting with the Sample Program”. Now, perform the
+                      experiments suggested and save the code change.</li>
+                    <li><strong>Git</strong> add and commit with message:<br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      "-exercise MultiPoint Experiment"</li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li><u>Exercise</u>:<br>
+              <ol>
+                <li class="Instruction_Todo">Copy the following sample code from
+                  ch03 to your T4_WebGL directory:</li>
+                <li class="Instruction_Git_Commit"><strong>Git </strong>add and
+                  commit with message:<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  "-add Triangles"</li>
+                <li class="Instruction_Todo">Read Section “Hello Triangle” and
+                  it’s subsection “Experimenting with the Sample<br>
+                  Program”. Make some of the modifications discussed.</li>
+                <li class="Instruction_Git_Commit"><strong>Git </strong>add and
+                  commit with message:<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  "-exercise – Triangles Experiment"</li>
+              </ol>
+            </li>
+            <li><u>Exercise</u>:<br>
+              <ol>
+                <li class="Instruction_Todo">Copy the following sample code from
+                  ch03 to your T4_WebGL directory with a new file name.</li>
+                <li><strong>Git </strong>add and commit with message:<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  "-added HelloTrianglePlay"</li>
+                <li>Continue reading Chapter 3 but stop before reading “Moving,
+                  Rotating, and Scaling”</li>
+                <li class="Instruction_Todo">Modify HelloTrianglePlay to include
+                  all of the following:<br>
+                  <ol>
+                    <li class="Instruction_Todo">Modify the fragment shader to
+                      use a uniform variable to control the color</li>
+                    <li class="Instruction_Todo">Render two TRIANGLE’s of
+                      different colors</li>
+                    <li class="Instruction_Todo">Render 1 TRIANGLE_FAN that
+                      displays a hexagon (choose any color)</li>
+                    <li class="Instruction_Todo">Render 1 TRIANGLE_STRIP with 5
+                      triangles (choose any color)\</li>
+                    <li class="Instruction_Todo">Render 1 LINE_STRIP whose edges
+                      draw on top of the TRIANGLE_STRIP triangle edges but in a
+                      different color</li>
+                    <li class="Instruction_Todo">Be mildly creative…</li>
+                  </ol>
+                </li>
+                <li class="Instruction_Todo">Git add and commit with message:<br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  "-exercise - Triangle Play"</li>
+              </ol>
+            </li>
+            <li>Remember to Git push your repo.</li>
+          </ol>
+          <section>
+            <h1> examples </h1>
+            <ol class="Instruction">
               <li><span class="Exercise_Title">Git Repo</span><br>
                 <ol>
-                  <li>Create a new remote repository on the Git server called
-                    <span class="File_Name">"
-                      <span class="DataField" data-course-number=""></span>-
-                      <span class="DataField" data-project-number=""></span>-
-                      <span class="DataField" data-project-name-dir=""></span>
-                    </span>".<br>
+                  <li>Create a new remote repository on the Git server called <span
+
+                      class="File_Name">" <span class="DataField" data-course-number=""></span>-
+                      <span class="DataField" data-project-number=""></span>- <span
+
+                        class="DataField" data-project-name-dir=""></span> </span>".<br>
                     <ol>
                       <li>Remember to make your remote repository <b>"Private"</b></li>
                       <li>Remember to give the TA and Professor "Reporter"
@@ -183,31 +656,6 @@
                     </ol>
                   </li>
                   <li>Now clone your remote repo:<br>
-                    <table class="Code_Example" id="Code_Example6" style="width: 100%;">
-                      <tbody>
-                        <tr>
-                          <td><button>▽</button></td>
-                          <td>
-                            <div style="height: 50px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                ~/ITCS_<span class="DataField" data-course-number=""></span>/</code><br>
-                              <code class="Shell_Code_Input">$git clone
-                                https://cci-git.uncc.edu/<span class="User_Input">your_user_id</span>/</code><code
-
-                                class="Shell_Code_Input"><span class="File_Name"><span
-
-                                    data-project-git="">3120_P2_Planet_Mobile</span></span>.git
-                                <span data-project-number-long-dir="Project_2"></span></code>2<br>
-                              <code class="Shell_Code_Output">Cloning into '<span
-
-                                  data-project-number-long-dir="">Project_X</span>'...<br>
-                                warning: You appear to have cloned an empty
-                                repository.<br>
-                              </code>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
                     <br>
                   </li>
                 </ol>
@@ -246,41 +694,6 @@
                     files with message "-setup inital file organization" </li>
                 </ol>
               </li>
-              <li><span class="Exercise_Title">Port</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="15"></span> <span>Port Observable </span> <a href="https://observablehq.com/@d3/connected-scatterplot"
-
-                  target="_blank">https://observablehq.com/@d3/connected-scatterplot</a>'s
-                D3 code to your JS and HTML files.<br>
-                <ol>
-                  <li>Download any referenced data files for <a href="https://observablehq.com/@d3/connected-scatterplot"
-
-                      target="_blank">https://observablehq.com/@d3/connected-scatterplot.</a>into
-                    your project directory.</li>
-                  <li>Port the JavaScript source code from the Observable
-                    notebook to your <span class="File_Name">connected-scatterplot.js</span>
-                    creating functions and classes as necessary.
-                    <div class="Hint"><br>
-                      <ul>
-                        <li> See the Canvas Announcement <a href="https://uncc.instructure.com/courses/146720/discussion_topics/1054444"
-
-                            target="_blank">Notebook Cell 'auto-magic'</a></li>
-                        <li>The Observable notebook code uses several functions
-                          that are not part of D3 or
-                          JavaScript.&nbsp;&nbsp;&nbsp; To port the notebook
-                          code make the following substitutions: instead of Observable FileAttachment read
-                          about and use<span>&nbsp;</span><a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader/onload"
-
-                            target="_blank">FileReader.onload</a>with an HTML<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input">&lt;input&gt;</a><span>&nbsp;</span>of
-                          type="file".</li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li>Verify the code works in the Chrome browser</li>
-                  <li><span class="Git_Commit">Git add and commit</span> all
-                    files with message "-ported connected scatter plot" </li>
-                </ol>
-              </li>
               <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
 
                   data-points="15"></span> <span>Pan and Zoom: </span>Add a
@@ -302,109 +715,12 @@
                 </div>
                 <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox"
 
-                  target="_blank">MDN viewbox)</a> </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="10"></span> <span>Data Point Selection:</span>
-                Add the ability to hover the the mouse pointer over any data
-                point and display a pop-up window with labeled numerical values
-                of all three of the data points 3 dimensional attributes (year,
-                miles per person per year, cost per gallon).<br>
-                <span class="Git_Commit">Git add and commit</span> with message
-                "-[feature] <span>Data Point Selection</span>" <br>
-                <div class="Hint">See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseover_event"
-
-                    target="_blank">MDN Mouseover Event </a><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups"
-
-                    target="_blank">MDN Popups</a></div>
-              </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="10"></span> <span>Time Range Selection:</span>
-                Add a GUI element slider to select an time internal (i.e. a
-                start year and end year). The extreme possible values, min and
-                max, should be determined by the data loaded.&nbsp;&nbsp; You
-                must choose one of two implementations.<br>
-                <span class="Git_Commit">Git add and commit</span> with message
-                "-[feature] <span>Time Range Selection</span>" <br>
-                <ol>
-                  <li>Option I [easy] - use a pair of &lt;input&gt; range
-                    elements.&nbsp; One sets the start year and the other the
-                    end year.&nbsp; For full credit you must also implement the
-                    logical that prevents the user from sliding the start year
-                    higher than the end year or vice-versa.
-                    <div class="Hint">See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range"
-
-                        target="_blank">MDN Input Range <br>
-                      </a> </div>
-                  </li>
-                  <li>Option II <span class="Extra_Credit_Points" data-points="10"></span>
-                    Use SVG drawing and object selection to implement your <strong>own
-                      </strong>interval slider. Yes, add-on libriares provide
-                    these, but the extra credit task here is to learn some more
-                    SVG and implement you own concept. A example library that
-                    demonstrates what you are to create is the jQuery Range
-                    slider shown at <a href="https://jqueryui.com/slider/#range"
-
-                      target="_blank">https://jqueryui.com/slider/#range</a></li>
-                </ol>
-                <strong> </strong> </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="10"></span> <span>Time Range Highlighting:</span>&nbsp;
-                Modify the drawing of the plotted curve to highlight the section
-                of the curve corresponding to the time range selected in the UI
-                above.<br>
-                <span class="Git_Commit">Git add and commit</span> with message
-                "-[feature] <span>Time Range Highlighting</span><span></span>"
-              </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="10"></span><span>Color Coding Bivariate Delta
-                  Values:</span> In addition to the year, each plot point has
-                two data values. As we move from one year to the next these two
-                values can increase, decrease, or stay the same.&nbsp; Use a the
-                textbook and class we discuss "Bivariate Color Sequences"
-                (4.9.7), that is color coding to bi-variate data.&nbsp;&nbsp;
-                Pick one of the two recommended methods for bivariate data color
-                coding and color code the plot points using that color coding<br>
-                <span class="Git_Commit">Git add and commit</span> with message
-                "-[feature] Color Coding Bivariate Delta Values<span></span>" </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="5"></span><span> Color Coding Legend:</span>&nbsp;
-                Add a color coding legend to the page.&nbsp;&nbsp; See Figure
-                4.36 in the textbook for an example.<br>
-                <span class="Git_Commit">Git add and commit</span> with message
-                "-[feature] Color Coding Bivariate Delta Values<span></span>" </li>
-              <li><span class="Exercise_Title">Feature</span>:&nbsp; <span class="Grade_Points"
-
-                  data-points="15"></span><span> Generalizing for Other Data
-                  Sets:</span>&nbsp; <br>
-                <ol>
-                  <li> Find another data set that you are interested in that is
-                    temporal (one dimension is time) and has at least 4 other
-                    dimensions that are numerical.&nbsp;&nbsp;&nbsp; <span class="Git_Commit">Git
-                      add and commit</span> the data file.</li>
-                  <li>Generalize your code so that the user can choose whether
-                    to load the original driving data or your new data file and
-                    the display adapts accordingly.&nbsp; This will require
-                    generalizing the code that handles step like the axis
-                    labeling, that creates the color coding legend, etc.&nbsp; </li>
-                  <li>Add 4 dropdown menus labeled:&nbsp; x-axis,y-axis, hue,
-                    and chrome or lightness (depending on what choice you made
-                    in"<span>Color Coding Bivariate Delta
-                      Values".&nbsp;&nbsp;&nbsp; Each menu lists the four
-                      non-temporal dimensions of the new dataset.&nbsp; Modify
-                      the D3 code so that the user's menu <u>choices change</u></span>
-                    which of the four dimension is for your four visualization
-                    channels (i.e. x-axis,y-axis, hue, and chrome or lightness).</li>
-                  <li><span class="Git_Commit">Git add and commit</span> with
-                    message "-[feature] generalized for different datasets" </li>
-                </ol>
-              </li>
+                  target="_blank">MDN viewbox)</a></li>
             </ol>
-          </div>
+          </section>
+          <p></p>
+          <ol class="Instructions">
+          </ol>
         </section>
       </div>
       <div style="margin-left:250px">
@@ -412,19 +728,7 @@
           <section>
             <h1 class="toc">Appendix I: Rubric</h1>
             <!--
-            <div style="border: solid 1px" hidden="">
-              <p style="background-color: yellow; color: red; text-align: center;"><em>[3/12/2021
-                  - 12:05am] Section&nbsp; Under Construction<br>
-                </em></p>
-              This Tutorial is out of will be 160 total points<br>
-              The rubric is generated from the "<strong>[x pts]</strong>"<strong>
-              </strong>labels<strong> </strong>next to each of the tutorial<strong>
-              </strong><u>Exercise</u><strong>:'s.<br>
-                <br>
-              </strong>ZJW: 3/12/2021:&nbsp; The rubric is nearly complete<strong>.<br>
-              </strong>
-            </div>
-            -->
+            <div style="border: solid 1px" hidden="">              <p style="background-color: yellow; color: red; text-align: center;"><em>[3/12/2021                  - 12:05am] Section&nbsp; Under Construction<br>                </em></p>              This Tutorial is out of will be 160 total points<br>              The rubric is generated from the "<strong>[x pts]</strong>"<strong>              </strong>labels<strong> </strong>next to each of the tutorial<strong>              </strong><u>Exercise</u><strong>:'s.<br>                <br>              </strong>ZJW: 3/12/2021:&nbsp; The rubric is nearly complete<strong>.<br>              </strong>            </div>            -->
             <table class="Rubric" id="RubricTable" style="width: 100%;">
               <thead>
                 <tr>
@@ -552,7 +856,9 @@
                   </tbody>
                 </table>
               </li>
-              <li>Create a new remote repository on the Git server called <span class="File_Name">"3120_P2_Planet_Mobile"</span>.<br>
+              <li>Create a new remote repository on the Git server called <span
+
+                  class="File_Name">"3120_P2_Planet_Mobile"</span>.<br>
                 <ol>
                   <li>Remember to make your remote repository <b>"Private"</b>
                     .</li>
@@ -772,7 +1078,7 @@
           </ol>
         </div>
       </template> <template id="Code_Example_Template">
-        <table class="Code_Example" id="Code_ExampleX" style="width: 100%;" >
+        <table class="Code_Example" id="Code_ExampleX" style="width: 100%;">
           <tbody>
             <tr>
               <td><button>▽</button></td>
