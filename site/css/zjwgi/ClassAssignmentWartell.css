@@ -265,6 +265,10 @@ span.Shell_Code_Comment {
 }
 
 
+ul.side_nav_bar li
+{
+    list-style-type : none;
+}
 
 /*
 *  Hierarchical List of Instructions
