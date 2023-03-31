@@ -7,8 +7,7 @@
  \status [STATUS=not deployed] work-in-progress
  */
 import "./third-party/jquery-3.5.1.min.js";
-import "./third-party/toc.min.js";
-import * as Inst from "./Rubric.js";
+import * as Rubric from "./Rubric.js";
 import { Instruction } from "./Rubric.js";
 /**
  ** \brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
@@ -94,21 +93,6 @@ export function Visibility_Toggle(Class, visible) {
         }
         */
     }
-    /*
-    * Re-Initialize toc module
-    */
-    $('#toc')["toc"]({
-        'smoothScrolling': true,
-        'selectors': 'h1.toc, h2.toc, h3.toc' //elements to use as headings
-    });
-    /*
-    console.log (typeof document.getElementById('toc')["toc"]);
-    document.getElementById('toc')["toc"](
-        { 'smoothScrolling': true,
-            'selectors': 'h1.toc, h2.toc, h3.toc' //elements to use as headings
-        }
-    );
-     */
 }
 /*
 https://web.dev/file-system-access/
@@ -130,7 +114,7 @@ function apiCheck() {
 export function main() {
     apiCheck();
     /**
-     **   Setup Menu Bar
+     **   Setup Toolbar
      **/
     /*
      *  add eventListners the close SubMenu on mouseleave
@@ -163,7 +147,7 @@ export function main() {
             then((handle) => {
             console.log("Save " + handle);
             //return writeFile(handle,document.getElementById("RubricTable").outerHTML);
-            return writeFile(handle, JSON.stringify(Inst.instructions));
+            return writeFile(handle, JSON.stringify(Rubric.instructions));
         }).
             catch((e) => { throw e; });
         e.target.parentElement.parentElement.hidden = true;
@@ -192,6 +176,17 @@ export function main() {
             throw err;
         }
     });
+    input = document.getElementById("back");
+    input.addEventListener('click', (e) => {
+        console.log("back", window.history.state);
+        if (false) {
+            window.history.scrollRestoration = "auto";
+            window.history.go(-1);
+        }
+        else {
+            Rubric.BreadCrumbs.singleton.array[Rubric.BreadCrumbs.singleton.array.length - 1].target.scrollIntoView(true);
+        }
+    });
     const inputFile = document.getElementById("loadFile");
     inputFile.addEventListener('change', (e) => {
         const reader = new FileReader();
@@ -206,16 +201,16 @@ export function main() {
              * - https://developer.mozilla.org/en-US/docs/Web/API/Window/frames
              */
             const instructions = Array(JSON.parse(event.target.result.toString()));
-            Inst.instructions.instructions.splice(0);
+            Rubric.instructions.instructions.splice(0);
             for (let ji of instructions) {
                 const i = new Instruction();
                 i.assign(ji);
-                Inst.instructions.push(i);
+                Rubric.instructions.push(i);
             }
             /**
              * Update JS Objects
              */
-            Inst.instructions.displayRubric();
+            Rubric.instructions.displayRubric();
             //init_rubric();
             //onload_InstructionsFile();
         });
@@ -321,17 +316,11 @@ export function onload() {
         e.after(button);
     }
     /**
-     ***  (Re)Initialize toc module
-     **/
-    $('#toc')["toc"]({
-        'smoothScrolling': true,
-        'selectors': 'h1.toc, h2.toc, h3.toc' //elements to use as headings
-    });
-    /**
      ***  Initialize <table id="RubricTable">
      **/
     //init_rubric();
-    Inst.instructions.extractRubric();
+    Rubric.instructions.extractSectionsAndRubricAll();
+    Rubric.Section.displayTableOfContents();
     //Rubric.main();
 }
 //# sourceMappingURL=ClassAssignmentWartell.js.map
