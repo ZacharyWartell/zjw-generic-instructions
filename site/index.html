@@ -25,18 +25,20 @@
         }
     </script>
   </head>
-  <body onload="window.onload_Body();">
-    <div id="AssignmentName" display="false">
+  <body onload="window.onload_Body();">    
+    <div id="AssignmentName" style="Data">
       <!-- AssignmentName.courseNumber -->
       <div>3120</div>
       <!-- AssignmentName.number -->
-      <div>T3</div>
+      <div>t3</div>
       <!-- AssignmentName.numberLongDir -->
       <div>3120-t3-webgl-1</div>
       <!-- AssignmentName.name -->
       <div>webgl-tutorial-1</div>
-  </div>
-    <div class="main-container"><br>
+    </div>      
+    <div class="window-container">           
+    </div>          
+    <div class="main-container">
       <div id="side-nav-bar" class="side_nav_bar"> </div>
       <main class="main-content" id="Content">
         <div class="toolbar" id="Toolbar">
@@ -56,7 +58,7 @@
         </div>
         <article>
           <h2 class="nocount Title">ITCS <span data-course-number=""></span> :
-            JavaScript Tutorial </h2>
+            WebGL Tutorial 1 </h2>
           <h2 class="nocount Title">Fall 2023</h2>
           <h3 class="nocount Title">Professor: Zachary Wartell</h3>
           <h3 class="nocount Title">Revision: $REVISION$ <sup> (<a href="https://gitlab.com/zwartell/JavaScript-Tutorial/commits/master"
@@ -77,7 +79,7 @@
           <h1 class="nocount">Compatibility</h1>
           <p>This page has been tested on Chrome Version 111.</p>
           <!--  -->
-          <section data-point-fraction="80" class="Instruction_Section">
+          <section data-point-fraction="5" class="Instruction_Section">
             <h1>VS Code IDE Setup</h1>
             <p><em>Remark</em>:&nbsp; Circa 2023, modern browser security <a href="%20%20%20%20https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">(CORS</a>,
               etc.) defeats older workarounds that allowed a WebGL app to load
@@ -86,7 +88,7 @@
               for in this course is to have everyone install the VSCode IDE with
               its Live Server extension. This will start a WWW server
               automatically whenever WebGL programs are run within VSCode.</p>
-            <ol class="Instructions">
+            <ol class="Instruction">
               <li><u>Install VSCode</u>:&nbsp; Download and install VS Code on
                 your computer&nbsp;&nbsp;&nbsp; The main page <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a>
                 has download options for all major operating systems. </li>
@@ -96,10 +98,9 @@
                   target="_blank">https://code.visualstudio.com/docs/introvideos/basics<br>
                   &nbsp; </a></li>
               <li><u>Extension "Live Server":</u>&nbsp;&nbsp;&nbsp; In the video
-                in above you installed a VSCode extension "Live
-                Preview".&nbsp;&nbsp; As better alternative, install the VSCode
-                extension "Live Server by Ritwick Dey" (v5.7.9 or
-                newer).&nbsp;&nbsp; After installing, adjust the following
+                 above you installed a VSCode extension "Live
+                Preview".&nbsp;&nbsp; We will use a better alternative,"Live Server by Ritwick Dey" (v5.7.9 or
+                newer).  Install this VSCode extension now. &nbsp;&nbsp; After installing, adjust the following
                 settings: <br>
                 <ol>
                   <li>Left click the settings icon on the Live Server extension:<br>
@@ -110,7 +111,7 @@
                     for this extension</li>
                   <li>Find the setting, <span class="File_Name">Live Server ›
                       Settings: Custom Browser</span>, and in the drop down menu
-                    select browser "chrome."</li>
+                    select the browser: "chrome."</li>
                 </ol>
               </li>
               <li><u>Clone WGL PG Code</u>:&nbsp;&nbsp; In your ITCS_3120
@@ -157,23 +158,21 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
               <!--
               <li><u>Live Preview in Chrome</u>:&nbsp; Note, in&nbsp;                the VSCode Live Preview panel, it displays the URL                of the local WWW server running index.html, it will appear                similar to <span class="File_Name">http://127.0.0.1:3000/index.html&nbsp;                  </span>The Live Preview panel is running whatever&nbsp; your                operating system has set for its default web browser.&nbsp;                Since the TA will be grading your assignments in Chrome, you                want to make sure you applications run as you expect in Chrome.<br>                <ol>                  <li>Open the Chrome browser.</li>                  <li>Copy and Paste the URL for the index.html page from the                    Live Preview panel into Chrome's URL.&nbsp;&nbsp; Chrome                    will now show index.html and you can follow the links to run                    any of the WebGL PG's example programs in Chrome.</li>                </ol>              </li>              <li><u>VSCode - Code Editing</u>:&nbsp; Watch and learn: <a href="https://code.visualstudio.com/docs/introvideos/codeediting"                  target="_blank">https://code.visualstudio.com/docs/introvideos/codeediting</a></li>              <li><u>VSCode - Productivity</u>:&nbsp;&nbsp;Watch and learn: <a                  href="https://code.visualstudio.com/docs/introvideos/productivity"                  target="_blank">https://code.visualstudio.com/docs/introvideos/productivity</a>              </li>              <li><u>VSCode - Personalization</u>:&nbsp;&nbsp;Watch and learn: <a                  href="%20https://code.visualstudio.com/docs/introvideos/productivity%20"                  target="_blank">https://code.visualstudio.com/docs/introvideos/configure</a>              </li>              <li><u>VSCode - Extensions</u>:&nbsp;&nbsp;Watch and learn: <a href="%20https://code.visualstudio.com/docs/introvideos/productivity%20"                  target="_blank"><span style="color: #0000ee;">https://code.visualstudio.com/docs/introvideos/extend</span></a></li>              <li><u>Additional Extensions</u>:&nbsp; Install the following                additional extensions:<br>                <ol>                  <li>Debugger for Chrome (Nightly) by microsoft.com</li>                </ol>              </li>              <li><u>VSCode - Debugging</u>:&nbsp;&nbsp;Watch and learn: <span                  style=" color: #0000ee;">https://code.visualstudio.com/docs/introvideos/debugging<br>                </span></li>              <li><u>VSCode - Version Control</u>:&nbsp; [Optional] Watch and                learn: <span style=" color: #0000ee;"></span> <a href="https://code.visualstudio.com/docs/introvideos/versioncontrol"                  target="_blank">https://code.visualstudio.com/docs/introvideos/versioncontrol<br>                </a>Note you have already done Step #1 of this video (installing                git), so now you just need to learn VS Code git GUI if you                choose to.&nbsp; Again this video is optional.</li>              <li><u>VSCode - Terminal Basics</u>:&nbsp;&nbsp;&nbsp; Watch and                learn <a href="https://code.visualstudio.com/docs/terminal/basics"                  target="_blank">https://code.visualstudio.com/docs/terminal/basic</a></li>              -->
             </ol>
+            <section data-point-fraction="5" class="Instruction_Section">
             <h1>Project and Repo Setup </h1>
             <ol class="Instruction">
               <li class="Instruction_Todo"><u>New Repo</u>:&nbsp; Create a new
                 remote repository on the Git server called <span class="File_Name">"itcs<span
 
-                    data-course-number=""></span>-t3-webgl-tutorial-1"</span>.<br>
+                    data-course-number=""></span>-<span data-project-number=""></span>-webgl-tutorial-1"</span>.<br>
                 Follow all the standard practices for the course, e.g. remote
                 repository <b> "Private" </b>, Group Invite private group
                 "Reporter" (see <a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#toc-basic-git-operations"
 
                   target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#toc-basic-git-operations)
                   </a><br> </li>
-              <li><u>Clone</u>:&nbsp; Clone you the repo into your course
-                directory <br>
-                <table class="Code_Example" id="Code_Example5" style="width: 1125px;"
-
-                  border="1">
+              <li><u>Clone</u>:&nbsp; Clone your repo into your course directory <br>
+                <table class="Code_Example" id="Code_Example5" style="width: 1125px;">
                   <tbody>
                     <tr>
                       <td><button onclick="Code_Example_Toggle('Code_Example_Example');">▽</button>
@@ -182,10 +181,10 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                         <div style="height : 100px;"> <code class="Shell_Code_Prompt">lucretius@Monad42
                             ~/ITCS_<span class="DataField" data-course-number=""></span>/</code>
                           <code class="Shell_Code_Input">$git clone
-                            https://cci-git.uncc.edu/<span class="User_Input">your_user_id</span>/itcs-<span
+                            https://cci-git.uncc.edu/<span class="User_Input">your_user_id</span>/itcs<span
 
-                              data-course-number=""></span>t3-webgl-tutorial-1.git
-                            webgl-tutorial-1</code><span style="color: white;"><span
+                              data-course-number=""></span>-<span data-assignment-number=""></span>-webgl-tutorial-1.git
+                            <span data-project-number=""></span>-webgl-tutorial-1</code><span style="color: white;"><span
 
                               style="font-family:Courier,monospace;"></span></span>we<br>
                         </div>
@@ -203,12 +202,12 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                 instance of VS Code.&nbsp;&nbsp; In the new instance select <span
 
                   class="File_Name">Open Folder.<span style="font-family: serif;">&nbsp;
-                    Open your project folder folder t3-webgl-tutorial-1.</span></span>
+                    Open your project folder folder <span data-project-number=""></span>-webgl-tutorial-1.</span></span>
               </li>
               <li><span class="File_Name"><span style=" font-family: serif;"><u>Initial
                       Files</u>:&nbsp; In directory </span></span><span class="File_Name"><span
 
-                    style=" font-family: serif;"><span class="File_Name">t3-webgl-tutorial-1<span
+                    style=" font-family: serif;"><span class="File_Name"><span data-project-number=""></span>-webgl-tutorial-1<span
 
                         style="font-family: serif;">, </span></span>create the
                     following new files:<br>
@@ -224,93 +223,23 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                     <br>
                     Verify that these files appear both in the left side VSCode
                     Explorer panel <u>and</u> verify in bash that they are in
-                    your <span class="File_Name">t3-webgl-tutorial-1</span>
+                    your <span class="File_Name"><span data-project-number=""></span>-webgl-tutorial-1</span>
                     directory. </li>
                   <li>Git commit all the files with message "-initial files"</li>
                 </ol>
               </li>
             </ol>
           </section>
-          <section>
+          <section data-point-fraction="30" class="Instruction_Section">
             <h1>WebGL PG: Chapter 1</h1>
             <ol class="Instruction">
               <li class="Instruction_Read"><span>Chapter 1:&nbsp; Overview of
                   WebGL </span> - read this chapter. &nbsp; There are no
                 associated exercises for this chapter.</li>
             </ol>
-            <p><strong>ORPHAN</strong></p>
-            <ol class="Instruction">
-            </ol>
-            <ol>
-              <li class="Instruction_Read">Examine the file
-                RotateObject.js.&nbsp; Note, that as Chapter 1 discusses two
-                small GLSL shader code funcitons are embedded as JavaScript
-                strings VSHADER_SOURCE and&nbsp;
-                FSHADER_SOURCE.&nbsp;&nbsp;&nbsp; While this embedded strategy
-                makes the books example code simpler to read for very programs
-                with very short GLSL programs, the strategy does not scale well
-                to larger programs and does not allow your to take advantage of
-                an IDE extension that support GLSL coding.&nbsp;&nbsp;
-                Therefore,&nbsp; you are going to refactor the code into a more
-                modular fashion.<u>Exercise</u>:&nbsp; [Refactor RotateObject -
-                Step 2]<br>
-              </li>
-              <li>Add two &lt;script&gt; elements to the &lt;head&gt; of
-                RotateObject.html:&nbsp; <code><br>
-                  &lt;script id="VertexShader"
-                  type="x-shader/x-vertex"&gt;&lt;/script&gt;</code><br>
-                <code>&lt;script id="FragmentShader"
-                  type="x-shader/x-fragment"&gt;&lt;/script&gt;</code></li>
-              <li class="Instruction_Read"><u>Exercise</u>:&nbsp; [Refactor
-                RotateObject - Step 1]<br>
-                <ol>
-                  <li>Create two more directories inside your directory
-                    t3-webgl-tutorial-1 called RotateObject, resources and lib.</li>
-                  <li>Copy over the files indicated below from the
-                    WebGL_Programming_Guide directory into the directory
-                    structure you just created above.&nbsp;&nbsp; The final file
-                    organization should appear as follows:
-                    <table class="Code_Example" style="width: 100%;">
-                      <tbody>
-                        <tr>
-                          <td><button>▽</button></td>
-                          <td>
-                            <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
-                              <code class="Shell_Code_Input">$find .&nbsp;</code>
-                              <code class="Shell_Code_Output"><br>
-                                ./.gitignore<br>
-                                ./.vscode<br>
-                                ./lib<br>
-                                ./lib/cuon-matrix.js<br>
-                                ./lib/cuon-utils.js<br>
-                                ./lib/webgl-debug.js<br>
-                                ./lib/webgl-utils.js<br>
-                                ./questions.docx<br>
-                                ./readme.md<br>
-                                ./resources<br>
-                                ./resources/sky.JPG<br>
-                                ./RotateObject<br>
-                                ./RotateObject/RotateObject.html<br>
-                                ./RotateObject/RotateObject.js<br>
-                              </code> </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </li>
-                  <li>In the VSCode application displaying your
-                    t3-webgl-tutorial-1 folder, the above files should appear in
-                    the Explorer panel.&nbsp; Right-click the <span>RotateObject.html</span>
-                    file and select <span>Live Server</span>.&nbsp; The
-                    textured cube should open in a new Chrome window.</li>
-                  <li>Git commit all new fileswith message '-copied RotateObject
-                    files from WebGL PG book'.</li>
-                </ol>
-              </li>
-            </ol>
+
           </section>
-          <section>
+          <section data-point-fraction="30" class="Instruction_Section">
             <h1> WebGL PG: Chapter 2</h1>
             <p>For Chapter 2, read one section of Chapter 2 at a time.&nbsp;
               While reading each section the chapter, perform the exercises
@@ -323,7 +252,7 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
               <li class="Instruction_Read"><span>WebGL PG: Chapter 2.&nbsp; Your
                   First Step with WebGL - read introductory paragraphs</span></li>
               <li class="Instruction_Read"><span><u>Chapter 2:&nbsp; Section
-                    "What Is a Canvas"</u><br>
+                    "What Is a Canvas"</u> [page 52]
                 </span>
                 <ol>
                   <li><span>Read this section of Chapter 2.&nbsp;&nbsp; When you
@@ -342,14 +271,14 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                       <li>Create the directory structure as illustrated below in
                         bash by copying the indicated files from the
                         WebGL_Programming_Guide directories to your
-                        t3-webgl-tutorial-1 directory:<br>
+                        <span data-project-number=""></span>-webgl-tutorial-1 directory:<br>
                         <table class="Code_Example" style="width: 100%;">
                           <tbody>
                             <tr>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .&nbsp;</code>
                                   <code class="Shell_Code_Output"><br>
                                     ./.gitignore<br>
@@ -375,7 +304,7 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                           </tbody>
                         </table>
                       </li>
-                      <li>In the VSCode instance for your t3-webgl-tutorial-1
+                      <li>In the VSCode instance for your <span data-project-number=""></span>-webgl-tutorial-1
                         folder,&nbsp; verify that you can run DrawRectangle.html
                         using Open with Live Server. </li>
                       <li>Change the code to draw the rectangle at a size that
@@ -403,7 +332,7 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                 </ol>
               </li>
               <li class="Instruction_Todo"><u>Chapter 2:&nbsp; Section “The
-                  World’s Shortest WebGL Program: Clear Drawing Area</u><br>
+                  World’s Shortest WebGL Program: Clear Drawing Area</u> [page 63] <br>
                 <ol>
                   <li><span>Read this section of Chapter 2. When you reach the
                       discussion about the code for Chapter 2's Figure 2.6, open
@@ -425,7 +354,7 @@ https://cci-git.charlotte.edu/UNCC_Graphics_Third_Party_Libraries/WebGL_Programm
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -549,7 +478,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -611,7 +540,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -673,7 +602,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -724,7 +653,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -824,7 +753,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
                               <td><button>▽</button></td>
                               <td>
                                 <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
-                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/t3-webgl-tutorial-1/</code><br>
+                                    ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
                                   <code class="Shell_Code_Input">$find .</code><br>
                                   <code class="Shell_Code_Output"><span class="Shell_Code_Comment">[..other
                                       details elided..]</span></code><br>
@@ -861,7 +790,7 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
               </li>
             </ol>
           </section>
-          <section>
+          <section data-point-fraction="20" class="Instruction_Section">
             <h1>WebGL PG: Chapter 3</h1>
             Read Chapter 3 page 144 - 173 (stopping <u>before</u> sub-section
             "Basic Shapes").<br>
@@ -1024,12 +953,85 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
               and/or Professor. <br>
             </p>
           </section>
+          <section hidden>
+            <section class="nocount" style="display:none;">
+              <h1><strong>ORPHAN</strong></h1>              
+              <ol class="Instruction">
+                <li class="Instruction_Read">Examine the file
+                  RotateObject.js.&nbsp; Note, that as Chapter 1 discusses two
+                  small GLSL shader code funcitons are embedded as JavaScript
+                  strings VSHADER_SOURCE and&nbsp;
+                  FSHADER_SOURCE.&nbsp;&nbsp;&nbsp; While this embedded strategy
+                  makes the books example code simpler to read for very programs
+                  with very short GLSL programs, the strategy does not scale well
+                  to larger programs and does not allow your to take advantage of
+                  an IDE extension that support GLSL coding.&nbsp;&nbsp;
+                  Therefore,&nbsp; you are going to refactor the code into a more
+                  modular fashion.<u>Exercise</u>:&nbsp; [Refactor RotateObject -
+                  Step 2]<br>
+                </li>
+                <li>Add two &lt;script&gt; elements to the &lt;head&gt; of
+                  RotateObject.html:&nbsp; <code><br>
+                    &lt;script id="VertexShader"
+                    type="x-shader/x-vertex"&gt;&lt;/script&gt;</code><br>
+                  <code>&lt;script id="FragmentShader"
+                    type="x-shader/x-fragment"&gt;&lt;/script&gt;</code></li>
+                <li class="Instruction_Read"><u>Exercise</u>:&nbsp; [Refactor
+                  RotateObject - Step 1]<br>
+                  <ol>
+                    <li>Create two more directories inside your directory
+                      <span data-project-number=""></span>-webgl-tutorial-1 called RotateObject, resources and lib.</li>
+                    <li>Copy over the files indicated below from the
+                      WebGL_Programming_Guide directory into the directory
+                      structure you just created above.&nbsp;&nbsp; The final file
+                      organization should appear as follows:
+                      <table class="Code_Example" style="width: 100%;">
+                        <tbody>
+                          <tr>
+                            <td><button>▽</button></td>
+                            <td>
+                              <div style="height: fit-content;"> <code class="Shell_Code_Prompt">lucretius@Monad42
+                                  ~/ITCS_<span class="DataField" data-course-number=""></span>/<span data-project-number=""></span>-webgl-tutorial-1/</code><br>
+                                <code class="Shell_Code_Input">$find .&nbsp;</code>
+                                <code class="Shell_Code_Output"><br>
+                                  ./.gitignore<br>
+                                  ./.vscode<br>
+                                  ./lib<br>
+                                  ./lib/cuon-matrix.js<br>
+                                  ./lib/cuon-utils.js<br>
+                                  ./lib/webgl-debug.js<br>
+                                  ./lib/webgl-utils.js<br>
+                                  ./questions.docx<br>
+                                  ./readme.md<br>
+                                  ./resources<br>
+                                  ./resources/sky.JPG<br>
+                                  ./RotateObject<br>
+                                  ./RotateObject/RotateObject.html<br>
+                                  ./RotateObject/RotateObject.js<br>
+                                </code> </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </li>
+                    <li>In the VSCode application displaying your
+                      <span data-project-number=""></span>-webgl-tutorial-1 folder, the above files should appear in
+                      the Explorer panel.&nbsp; Right-click the <span>RotateObject.html</span>
+                      file and select <span>Live Server</span>.&nbsp; The
+                      textured cube should open in a new Chrome window.</li>
+                    <li>Git commit all new fileswith message '-copied RotateObject
+                      files from WebGL PG book'.</li>
+                  </ol>
+                </li>
+              </ol>
+            </section>
+          </section>
         </article>
       </main>
       <!--
         <div class="side-read-bar">          <iframe src="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators">          </iframe>        </div>                      -->
     </div>
-    <p> <template id="SectionRubricTemplate" data-version="1.0">
+    <template id="SectionRubricTemplate" data-version="1.0">
         <table class="SectionRubric">
           <tbody>
             <tr>
@@ -1046,6 +1048,6 @@ US/docs/Web/JavaScript/Reference/Global_Objects/Math/random</a> </li>
         </table>
       </template> <template id="Instruction_Section_Template" data-version="1.0">
         <div class="Instruction_Section"> </div>
-      </template>'</p>
+      </template>
   </body>
 </html>
