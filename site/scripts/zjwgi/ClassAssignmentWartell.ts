@@ -140,7 +140,7 @@ function apiCheck()
         alert("Browser does not support window.showSaveFilePicker");
 }
 
-export function main()
+export function main(totalPoints : number)
 {
     apiCheck();
     
@@ -330,11 +330,11 @@ export function main()
     xhr.responseType = "document";
     xhr.send();    
      */
-    onload();
+    onload(totalPoints);
 }
 
 export
-function onload()
+function onload(totalPoints : number)
 {
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
@@ -403,7 +403,7 @@ function onload()
      ***  Initialize <table id="RubricTable">
      **/
     //init_rubric();
-    Rubric.instructions.extractSectionsAndRubricAll();
+    Rubric.instructions.extractSectionsAndRubricAll(totalPoints);
     Rubric.Section.displayTableOfContents();
 
     //Rubric.main();

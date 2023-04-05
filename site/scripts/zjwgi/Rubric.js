@@ -321,7 +321,8 @@ export class Instructions {
             }
         }
     }
-    extractSectionsAndRubricAll() {
+    extractSectionsAndRubricAll(totalPoints) {
+        this.totalPoints = totalPoints;
         this.extractSectionsAndRubric(null, document.body, 1);
         /**
          *  compute points from fraction hierarchy
@@ -346,6 +347,23 @@ export class Instructions {
         const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
         let ri = 0;
         for (let instruction of this.instructions) {
+            /* */
+            const iElement = document.getElementById(instruction.id);
+            if (iElement !== null) {
+                const ptDiv = document.createElement("span");
+                ptDiv.classList.add("Points");
+                let points = instruction.points.toFixed(1);
+                if (points.split('.')[1] === '0')
+                    points = points.split('.')[0];
+                else if (points.split('.')[0] === '0')
+                    points = "." + points.split('.')[1];
+                if (instruction.category === Category.COMPOSITE)
+                    ptDiv.innerHTML = "| &#x2211;" + points + "| ";
+                else
+                    ptDiv.innerHTML = "|" + points + "| ";
+                iElement.firstChild.before(ptDiv);
+            }
+            /* insert rubric table row */
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString());
             let level = "";
@@ -384,8 +402,10 @@ export class Instructions {
             rubric.append(row);
             ri++;
         }
-        let ttd = document.getElementById("Total");
-        //(<HTMLElement>ttd.nextElementSibling).innerText = total.toString();
+        //let ttd = document.getElementById("Total");
+        const tps = document.querySelectorAll("span[data-total-points]");
+        for (let tp of tps)
+            tp.innerText = this.totalPoints.toString();
     }
 }
 export const instructions = new Instructions();
