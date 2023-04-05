@@ -28,7 +28,7 @@ div.main-container
     grid-template-columns: min-max(0,fit-content) 10fr;
     grid-template-rows: max-content;    
     */
-    flex-flow: row;
+    flex-direction: row;
     /*
     grid-template-columns: min-content fit-content;
     */
@@ -40,17 +40,22 @@ div#side-nav-bar
     border-right-width: 5px;
     border-right-style: solid;
     
-    padding-right: 10px;
+    padding-right: 0px;
+    padding-left: 0px;
     padding-bottom: 10px;
 
     color: black;    
     font-weight: bold;
 
     resize: horizontal;
-    overflow: hidden;     
+    overflow: hidden;      
     height : 98vh;
-    
-    max-width: fit-content;        
+        
+    flex-basis : fit-content;
+    /*
+    width: fit-content; 
+    */
+    max-width: fit-content;    
 }
 
 div.side-read-bar
@@ -66,8 +71,11 @@ div.side-read-bar
 
 main.main-content
 {        
-    height: 90vh;             
+    height: 90vh;    
+    flex: auto;
+    
     /*
+    flex-basis: 0;
      resize: horizontal; 
      height : 95vh;             
      */        

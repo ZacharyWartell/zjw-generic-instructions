@@ -160,11 +160,14 @@ export class Section
     static displayTableOfContents()
     {
         const snb : HTMLDivElement = <HTMLDivElement>document.getElementById("side-nav-bar");
-        const ul : HTMLUListElement = document.createElement("ul");        
-        snb.appendChild(ul);
-        ul.classList.add("side_nav_bar");
-        for (let s of Section.sections)        
-            Section.buildList(s,ul);
+        if (snb !== null)
+        {
+            const ul : HTMLUListElement = document.createElement("ul");        
+            snb.appendChild(ul);
+            ul.classList.add("side_nav_bar");
+            for (let s of Section.sections)        
+                Section.buildList(s,ul);
+        }
     }
     /**
      * array of all Section objects
@@ -487,8 +490,8 @@ export class Instructions {
                  <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
+                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td >${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${instruction.points.toFixed(2)}</td>
                  <td hidden></td>
                  <td hidden><input type="text"></td>`;
@@ -498,7 +501,7 @@ export class Instructions {
 				 <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${instruction.points.toFixed(2)}</td>
                  <td hidden></td>

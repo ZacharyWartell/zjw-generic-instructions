@@ -124,11 +124,13 @@ export class Section {
     }
     static displayTableOfContents() {
         const snb = document.getElementById("side-nav-bar");
-        const ul = document.createElement("ul");
-        snb.appendChild(ul);
-        ul.classList.add("side_nav_bar");
-        for (let s of Section.sections)
-            Section.buildList(s, ul);
+        if (snb !== null) {
+            const ul = document.createElement("ul");
+            snb.appendChild(ul);
+            ul.classList.add("side_nav_bar");
+            for (let s of Section.sections)
+                Section.buildList(s, ul);
+        }
     }
 }
 Section.sections = new Array();
@@ -375,22 +377,22 @@ export class Instructions {
                  <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
+                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td >${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${instruction.points.toFixed(2)}</td>
-                 <td></td>
-                 <td><input type="text"></td>`;
+                 <td hidden></td>
+                 <td hidden><input type="text"></td>`;
             else
                 row.innerHTML =
                     `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${instruction.points.toFixed(2)}</td>
-                 <td></td>
-                 <td><input type="text"></td>`;
+                 <td hidden></td>
+                 <td hidden><input type="text"></td>`;
             prevSection = instruction.section;
             row.querySelector('input[type="text"]').addEventListener('input', (e) => {
                 const itemID = (e.target).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
