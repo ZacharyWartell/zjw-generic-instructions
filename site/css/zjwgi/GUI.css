@@ -1,0 +1,112 @@
+body
+{        
+    overflow: hidden; 
+    height: 100%;
+}
+
+div.window-container
+{    
+    height: 100%;
+    /*
+    width: fit-content;
+    */
+}
+
+
+div.toolbar
+{
+    border: solid black 2px;    
+    margin-top: 0px;    
+    padding-top: 0px;
+    padding-bottom: 0px;        
+}
+
+div.main-container
+{
+    display: flex;
+    /*
+    grid-template-columns: min-max(0,fit-content) 10fr;
+    grid-template-rows: max-content;    
+    */
+    flex-flow: row;
+    /*
+    grid-template-columns: min-content fit-content;
+    */
+}
+
+div#side-nav-bar
+{
+    border-right-color:black;    
+    border-right-width: 5px;
+    border-right-style: solid;
+    
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    color: black;    
+    font-weight: bold;
+
+    resize: horizontal;
+    overflow: hidden;     
+    height : 98vh;
+    
+    max-width: fit-content;        
+}
+
+div.side-read-bar
+{
+
+
+    color: red;    
+    font-weight: bold;
+    
+    overflow: hidden;      
+    height: 100%;
+}
+
+main.main-content
+{        
+    height: 90vh;             
+    /*
+     resize: horizontal; 
+     height : 95vh;             
+     */        
+}
+
+main.main-content > article
+{
+    overflow-y: scroll;    
+    overflow-x: scroll;       
+    height: 95vh;       
+}
+/*
+ *   Toolbar and Menu claases
+ */
+
+
+
+div#Toolbar > div
+{
+    border: solid black 1px;
+}
+
+div.Menu
+{
+    background-color : lightgrey;
+}
+ul.SubMenu
+{
+    list-style-type: none;
+    background-color : lightgrey;
+    position : absolute;
+    top: 15px;    
+    padding: 0px;
+}
+
+ul.SubMenu > li
+{
+    border : black 1px solid;
+    padding : 0px;
+    align-items: center;
+}
+
