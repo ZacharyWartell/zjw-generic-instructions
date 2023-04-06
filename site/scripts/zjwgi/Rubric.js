@@ -117,17 +117,17 @@ export class Section {
         if (section.children.length !== 0) {
             const ul = document.createElement("ul");
             li.appendChild(ul);
-            ul.classList.add("side_nav_bar");
+            ul.classList.add("side-nav-bar");
             for (let s of section.children)
                 Section.buildList(s, ul);
         }
     }
     static displayTableOfContents() {
-        const snb = document.getElementById("side-nav-bar");
+        const snb = document.querySelector("div#side-nav-bar > div");
         if (snb !== null) {
             const ul = document.createElement("ul");
             snb.appendChild(ul);
-            ul.classList.add("side_nav_bar");
+            ul.classList.add("side-nav-bar");
             for (let s of Section.sections)
                 Section.buildList(s, ul);
         }

@@ -151,7 +151,7 @@ export class Section
             const ul : HTMLUListElement = document.createElement("ul");                    
             li.appendChild(ul);              
                                               
-            ul.classList.add("side_nav_bar");
+            ul.classList.add("side-nav-bar");
             for(let s of section.children)
                 Section.buildList(s,ul);
         }
@@ -159,12 +159,12 @@ export class Section
 
     static displayTableOfContents()
     {
-        const snb : HTMLDivElement = <HTMLDivElement>document.getElementById("side-nav-bar");
+        const snb : HTMLDivElement = <HTMLDivElement>document.querySelector("div#side-nav-bar > div");
         if (snb !== null)
         {
             const ul : HTMLUListElement = document.createElement("ul");        
             snb.appendChild(ul);
-            ul.classList.add("side_nav_bar");
+            ul.classList.add("side-nav-bar");
             for (let s of Section.sections)        
                 Section.buildList(s,ul);
         }
