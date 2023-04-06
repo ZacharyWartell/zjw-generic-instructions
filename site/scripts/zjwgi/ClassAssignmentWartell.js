@@ -138,6 +138,7 @@ export function emailComment(e) {
             //if (p is HTMLLIElement && p.classList.contains("Instruction") )
             if (p.classList.contains("Instruction_Todo") ||
                 p.classList.contains("Instruction_Read") ||
+                p.classList.contains("Instruction_Git_Commit") ||
                 p.classList.contains("Instruction_Question") ||
                 p.classList.contains("Instruction_Section")) {
                 console.log(p);
@@ -169,10 +170,6 @@ export function emailComment(e) {
 }
 export function main(totalPoints) {
     apiCheck();
-    /**
-     *   [experimental , non-deploy]
-     */
-    document.body.addEventListener('mousedown', emailComment);
     /**
      **   Setup Toolbar
      **/
