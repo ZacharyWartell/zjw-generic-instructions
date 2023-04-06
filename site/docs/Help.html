@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <!--
 \author Zachary Wartell, Ph.D.
-
-\license 
-${license}
-
+\license ${license}
 References  - [R1] https://css-tricks.com/expanding-images-html5/                - [R2] http://philarcher.org/diary/2013/headingnumbers/
--->
-<html>
+--><html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Guide To Reading</title>
@@ -25,8 +21,9 @@ References  - [R1] https://css-tricks.com/expanding-images-html5/               
         $('#toc').toc( {'smoothScrolling': false});
       }
     </script>
-    <link href="../toc.css" rel="stylesheet" type="text/css">
-    <link href="../ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
+    <!--
+    <link href="../toc.css" rel="stylesheet" type="text/css">    -->
+    <link href="../css/zjwgi/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
     <script></script>
     <style media="print" type="text/css">        
             /*
@@ -44,7 +41,7 @@ References  - [R1] https://css-tricks.com/expanding-images-html5/               
     <div  style="top: 112px;"  class="w3-sidenav w3-collapse w3-slim"  id="sidenav">      <div  style="padding-top: 112px;"  id="leftmenuinner">        <div  class="w3-light-grey"  id="leftmenuinnerinner"> <a  href="javascript:void(0)"  onclick="close_menu()"  class="w3-closebtn w3-hide-large w3-large"             style="padding:3px 12px;">×</a> </div>      </div>    </div>    <div  class="w3-main w3-light-grey"  id="belowtopnav"  style="margin-left: 220px; padding-top: 0px;">      <div  class="w3-row w3-white">        <div  class="w3-col l10 m12"  id="main">          -->
     <!-- IF_TOC -->
     <div id="toc"> </div>
-    <div style="margin-left:250px">
+    <div>
       <div align="center">
         <h1 class="Title nocount">Guide to Reading</h1>
         <br>
@@ -129,6 +126,12 @@ References  - [R1] https://css-tricks.com/expanding-images-html5/               
               <li> <span class="Shell_Code_Comment"> […additional output will
                   appear…] </span> – this a comment describing output from a
                 command-line command. </li>
+              <li> Post-publication corrective markup:
+                <ol>
+                  <li><ins datetime="1/1/2023 12:00pm">Elaboration on instructions</ins> - this highlighting indicates the highlighted text was inserted after original publication of the assignment.  Mouse hovering on the text may display additional information about the date/time of the correction.  </li>
+                  <li><del datetime="1/1/2023 12:00pm">Solve this problem using depth first search</del> - this font typeface indicates the text was deleted after original publication of the assignment and is no longer correct. Mouse hovering on the text may display additional information about the date/time of the correction.</li>                  
+                </ol>
+              </li>
             </ul>
           </li>
           <li><b>Shell Code Examples:</b> Shell code instructions appear in
