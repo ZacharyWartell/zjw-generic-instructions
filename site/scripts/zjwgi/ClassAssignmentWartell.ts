@@ -140,13 +140,88 @@ function apiCheck()
         alert("Browser does not support window.showSaveFilePicker");
 }
 
+/**
+ * \status   [experimental , non-deploy]
+ *  
+ * \brief See USAGE
+ * 
+ * Notes:   From what I have read it is not possible to use the ?body= query parameter to pass html code that will be displayed as rendered HTML
+ * Other more complex mechanisms would be needed to get the users selection from the HTML document to be auto-inserted at HTML into an email.
+ * Doing perfectly would not be really possible because you would have to pull the CSS stylesheets as well.
+ */
+const USAGE : string =
+`
+    Left-clicking on part of the assignment document opens a new browser tab composing a email via the UNCC account active in that browser.
+    The email is addressed to computer-graphics-wartell-group@uncc.edu.  The body is pre-filled with a WWW hyperlink to the inner most Instruction item
+    on whihc you clicked and a brief bit of the surrounding text in the document where you clicked:
+
+    Add your question about selected part of the assignment to the email's text and send.
+`
+export function emailComment(e : MouseEvent) : void
+{
+    if (e.button === 0)        
+    {
+        const target : HTMLElement = <HTMLElement> e.target;
+        console.log(
+            `
+            ${e.target}
+            `
+        );   
+        console.log(e.target);
+        for (let p : HTMLElement = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
+        {
+            //if (p is HTMLLIElement && p.classList.contains("Instruction") )
+            if (p.classList.contains("Instruction_Todo") ||
+                p.classList.contains("Instruction_Read") ||
+                p.classList.contains("Instruction_Question") ||
+                p.classList.contains("Instruction_Section"))
+                {
+                    console.log(p);                                                
+                    let id : string = p.getAttribute('id');
+                    console.log(id);                        
+                    if (id !== null)
+                        id = "#" + id;
+                    else
+                        id = "";
+                    const body = encodeURIComponent("At " + window.location.toString().split("#")[0] + id + ":" +
+                        "\n-----------------------------------------------------------------\n" +
+                        p.innerText + 
+                        "\n-----------------------------------------------------------------\n");
+                    let short =  window.location.toString();
+                    let count : number = 0;
+                    let i : number = short.length-1;
+                    for (;i>=0 && count != 2;i--) if (short[i] === '/') count++;
+                    short = short.substring(i+2).split("#")[0];
+                    const subject=encodeURIComponent("Question: " + assignmentName.name + " | " + short + "#" + id);
+                    console.log(body);                        
+                    window.open("https://mail.google.com/mail/?view=cm&to=computer-graphics-wartell-group@uncc.edu&su="+subject+"&body="+body,"_blank");
+                    break;
+                }
+
+        }
+    }   
+    document.body.removeEventListener('mousedown',emailComment);
+}
 export function main(totalPoints : number)
 {
     apiCheck();
+
+    /**
+     *   [experimental , non-deploy]
+     */
+    document.body.addEventListener('mousedown',emailComment);
     
     /**
      **   Setup Toolbar
      **/
+    /*
+    Notes:
+        https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
+    */
+
+     let input = document.getElementById("Question");
+     input.addEventListener('click',     
+        (e : MouseEvent)=>{document.body.addEventListener('mousedown',emailComment);});
 
 
 
@@ -167,7 +242,7 @@ export function main(totalPoints : number)
 
             
 
-    let input;
+    input;
     /*
     *  Menu#File Download button
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
@@ -333,13 +408,14 @@ export function main(totalPoints : number)
     onload(totalPoints);
 }
 
+let assignmentName : AssignmentName;
 export
 function onload(totalPoints : number)
 {
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/
-    const assignmentName = new AssignmentName(<HTMLDivElement>document.getElementById("AssignmentName"));
+    assignmentName = new AssignmentName(<HTMLDivElement>document.getElementById("AssignmentName"));
     assignmentName.insertText(document);
 
     /**
