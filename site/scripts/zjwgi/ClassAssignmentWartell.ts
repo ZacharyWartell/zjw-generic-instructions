@@ -217,7 +217,14 @@ export function main(totalPoints : number)
 
      let input = document.getElementById("Question");
      input.addEventListener('click',     
-        (e : MouseEvent)=>{document.body.addEventListener('mousedown',emailComment);});
+        (e : MouseEvent)=>
+            {
+                /*
+                \todo change mouse cursor to indicate 'question' mode
+                \todo add mouee hover to highlight the inner most instruction section being queried
+                 */
+                document.body.addEventListener('mousedown',emailComment);
+            });
 
 
 
