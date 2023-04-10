@@ -573,16 +573,22 @@ ins {
     text-decoration-line: underline;
 }
 
+/*
+on average inline-block seems to produce a better positioned Updated_Text_Popup_Note than block
+*/
 ins:hover + span.Updated_Text_Popup_Note {
-    display: block;
+    display: inline-block;
+    
 }
 
 
 span.Updated_Text_Popup_Note {
     position: relative;
+    top: 1em;
     /* top: -2em; */
     /* left: 250em; */
     display: none;
+    width: fit-content;
     background-color: lightblue;
     border: black solid 1px;
     padding: 5px;
