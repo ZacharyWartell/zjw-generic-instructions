@@ -481,18 +481,19 @@ export class Instructions {
             /* insert rubric table row */
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString());
-            let level="";
+            let levelPrefix="";
+            let level=0;
             for (let i=instruction.parent; i != null; i = i.parent)
-                level += "-|-";
+                {levelPrefix += "-|-"; level++; }
             if (instruction.section === prevSection)
                 row.innerHTML =
                     `<td class="Empty"></td>
                  <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
-                 <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
-                 <td>${level}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
+                 <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
+                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
             else
@@ -501,9 +502,9 @@ export class Instructions {
 				 <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
-                 <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
-                 <td>${level}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden>${level}$<input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
+                 <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
+                 <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
             prevSection = instruction.section;

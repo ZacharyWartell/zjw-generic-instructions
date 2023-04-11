@@ -73,6 +73,7 @@ table.SectionRubric > tbody > tr:nth-child(2) > td
 table.Rubric {
     border: solid 2px black;
     border-collapse: collapse;
+    width: fit-content;
 }
 
 table.Rubric > thead > tr > th
@@ -395,7 +396,7 @@ div.Hint
 div.VideoInstructions > div:nth-of-type(1)
 {
     border : solid 1px;
-    padding: 5px;
+    padding: 5px;    
     align-content: center;
     resize: vertical;
     overflow: hidden;
