@@ -75,21 +75,20 @@
         <li><strong>Q&amp;A Feature </strong>...<strong> </strong>see<strong>
           </strong>notes below<strong><br>
           </strong></li>
-        <li>The ZJWGI is made a git submodule of your my-project and a script
-          makes symbolic links for the ZJWGI provided component files into the
-          directory structure of my-project</li>
         <li>HTML5 document should be a static web page, but otherwise the
           template user must be able to include any HTML5 content -- SVG, WebGL,
           Canvas, etc. -- in their instruction document.&nbsp;&nbsp; This is
           where relying on <code>C</code>ontent Management Systems, Learning
           Management Systems, etc. always fails me..</li>
-        <li>ZJWGI template.users alter the content of my-project files without
-          needing to modify code modules and components provided by the ZJWGI
-          template.</li>
-        <li>ZJWGI template.users may contribute updates, improvements, bug
-          fixes, to the ZJWGI template's code modules and components by making a
-          git fork of the ZJWGI template.git submodule and linking my-project to
-          their git fork<br>
+        <li>The ZJWGI is made a git submodule of your my-project and an
+          initialization script makes symbolic links from the ZJWGI provided
+          component file's directories into corresponding locations in the
+          directory structure of my-project</li>
+        <li>ZJW GI users alter the content of my-project files without needing
+          to modify code modules and components provided by the ZJW GI code.</li>
+        <li>ZJW GI users may contribute updates, improvements, bug fixes, to the
+          ZJW GI code modules and components by making a git fork of the ZJW GI
+          template.git submodule and linking my-project to their git fork<br>
           <br>
         </li>
         <li><strong>[FUTURE]:</strong>
@@ -148,10 +147,11 @@
             maybe faster to just code a GUI slidable window pane divider myself
           </li>
         </ol>
-        <li>[Navigation] </li>
+        <li>[Navigation] in-progress</li>
         <ol>
           <li>precise internal document navigation (standard hyperlinks are not
             precise about moving to particular location in page)</li>
+          <li>see class BreadCrumbs in Rubric.ts</li>
         </ol>
         <li>[Q&amp;A Feature] <br>
           Status:&nbsp; feature is disabled by default;&nbsp; experimental,
@@ -328,7 +328,11 @@
       </ul>
       <section>
         <h3>WWW deployment</h3>
-        <p>See zjwgi/scripts/zjwgi/publishWWW</p>
+        <p>See zjwgi/scripts/zjwgi/publishWWW.&nbsp;&nbsp; Currently they deploy
+          using sftp.</p>
+        <p>Previously I used GitLab pages and a CI/CD script .gitlab-ci.yml, but
+          GitLab.com stopped being free, and circa 2023 cci-git does not appear
+          to have the GitLab pages feature enabled.</p>
         <p><br>
         </p>
       </section>
