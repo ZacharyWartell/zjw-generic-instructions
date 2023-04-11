@@ -22,27 +22,32 @@
     <section>
       <h1>Goals</h1>
       <ol class="Instruction">
-        <li>&nbsp;Provide a "template" for an HTML5 document which follows
+        <li>Provide a "template" for an HTML5 document which follows some
           best-practices for presenting written instructions for typical
-          computer science assignments.&nbsp;&nbsp; These features include the
+          computer science assignment.&nbsp;&nbsp; These features include the
           following (see also the instruction audience's manual <a href="Help.html">Help.html</a>):<br>
           <ol>
-            <li>Provide for &lt;span&gt; classes that visually designate simple
-              content such as file names, code variable name, function names,
-              user input, etc.</li>
-            <li>Support for &lt;span&gt;,&lt;div&gt; and &lt;table&gt; classes
-              that designate complex structured content such as<br>
+            <li><strong>CSS Formating and &lt;templates&gt;</strong>:<br>
               <ol>
-                <li>Shell script (CLI) code with annotations</li>
-                <li>Zoomable screen captures</li>
-                <li>Embedded video with associated written instructions whose
-                  written steps each include a button that advanced the video to
-                  the video segment illustrated that written step.</li>
+                <li>Provide for &lt;span&gt; classes that visually designate
+                  simple content such as file names, code variable name,
+                  function names, user input, etc.</li>
+                <li>Support for &lt;span&gt;,&lt;div&gt; and &lt;table&gt;
+                  classes that designate complex structured content such as<br>
+                  <ol>
+                    <li>Shell script (CLI) code with annotations</li>
+                    <li>Zoomable screen captures</li>
+                    <li>[Ideally] Embedded video with associated written
+                      instructions whose written steps each include a button
+                      that advanced the video to the video segment illustrated
+                      that written step.</li>
+                  </ol>
+                </li>
               </ol>
             </li>
             <li><strong>Rubric Generation</strong>: Use HTML data- attributes
-              that encode the points that different exercises and items in the
-              assignment are worth and then automatically generate a rubric as a
+              that encode the points that each exercise and itemsin the
+              assignment are worth and then automatically generate a rubric
               &lt;table&gt; from these data- attribute annotations.</li>
             <li><strong>Document Variables</strong>: Use HTML data- attributes
               to support automatic string replacement of named "document
@@ -53,6 +58,9 @@
               written for displaying the shell CLI examples will refer to a
               "document variable" that will be replaced by a designated text
               string defined globally in the assignments meta data.</li>
+            <li><strong>Q&amp;A Feature </strong>...<strong> </strong>see<strong>
+              </strong>notes below<strong><br>
+              </strong></li>
           </ol>
         </li>
         <li>The ZJWGI is made a git submodule of your my-project and a script
@@ -108,7 +116,8 @@
       </ol>
       <h1>Todos</h1>
       <ol>
-        <li>[help] link to documentation convention page</li>
+        <li><span style="text-decoration: line-through;">[help]</span> link to
+          documentation convention page</li>
         <li>[instructor grading rubric] finish implementing the grader part of
           the auto rubric mechanism</li>
         <li>[rubric]&nbsp; add more default process to rubric generation to
@@ -130,16 +139,56 @@
           <li>precise internal document navigation (standard hyperlinks are not
             precise about moving to particular location in page)</li>
         </ol>
-        <li>[Post Question Feature]<br>
-          Status:&nbsp; code is disabled, experimental, in-progress</li>
+        <li>[Q&amp;A Feature] <br>
+          Status:&nbsp; feature is disabled by default;&nbsp; experimental,
+          in-progress</li>
         <ol>
-          <li>allow user to select a part of the assignment, click a button, and
-            then a browser tab is opened with Gmail mail compose window to the
-            class google group initiated with a copy of the selected text
-            allowing posting of a question regarding that selected part of the
-            webpage</li>
+          <li>Make a minimal attempt at the type of functionality that&nbsp;
+            hypothesis.is would support (if UNCC were to install hypothesis.is
+            within our Canvas LMS).</li>
+          <li>In particular, allow user to select a part of the assignment
+            document, click a button, and then launch browser tab with Gmail
+            mail compose window address to the class google group and initiated
+            with a copy of the selected document text.&nbsp;&nbsp; Thus allowing
+            posting of a question regarding that selected part of assignment
+            document.</li>
         </ol>
       </ol>
+      <h1>Notes</h1>
+      <section>
+        <h2>Q&amp;A Feature</h2>
+        <p>UNCC policy makes it pretty much impossible to (1) run you own www
+          server on campus and (2) get permission from UNCC services such as
+          Gmail to accept XMLRequests [<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">^</a>]
+          from your own server.&nbsp; The only mechanism I can find to have a
+          static www page launch a email to a UNCC Google Group is via the
+          mailto URI scheme.</p>
+        <p>This appears to disallow initial pre-compose email body to have
+          anything other than plain text.&nbsp; Possibly the static www page
+          could copy content to the clipboard and then the user could paste it
+          into the launched Gmail compose browser tab.</p>
+        <ul>
+          <li>mailto URI scheme</li>
+          <ul>
+            <li>Limitations on body contents:
+              <ul>
+                <li>
+                  <blockquote>The "body" pseudo header field is primarily
+                    intended for&nbsp;&nbsp; the generation of short text
+                    messages for automatic processing (such&nbsp;&nbsp; as
+                    "subscribe" messages for mailing lists), not for general
+                    MIME &nbsp;&nbsp; bodies.&nbsp; Except for the encoding of
+                    characters based on UTF-8 and&nbsp;&nbsp; percent-encoding,
+                    no additional encoding (such as e.g., base64 or&nbsp;
+                    quoted-printable; see [RFC2045]) is used for the "body"
+                    field value. </blockquote>
+                  <cite><a href="https://www.rfc-editor.org/rfc/rfc6068" target="_blank">https://www.rfc-editor.org/rfc/rfc6068</a></cite>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+      </section>
       <h1>Usage</h1>
       <h2>Version "(git tag) version2"</h2>
       <p>Note the file organizations uses symbolic links which are ubiquitous on
@@ -161,6 +210,12 @@
             <li>index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | project
               specific index.html that is initiated with a <u>copy</u> of
               ./git_modules/zjwgi/site/index.html </li>
+            <li>html/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+              &nbsp; | additional my-project .html if applicable files </li>
+            <ul>
+              <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                symlink to ../git_modules/zjwgi/site/html/zjwji</li>
+            </ul>
             <li>images/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
               &nbsp; | contains my-project .image files </li>
             <ul>
@@ -344,6 +399,10 @@ style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
         <li>Request pull of your changes to master.</li>
       </ol>
     </section>
+    <blockquote><br>
+    </blockquote>
+    <blockquote><br>
+    </blockquote>
     <section>
       <h1>References</h1>
       <ol class="References">
