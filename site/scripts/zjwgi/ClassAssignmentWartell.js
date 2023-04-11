@@ -178,7 +178,13 @@ export function main(totalPoints) {
         https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
     */
     let input = document.getElementById("Question");
-    input.addEventListener('click', (e) => { document.body.addEventListener('mousedown', emailComment); });
+    input.addEventListener('click', (e) => {
+        /*
+        \todo change mouse cursor to indicate 'question' mode
+        \todo add mouee hover to highlight the inner most instruction section being queried
+         */
+        document.body.addEventListener('mousedown', emailComment);
+    });
     /*
      *  add eventListners the close SubMenu on mouseleave
      */
@@ -378,6 +384,11 @@ export function onload(totalPoints) {
         //const cclv = document.getElementById(videoCue.videoID);
         button.innerHTML = "&trianglerighteq;";
         e.after(button);
+    }
+    elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
+    for (let e of elements) {
+        if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
+            e.innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + e.innerText;
     }
     /**
      ***  Initialize <table id="RubricTable">

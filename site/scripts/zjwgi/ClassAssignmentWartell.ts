@@ -478,6 +478,13 @@ function onload(totalPoints : number)
     }
        
 
+    elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
+    for (let e of elements)
+    {
+        if ( e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
+            (<HTMLElement>e).innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + (<HTMLElement>e).innerText;
+    }
+
     /**
      ***  Initialize <table id="RubricTable">
      **/
