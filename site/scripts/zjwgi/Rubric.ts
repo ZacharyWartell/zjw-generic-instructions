@@ -234,28 +234,36 @@ export class Instruction {
     gui_checkbox(input : HTMLInputElement) : void
     {
         if (input.checked)
+        {
             this.awarded = this.points;
+            input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+        }
         else
-            this.awarded = 0;
-        input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
-        if (this.parent !== null)// && propogate)
-        {            
-        
-            for (let p = this.parent; p !== null; p = p.parent)
-            {   
-                let thisLevel : number = parseInt(input.parentElement.parentElement.dataset.level);
-                if (thisLevel !== 0)
-                {
-                    while(parseInt(input.parentElement.parentElement.dataset.level) == thisLevel)                
-                        input = input.parentElement.parentElement.previousElementSibling.querySelector(":scope input");
-                
-                    console.log(input.parentElement); 
-                    console.log(input.parentElement.parentElement);        
-                    console.log(input.parentElement.parentElement.previousElementSibling);                
-                    input.checked = false;
-                    p.gui_checkbox(input);
+            {
+                const oldAwarded = this.awarded;
+                this.awarded = 0;
+                input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+                if(oldAwarded === this.points)
+                {// box was checked and now unchecked, so reset all parent Instructions                    
+                    if (this.parent !== null)// && propogate)
+                    {                                
+                        for (let p = this.parent; p !== null; p = p.parent)
+                        {   
+                            let thisLevel : number = parseInt(input.parentElement.parentElement.dataset.level);
+                            if (thisLevel !== 0)
+                            {
+                                while(parseInt(input.parentElement.parentElement.dataset.level) == thisLevel)                
+                                    input = input.parentElement.parentElement.previousElementSibling.querySelector(":scope input");
+                            
+                                console.log(input.parentElement); 
+                                console.log(input.parentElement.parentElement);        
+                                console.log(input.parentElement.parentElement.previousElementSibling);                
+                                input.checked = false;
+                                p.gui_checkbox(input);
+                            }
+                        }            
                 }
-            }
+            }            
         }
     }
 
