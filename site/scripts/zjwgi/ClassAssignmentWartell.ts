@@ -202,6 +202,7 @@ export function QandAModeClick(e : MouseEvent) : void
         }
     }   
     document.body.removeEventListener('mousedown',QandAModeClick);
+    document.body.removeEventListener('mouseover',QandAModeHover);
 }
 
 /**
