@@ -489,23 +489,23 @@ export class Instructions {
                     `<td class="Empty"></td>
                  <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
-				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td >${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
-                 <td>${instruction.points.toFixed(2)}</td>
-                 <td hidden></td>
-                 <td hidden><input type="text"></td>`;
+				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
+                 <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
+                 <td>${level}${instruction.points.toFixed(2)}</td>
+                 <td class="Instructor_Mode" hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td class="Instructor_Mode" hidden></td>
+                 <td class="Instructor_Mode" hidden><input type="text"></td>`;
             else
                 row.innerHTML =
                     `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
-				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>
-                 <td hidden><input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${level}${instruction.pointFraction.toFixed(0)}&percnt;</td>
-                 <td>${instruction.points.toFixed(2)}</td>
-                 <td hidden></td>
-                 <td hidden><input type="text"></td>`;
+                 <td>${level}${instruction.points.toFixed(2)}</td>
+                 <td class="Instructor_Mode" hidden>${level}$<input type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td class="Instructor_Mode" hidden></td>
+                 <td class="Instructor_Mode" hidden><input type="text"></td>`;
             prevSection = instruction.section;
             row.querySelector('input[type="text"]').addEventListener('input',
                 (e: Event) => {
