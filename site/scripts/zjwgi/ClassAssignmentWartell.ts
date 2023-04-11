@@ -218,15 +218,19 @@ export function QandAModeHover(e : MouseEvent) : void
         `
     );   
     console.log(e.target);
-    for (let p : HTMLElement = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
+    /**
+     * favor selections of inner mode Instruction item , if found
+     */
+    let p : HTMLElement;
+    for (p = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
     {
         //if (p is HTMLLIElement && p.classList.contains("Instruction") )
         if (p.classList.contains("Instruction_Todo") ||
             p.classList.contains("Instruction_Read") ||
             p.classList.contains("Instruction_Git_Commit") ||
             p.classList.contains("Instruction_Question") ||
-            p.classList.contains("Instruction_Composite") ||
-            p.classList.contains("Instruction_Section"))
+            p.classList.contains("Instruction_Composite")              
+            /*|| p.classList.contains("Instruction_Section")*/)
             {   
                 if (QandAModeTarget !== null)
                     QandAModeTarget.removeAttribute('style');
@@ -237,6 +241,24 @@ export function QandAModeHover(e : MouseEvent) : void
             }
 
     }    
+    /**
+     * if no inner mode Instruction item, favor the inner most general HTMLElement
+     * \todo
+     */
+    if (p === document.body)
+    {
+        if (QandAModeTarget !== null)
+            QandAModeTarget.removeAttribute('style');
+        p = <HTMLElement>e.target
+        p.setAttribute('style','background-color : yellow');                
+        p.addEventListener('mouseleave',(e)=>{ (<HTMLElement>e.target).removeAttribute('style'); });
+        QandAModeTarget = p;            
+    }
+
+    }
+
+
+
 }
 
 export function main(totalPoints : number)

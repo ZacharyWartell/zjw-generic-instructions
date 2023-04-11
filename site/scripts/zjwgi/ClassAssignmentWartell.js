@@ -127,7 +127,7 @@ const USAGE = `
 
     Add your question about selected part of the assignment to the email's text and send.
 `;
-export function emailComment(e) {
+export function QandAModeClick(e) {
     if (e.button === 0) {
         const target = e.target;
         console.log(`
@@ -166,30 +166,49 @@ export function emailComment(e) {
             }
         }
     }
-    document.body.removeEventListener('mousedown', emailComment);
+    document.body.removeEventListener('mousedown', QandAModeClick);
 }
-var emailCommentTarget = null;
-export function emailCommentHover(e) {
+/**
+ * The last HTMLElement that was sslected in Q&A Mode
+ */
+var QandAModeTarget = null;
+export function QandAModeHover(e) {
     const target = e.target;
     console.log(`
         ${e.target}
         `);
     console.log(e.target);
-    for (let p = e.target; p !== document.body; p = p.parentElement) {
+    /**
+     * favor selections of inner mode Instruction item , if found
+     */
+    let p;
+    for (p = e.target; p !== document.body; p = p.parentElement) {
         //if (p is HTMLLIElement && p.classList.contains("Instruction") )
         if (p.classList.contains("Instruction_Todo") ||
             p.classList.contains("Instruction_Read") ||
             p.classList.contains("Instruction_Git_Commit") ||
             p.classList.contains("Instruction_Question") ||
-            p.classList.contains("Instruction_Composite") ||
-            p.classList.contains("Instruction_Section")) {
-            if (emailCommentTarget !== null)
-                emailCommentTarget.removeAttribute('style');
+            p.classList.contains("Instruction_Composite")
+        /*|| p.classList.contains("Instruction_Section")*/ ) {
+            if (QandAModeTarget !== null)
+                QandAModeTarget.removeAttribute('style');
             p.setAttribute('style', 'background-color : yellow');
             p.addEventListener('mouseleave', (e) => { e.target.removeAttribute('style'); });
-            emailCommentTarget = p;
+            QandAModeTarget = p;
             break;
         }
+    }
+    /**
+     * if no inner mode Instruction item, favor the inner most general HTMLElement
+     * \todo
+     */
+    if (p === document.body) {
+        if (QandAModeTarget !== null)
+            QandAModeTarget.removeAttribute('style');
+        p = e.target;
+        p.setAttribute('style', 'background-color : yellow');
+        p.addEventListener('mouseleave', (e) => { e.target.removeAttribute('style'); });
+        QandAModeTarget = p;
     }
 }
 export function main(totalPoints) {
@@ -207,8 +226,8 @@ export function main(totalPoints) {
         \todo change mouse cursor to indicate 'question' mode
         \todo add mouee hover to highlight the inner most instruction section being queried
          */
-        document.body.addEventListener('mousedown', emailComment);
-        document.body.addEventListener('mouseover', emailCommentHover);
+        document.body.addEventListener('mousedown', QandAModeClick);
+        document.body.addEventListener('mouseover', QandAModeHover);
     });
     let input = document.getElementById("Beta_Mode");
     input.addEventListener('change', (e) => {
