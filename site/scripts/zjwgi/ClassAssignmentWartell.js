@@ -167,6 +167,7 @@ export function QandAModeClick(e) {
         }
     }
     document.body.removeEventListener('mousedown', QandAModeClick);
+    document.body.removeEventListener('mouseover', QandAModeHover);
 }
 /**
  * The last HTMLElement that was sslected in Q&A Mode
