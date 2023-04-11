@@ -215,8 +215,8 @@ export function main(totalPoints : number)
         https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
     */
 
-     let input = document.getElementById("Question");
-     input.addEventListener('click',     
+     let button = document.getElementById("Question");
+     button.addEventListener('click',     
         (e : MouseEvent)=>
             {
                 /*
@@ -227,6 +227,16 @@ export function main(totalPoints : number)
             });
 
 
+    let input = <HTMLInputElement> document.getElementById("Beta_Mode");
+    input.addEventListener('change',
+        (e : Event )=>{
+            let list = document.querySelectorAll('div#BetaModeGUI button');
+            for (let l of list)
+                if (!input.checked)
+                    (<HTMLElement>l).setAttribute('disabled','');
+                else
+                    (<HTMLElement>l).removeAttribute('disabled');
+        });         
 
     /*
      *  add eventListners the close SubMenu on mouseleave 
@@ -245,15 +255,15 @@ export function main(totalPoints : number)
 
             
 
-    input;
+    button;
     /*
     *  Menu#File Download button
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
 
-    input = document.getElementById("save");
-    input.addEventListener('click',
+    button = document.getElementById("save");
+    button.addEventListener('click',
         (e:MouseEvent)=>
         {
             const options = {
@@ -285,8 +295,8 @@ export function main(totalPoints : number)
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    input = document.getElementById("exportAll");
-    input.addEventListener("click",
+    button = document.getElementById("exportAll");
+    button.addEventListener("click",
         ( e: InputEvent )=>
         {
             try{
@@ -311,8 +321,8 @@ export function main(totalPoints : number)
         });
 
 
-    input = document.getElementById("back");
-    input.addEventListener('click',
+    button = document.getElementById("back");
+    button.addEventListener('click',
         (e:MouseEvent)=>        
             {
                 console.log("back", window.history.state);

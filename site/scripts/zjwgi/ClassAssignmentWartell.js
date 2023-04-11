@@ -177,13 +177,22 @@ export function main(totalPoints) {
     Notes:
         https://developer.mozilla.org/en-US/docs/Web/CSS/cursor
     */
-    let input = document.getElementById("Question");
-    input.addEventListener('click', (e) => {
+    let button = document.getElementById("Question");
+    button.addEventListener('click', (e) => {
         /*
         \todo change mouse cursor to indicate 'question' mode
         \todo add mouee hover to highlight the inner most instruction section being queried
          */
         document.body.addEventListener('mousedown', emailComment);
+    });
+    let input = document.getElementById("Beta_Mode");
+    input.addEventListener('change', (e) => {
+        let list = document.querySelectorAll('div#BetaModeGUI button');
+        for (let l of list)
+            if (!input.checked)
+                l.setAttribute('disabled', '');
+            else
+                l.removeAttribute('disabled');
     });
     /*
      *  add eventListners the close SubMenu on mouseleave
@@ -194,14 +203,14 @@ export function main(totalPoints) {
             e.target.hidden = true;
         });
     });
-    input;
+    button;
     /*
     *  Menu#File Download button
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    input = document.getElementById("save");
-    input.addEventListener('click', (e) => {
+    button = document.getElementById("save");
+    button.addEventListener('click', (e) => {
         const options = {
             types: [
                 {
@@ -226,8 +235,8 @@ export function main(totalPoints) {
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    input = document.getElementById("exportAll");
-    input.addEventListener("click", (e) => {
+    button = document.getElementById("exportAll");
+    button.addEventListener("click", (e) => {
         try {
             let htmlOut = "";
             const scs = document.querySelectorAll(`div.SlideContainer`);
@@ -245,8 +254,8 @@ export function main(totalPoints) {
             throw err;
         }
     });
-    input = document.getElementById("back");
-    input.addEventListener('click', (e) => {
+    button = document.getElementById("back");
+    button.addEventListener('click', (e) => {
         console.log("back", window.history.state);
         if (false) {
             window.history.scrollRestoration = "auto";
