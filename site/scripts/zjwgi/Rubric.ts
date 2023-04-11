@@ -202,7 +202,7 @@ export class Instruction {
 
     pointFraction: number;  // percentage of parent instruction's total points that this instruction item is worth
     points: number;         // actual points this Instructions's task is worth out of assignment total points.
-    marks: number;          // how many points student received for this task
+    awarded: number;          // how many points student received for this task
     comment: string;
     short: string;
     category: Category;
@@ -218,7 +218,7 @@ export class Instruction {
         this.id = "Section_" + (s + "_Item_" + n).replace(/\./g, '_');
         this.pointFraction = pointFraction;
         this.points = 0;
-        this.marks = 0;
+        this.awarded = 0;
         this.comment = "";
         this.parent = parent;
         this.subSteps = new Array<Instruction>();
@@ -231,6 +231,21 @@ export class Instruction {
                 this[p] = jsonObject[p]
     }
 
+    gui_checkbox(input : HTMLInputElement) : void
+    {
+        if (input.checked)
+            this.awarded = this.points;
+        else
+            this.awarded = 0;
+        input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+    }
+
+    /**
+     * \brief replacer callback for JSON.stringify
+     * @param key 
+     * @param value 
+     * @returns 
+     */
     static replacer(key: any, value: any) {
         if (key === 'parent')
             return instructions.instructions.indexOf(value);
@@ -486,6 +501,7 @@ export class Instructions {
             for (let i=instruction.parent; i != null; i = i.parent)
                 {levelPrefix += "-|-"; level++; }
             if (instruction.section === prevSection)
+            {
                 row.innerHTML =
                     `<td class="Empty"></td>
                  <td>${instruction.number}</td>
@@ -496,7 +512,11 @@ export class Instructions {
                  <td class="Instructor_Mode" hidden><input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
+                 const input = <HTMLInputElement>row.querySelector('input');
+                 input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
+            }
             else
+            {
                 row.innerHTML =
                     `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
@@ -507,6 +527,9 @@ export class Instructions {
                  <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
+                 const input = <HTMLInputElement>row.querySelector('input');
+                 input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
+            }
             prevSection = instruction.section;
             row.querySelector('input[type="text"]').addEventListener('input',
                 (e: Event) => {

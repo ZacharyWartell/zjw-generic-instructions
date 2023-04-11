@@ -158,7 +158,7 @@ export class Instruction {
         this.id = "Section_" + (s + "_Item_" + n).replace(/\./g, '_');
         this.pointFraction = pointFraction;
         this.points = 0;
-        this.marks = 0;
+        this.awarded = 0;
         this.comment = "";
         this.parent = parent;
         this.subSteps = new Array();
@@ -170,6 +170,19 @@ export class Instruction {
             if (p in this)
                 this[p] = jsonObject[p];
     }
+    gui_checkbox(input) {
+        if (input.checked)
+            this.awarded = this.points;
+        else
+            this.awarded = 0;
+        input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+    }
+    /**
+     * \brief replacer callback for JSON.stringify
+     * @param key
+     * @param value
+     * @returns
+     */
     static replacer(key, value) {
         if (key === 'parent')
             return instructions.instructions.indexOf(value);
@@ -374,7 +387,7 @@ export class Instructions {
                 levelPrefix += "-|-";
                 level++;
             }
-            if (instruction.section === prevSection)
+            if (instruction.section === prevSection) {
                 row.innerHTML =
                     `<td class="Empty"></td>
                  <td>${instruction.number}</td>
@@ -385,7 +398,10 @@ export class Instructions {
                  <td class="Instructor_Mode" hidden><input style="margin-left: ${level * 15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
-            else
+                const input = row.querySelector('input');
+                input.addEventListener('change', (e) => { instruction.gui_checkbox(e.target); });
+            }
+            else {
                 row.innerHTML =
                     `<td>${instruction.section}</td>
 				 <td>${instruction.number}</td>
@@ -396,6 +412,9 @@ export class Instructions {
                  <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level * 15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
+                const input = row.querySelector('input');
+                input.addEventListener('change', (e) => { instruction.gui_checkbox(e.target); });
+            }
             prevSection = instruction.section;
             row.querySelector('input[type="text"]').addEventListener('input', (e) => {
                 const itemID = (e.target).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
