@@ -157,7 +157,7 @@ const USAGE : string =
 
     Add your question about selected part of the assignment to the email's text and send.
 `
-export function emailComment(e : MouseEvent) : void
+export function QandAModeClick(e : MouseEvent) : void
 {
     if (e.button === 0)        
     {
@@ -201,12 +201,15 @@ export function emailComment(e : MouseEvent) : void
 
         }
     }   
-    document.body.removeEventListener('mousedown',emailComment);
+    document.body.removeEventListener('mousedown',QandAModeClick);
 }
 
-var emailCommentTarget : HTMLElement=null;
+/**
+ * The last HTMLElement that was sslected in Q&A Mode
+ */
+var QandAModeTarget : HTMLElement=null;
 
-export function emailCommentHover(e : MouseEvent) : void
+export function QandAModeHover(e : MouseEvent) : void
 {
     const target : HTMLElement = <HTMLElement> e.target;
     console.log(
@@ -225,11 +228,11 @@ export function emailCommentHover(e : MouseEvent) : void
             p.classList.contains("Instruction_Composite") ||
             p.classList.contains("Instruction_Section"))
             {   
-                if (emailCommentTarget !== null)
-                    emailCommentTarget.removeAttribute('style');
+                if (QandAModeTarget !== null)
+                    QandAModeTarget.removeAttribute('style');
                 p.setAttribute('style','background-color : yellow');                
                 p.addEventListener('mouseleave',(e)=>{ (<HTMLElement>e.target).removeAttribute('style'); });
-                emailCommentTarget = p;
+                QandAModeTarget = p;
                 break;
             }
 
@@ -256,8 +259,8 @@ export function main(totalPoints : number)
                 \todo change mouse cursor to indicate 'question' mode
                 \todo add mouee hover to highlight the inner most instruction section being queried
                  */
-                document.body.addEventListener('mousedown',emailComment);
-                document.body.addEventListener('mouseover',emailCommentHover);
+                document.body.addEventListener('mousedown',QandAModeClick);
+                document.body.addEventListener('mouseover',QandAModeHover);
             });
 
 
