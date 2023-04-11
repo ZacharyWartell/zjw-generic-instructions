@@ -20,49 +20,51 @@
     <p><br>
     </p>
     <section>
+      <h4>Deployed Examples: </h4>
+      <ul>
+        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/WebGL%20Tutorial%201/index.html"
+            target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/WebGL%20Tutorial%201/index.html</a></li>
+      </ul>
       <h1>Goals</h1>
+      Provide a template for an HTML5 document which follows best-practices for
+      presenting written instructions for typical computer science assignment,
+      either tutorial or project. &nbsp;&nbsp; These template features include
+      the following (see also the end users manual <a href="Help.html">Help.html</a>):<br>
       <ol class="Instruction">
-        <li>Provide a "template" for an HTML5 document which follows some
-          best-practices for presenting written instructions for typical
-          computer science assignment.&nbsp;&nbsp; These features include the
-          following (see also the instruction audience's manual <a href="Help.html">Help.html</a>):<br>
+        <li><strong>CSS Formating and &lt;templates&gt;</strong>:<br>
           <ol>
-            <li><strong>CSS Formating and &lt;templates&gt;</strong>:<br>
+            <li>Provide for &lt;span&gt; classes that visually designate simple
+              content such as file names, code variable name, function names,
+              user input, etc.</li>
+            <li>Support for &lt;span&gt;,&lt;div&gt; and &lt;table&gt; classes
+              that designate complex structured content such as<br>
               <ol>
-                <li>Provide for &lt;span&gt; classes that visually designate
-                  simple content such as file names, code variable name,
-                  function names, user input, etc.</li>
-                <li>Support for &lt;span&gt;,&lt;div&gt; and &lt;table&gt;
-                  classes that designate complex structured content such as<br>
-                  <ol>
-                    <li>Shell script (CLI) code with annotations</li>
-                    <li>Zoomable screen captures</li>
-                    <li>[Ideally] Embedded video with associated written
-                      instructions whose written steps each include a button
-                      that advanced the video to the video segment illustrated
-                      that written step.</li>
-                  </ol>
-                </li>
+                <li>Shell script (CLI) code with annotations</li>
+                <li>Zoomable screen captures</li>
+                <li>[Ideally] Embedded video with associated written
+                  instructions whose written steps each include a button that
+                  advanced the video to the video segment illustrated that
+                  written step.</li>
               </ol>
             </li>
-            <li><strong>Rubric Generation</strong>: Use HTML data- attributes
-              that encode the points that each exercise and itemsin the
-              assignment are worth and then automatically generate a rubric
-              &lt;table&gt; from these data- attribute annotations.</li>
-            <li><strong>Document Variables</strong>: Use HTML data- attributes
-              to support automatic string replacement of named "document
-              variables" in the document text with text strings specific to the
-              assignment.&nbsp;&nbsp; For example, the shell CLI examples may
-              all display a path name that user is working in.&nbsp;&nbsp; The
-              path name text often is specific the assignment name. The HTML
-              written for displaying the shell CLI examples will refer to a
-              "document variable" that will be replaced by a designated text
-              string defined globally in the assignments meta data.</li>
-            <li><strong>Q&amp;A Feature </strong>...<strong> </strong>see<strong>
-              </strong>notes below<strong><br>
-              </strong></li>
           </ol>
         </li>
+        <li><strong>Rubric Generation</strong>: Use HTML data- attributes that
+          encode the points that each exercise and itemsin the assignment are
+          worth and then automatically generate a rubric &lt;table&gt; from
+          these data- attribute annotations.</li>
+        <li><strong>Document Variables</strong>: Use HTML data- attributes to
+          support automatic string replacement of named "document variables" in
+          the document text with text strings specific to the
+          assignment.&nbsp;&nbsp; For example, the shell CLI examples may all
+          display a path name that user is working in.&nbsp;&nbsp; The path name
+          text often is specific the assignment name. The HTML written for
+          displaying the shell CLI examples will refer to a "document variable"
+          that will be replaced by a designated text string defined globally in
+          the assignments meta data.</li>
+        <li><strong>Q&amp;A Feature </strong>...<strong> </strong>see<strong>
+          </strong>notes below<strong><br>
+          </strong></li>
         <li>The ZJWGI is made a git submodule of your my-project and a script
           makes symbolic links for the ZJWGI provided component files into the
           directory structure of my-project</li>
@@ -132,7 +134,9 @@
         <li>[navigation side bar]&nbsp; <br>
           Status: code is disabled</li>
         <ol>
-          <li>HTML5 flexbox css code still not doing what is desired</li>
+          <li>HTML5 flexbox css code still not doing what I desire.&nbsp; I
+            maybe faster to just code a GUI slidable window pane divider myself
+          </li>
         </ol>
         <li>[Navigation] </li>
         <ol>
@@ -157,16 +161,19 @@
       <h1>Notes</h1>
       <section>
         <h2>Q&amp;A Feature</h2>
-        <p>UNCC policy makes it pretty much impossible to (1) run you own www
-          server on campus and (2) get permission from UNCC services such as
-          Gmail to accept XMLRequests [<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">^</a>]
-          from your own server.&nbsp; The only mechanism I can find to have a
-          static www page launch a email to a UNCC Google Group is via the
-          mailto URI scheme.</p>
-        <p>This appears to disallow initial pre-compose email body to have
-          anything other than plain text.&nbsp; Possibly the static www page
-          could copy content to the clipboard and then the user could paste it
-          into the launched Gmail compose browser tab.</p>
+        <p>UNCC IT secuirty&nbsp; policy makes it pretty much impossible to (1)
+          run you own www server on campus and (2) get permission from UNCC
+          services such as Gmail to accept XMLRequests [<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">^</a>]
+          from your own off-campus server.&nbsp; The only mechanism I can find
+          to have a static www page launch a email to a UNCC Google Group is via
+          the mailto URI scheme (elaborated on below).</p>
+        <p>The mailto URI scheme appears to disallow the pre-composed email body
+          to have anything other than plain text.&nbsp; Possibly the static www
+          page could copy content to the browser clipboard and then the user
+          could paste it into the launched Gmail compose browser tab in order to
+          transfer an exact visual representation of the text the user selected
+          in Q&amp;A mode.</p>
+        <p>Notes:</p>
         <ul>
           <li>mailto URI scheme</li>
           <ul>
@@ -187,15 +194,44 @@
               </ul>
             </li>
           </ul>
+          <li>formatting innerText |&nbsp; [PRIORITY = LOW]<br>
+            <ul>
+              <li>Goal:&nbsp;&nbsp; auto-indent (akka pretty-print) the selected
+                HTML as best as possible after conversion to plain text
+                (.innerText extraction) .</li>
+              <li><br>
+              </li>
+              <li>References</li>
+              <ul>
+                <li><a href="https://github.com/Sanchithasharma/htmlToText" target="_blank">https://github.com/Sanchithasharma/htmlToText</a>
+                  - nodejs module. last active update 3 years ago.</li>
+                <li><a href="https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8"
+                    target="_blank">https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8
+                    </a>- article<br>
+                  <ul>
+                    <li>f gg</li>
+                  </ul>
+                </li>
+              </ul>
+            </ul>
+          </li>
+          <li>capture image of rendering of a part of&nbsp; a webpage |&nbsp;
+            [PRIORITY = LOW]</li>
+          <ul>
+            <li>It possibleI found various references when Googleing how to do
+              this.</li>
+          </ul>
         </ul>
       </section>
       <h1>Usage</h1>
       <h2>Version "(git tag) version2"</h2>
-      <p>Note the file organizations uses symbolic links which are ubiquitous on
-        all OS's forever -- except MS Windows which eventually supported them
-        (see mklink /D).&nbsp;&nbsp; </p>
-      <p>The directory structure of an assignment/project that uses the ZJW GI
-        module is as follows:</p>
+      <h3>Directory Structure</h3>
+      <p>Note the file organization for a assignment description page using ZJW
+        GI uses symbolic links.&nbsp;&nbsp; These are ubiquitous on all OS's
+        forever -- except MS Windows which eventually supported them (see mklink
+        /D).&nbsp;&nbsp; </p>
+      <p>The directory structure of an assignment description that uses ZJW GI
+        is as follows:</p>
       <ul>
         <li>my-project/</li>
         <ul>
@@ -280,8 +316,30 @@
           </ul>
         </ul>
       </ul>
+      <section>
+        <h3>WWW deployment</h3>
+        <p>See zjwgi/scripts/zjwgi/publishWWW</p>
+        <p><br>
+        </p>
+      </section>
+      <ul>
+        <ul>
+          <ul>
+            <ul>
+              <ul>
+                <ul>
+                  <ul>
+                  </ul>
+                </ul>
+              </ul>
+            </ul>
+          </ul>
+        </ul>
+      </ul>
       <h2>Version "April" <em>[Being Retired]</em></h2>
-      <p><strong>This version is deprecated.</strong></p>
+      <p><strong>This version is deprecated.&nbsp; Although may (?) still be in
+          use by some of my tutorials and assignments....<br>
+        </strong></p>
       <ol class="Instruction">
         <li>Create an empty repo on gitlab.&nbsp;&nbsp; Assume repo's clone URL
           is <span class="User_Input">Your-Repo</span> </li>
