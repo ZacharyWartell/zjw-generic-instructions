@@ -168,37 +168,60 @@ export function QandAModeClick(e : MouseEvent) : void
             `
         );   
         console.log(e.target);
-        for (let p : HTMLElement = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
+        if (0)
+            for (let p : HTMLElement = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
+            {
+                //if (p is HTMLLIElement && p.classList.contains("Instruction") )
+                if (p.classList.contains("Instruction_Todo") ||
+                    p.classList.contains("Instruction_Read") ||
+                    p.classList.contains("Instruction_Git_Commit") ||
+                    p.classList.contains("Instruction_Question") ||
+                    p.classList.contains("Instruction_Section"))
+                    {
+                        console.log(p);                                                
+                        let id : string = p.getAttribute('id');
+                        console.log(id);                        
+                        if (id !== null)
+                            id = "#" + id;
+                        else
+                            id = "";
+                        const body = encodeURIComponent("At " + window.location.toString().split("#")[0] + id + ":" +
+                            "\n-----------------------------------------------------------------\n" +
+                            p.innerText + 
+                            "\n-----------------------------------------------------------------\n");
+                        let short =  window.location.toString();
+                        let count : number = 0;
+                        let i : number = short.length-1;
+                        for (;i>=0 && count != 2;i--) if (short[i] === '/') count++;
+                        short = short.substring(i+2).split("#")[0];
+                        const subject=encodeURIComponent("Question: " + assignmentName.name + " | " + short + "#" + id);
+                        console.log(body);                        
+                        window.open("https://mail.google.com/mail/?view=cm&to=computer-graphics-wartell-group@uncc.edu&su="+subject+"&body="+body,"_blank");
+                        break;
+                    }
+            }
+        else
         {
-            //if (p is HTMLLIElement && p.classList.contains("Instruction") )
-            if (p.classList.contains("Instruction_Todo") ||
-                p.classList.contains("Instruction_Read") ||
-                p.classList.contains("Instruction_Git_Commit") ||
-                p.classList.contains("Instruction_Question") ||
-                p.classList.contains("Instruction_Section"))
-                {
-                    console.log(p);                                                
-                    let id : string = p.getAttribute('id');
-                    console.log(id);                        
-                    if (id !== null)
-                        id = "#" + id;
-                    else
-                        id = "";
-                    const body = encodeURIComponent("At " + window.location.toString().split("#")[0] + id + ":" +
-                        "\n-----------------------------------------------------------------\n" +
-                        p.innerText + 
-                        "\n-----------------------------------------------------------------\n");
-                    let short =  window.location.toString();
-                    let count : number = 0;
-                    let i : number = short.length-1;
-                    for (;i>=0 && count != 2;i--) if (short[i] === '/') count++;
-                    short = short.substring(i+2).split("#")[0];
-                    const subject=encodeURIComponent("Question: " + assignmentName.name + " | " + short + "#" + id);
-                    console.log(body);                        
-                    window.open("https://mail.google.com/mail/?view=cm&to=computer-graphics-wartell-group@uncc.edu&su="+subject+"&body="+body,"_blank");
-                    break;
-                }
-
+            const p : HTMLElement = QandAModeTarget;
+            console.log(p);                                                
+            let id : string = p.getAttribute('id');
+            console.log(id);                        
+            if (id !== null)
+                id = "#" + id;
+            else
+                id = "";
+            const body = encodeURIComponent("At " + window.location.toString().split("#")[0] + id + ":" +
+                "\n-----------------------------------------------------------------\n" +
+                p.innerText + 
+                "\n-----------------------------------------------------------------\n");
+            let short =  window.location.toString();
+            let count : number = 0;
+            let i : number = short.length-1;
+            for (;i>=0 && count != 2;i--) if (short[i] === '/') count++;
+            short = short.substring(i+2).split("#")[0];
+            const subject=encodeURIComponent("Question: " + assignmentName.name + " | " + short + "#" + id);
+            console.log(body);                        
+            window.open("https://mail.google.com/mail/?view=cm&to=computer-graphics-wartell-group@uncc.edu&su="+subject+"&body="+body,"_blank");
         }
     }   
     document.body.removeEventListener('mousedown',QandAModeClick);
@@ -256,11 +279,11 @@ export function QandAModeHover(e : MouseEvent) : void
         QandAModeTarget = p;            
     }
 
-    }
+ }
 
 
 
-}
+
 
 export function main(totalPoints : number)
 {
