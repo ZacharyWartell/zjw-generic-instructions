@@ -203,6 +203,39 @@ export function emailComment(e : MouseEvent) : void
     }   
     document.body.removeEventListener('mousedown',emailComment);
 }
+
+var emailCommentTarget : HTMLElement=null;
+
+export function emailCommentHover(e : MouseEvent) : void
+{
+    const target : HTMLElement = <HTMLElement> e.target;
+    console.log(
+        `
+        ${e.target}
+        `
+    );   
+    console.log(e.target);
+    for (let p : HTMLElement = <HTMLElement>e.target; p !== document.body; p = p.parentElement)
+    {
+        //if (p is HTMLLIElement && p.classList.contains("Instruction") )
+        if (p.classList.contains("Instruction_Todo") ||
+            p.classList.contains("Instruction_Read") ||
+            p.classList.contains("Instruction_Git_Commit") ||
+            p.classList.contains("Instruction_Question") ||
+            p.classList.contains("Instruction_Composite") ||
+            p.classList.contains("Instruction_Section"))
+            {   
+                if (emailCommentTarget !== null)
+                    emailCommentTarget.removeAttribute('style');
+                p.setAttribute('style','background-color : yellow');                
+                p.addEventListener('mouseleave',(e)=>{ (<HTMLElement>e.target).removeAttribute('style'); });
+                emailCommentTarget = p;
+                break;
+            }
+
+    }    
+}
+
 export function main(totalPoints : number)
 {
     apiCheck();
@@ -224,6 +257,7 @@ export function main(totalPoints : number)
                 \todo add mouee hover to highlight the inner most instruction section being queried
                  */
                 document.body.addEventListener('mousedown',emailComment);
+                document.body.addEventListener('mouseover',emailCommentHover);
             });
 
 
@@ -488,6 +522,9 @@ function onload(totalPoints : number)
     }
        
 
+    /**
+     *   insert the <ins> element datatime attribute info into the associate span.Updated_Text_Popup_Note inner text
+     */
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements)
     {

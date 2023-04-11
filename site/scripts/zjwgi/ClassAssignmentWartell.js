@@ -168,6 +168,30 @@ export function emailComment(e) {
     }
     document.body.removeEventListener('mousedown', emailComment);
 }
+var emailCommentTarget = null;
+export function emailCommentHover(e) {
+    const target = e.target;
+    console.log(`
+        ${e.target}
+        `);
+    console.log(e.target);
+    for (let p = e.target; p !== document.body; p = p.parentElement) {
+        //if (p is HTMLLIElement && p.classList.contains("Instruction") )
+        if (p.classList.contains("Instruction_Todo") ||
+            p.classList.contains("Instruction_Read") ||
+            p.classList.contains("Instruction_Git_Commit") ||
+            p.classList.contains("Instruction_Question") ||
+            p.classList.contains("Instruction_Composite") ||
+            p.classList.contains("Instruction_Section")) {
+            if (emailCommentTarget !== null)
+                emailCommentTarget.removeAttribute('style');
+            p.setAttribute('style', 'background-color : yellow');
+            p.addEventListener('mouseleave', (e) => { e.target.removeAttribute('style'); });
+            emailCommentTarget = p;
+            break;
+        }
+    }
+}
 export function main(totalPoints) {
     apiCheck();
     /**
@@ -184,6 +208,7 @@ export function main(totalPoints) {
         \todo add mouee hover to highlight the inner most instruction section being queried
          */
         document.body.addEventListener('mousedown', emailComment);
+        document.body.addEventListener('mouseover', emailCommentHover);
     });
     let input = document.getElementById("Beta_Mode");
     input.addEventListener('change', (e) => {
@@ -394,6 +419,9 @@ export function onload(totalPoints) {
         button.innerHTML = "&trianglerighteq;";
         e.after(button);
     }
+    /**
+     *   insert the <ins> element datatime attribute info into the associate span.Updated_Text_Popup_Note inner text
+     */
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements) {
         if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
