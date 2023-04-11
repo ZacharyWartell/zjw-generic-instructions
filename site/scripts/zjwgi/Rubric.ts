@@ -238,6 +238,25 @@ export class Instruction {
         else
             this.awarded = 0;
         input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+        if (this.parent !== null)// && propogate)
+        {            
+        
+            for (let p = this.parent; p !== null; p = p.parent)
+            {   
+                let thisLevel : number = parseInt(input.parentElement.parentElement.dataset.level);
+                if (thisLevel !== 0)
+                {
+                    while(parseInt(input.parentElement.parentElement.dataset.level) == thisLevel)                
+                        input = input.parentElement.parentElement.previousElementSibling.querySelector(":scope input");
+                
+                    console.log(input.parentElement); 
+                    console.log(input.parentElement.parentElement);        
+                    console.log(input.parentElement.parentElement.previousElementSibling);                
+                    input.checked = false;
+                    p.gui_checkbox(input);
+                }
+            }
+        }
     }
 
     /**
@@ -500,6 +519,7 @@ export class Instructions {
             let level=0;
             for (let i=instruction.parent; i != null; i = i.parent)
                 {levelPrefix += "-|-"; level++; }
+            row.setAttribute("data-level", level.toString());
             if (instruction.section === prevSection)
             {
                 row.innerHTML =
