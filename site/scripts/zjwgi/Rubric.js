@@ -329,6 +329,9 @@ export class Instructions {
             }
         }
     }
+    /**
+     * \brief recalculate all Instruction.points based on Instruction subStep hierarchy
+     */
     recalc_points_resursive(i) {
         //if (i.pointCalculation === PointCalculation.COMPOSITE)
         if (i.category === Category.COMPOSITE) {
@@ -340,13 +343,24 @@ export class Instructions {
         else
             return i.awarded;
     }
+    /**
+     * @brief recalculate all Instruction.points based on Instruction subStep hierarchy
+     */
     recalc_points() {
         for (let i of this.instructions)
             if (i.parent === null)
                 this.recalc_points_resursive(i);
         this.gui_update_awarded();
     }
-    collectInstructions_recursive(section, sectionElement, sectionLabel, parent, itemLevels, olList) {
+    /**
+     * @brief collectInstructions_recursive resursively extracts Instructions from nested ol.Instructions within the <section> of the document "section"
+     **/
+    collectInstructions_recursive(section, // the Section object we are extracting from
+    sectionElement, // the HTML <section> element corresponding to the above "section"
+    sectionLabel, // name of the section , e.g. 4.1 or 4.2.3
+    parent, // parent Instruction (if any) that contains (as subSteps) all Instructions being extracted from the "olList"
+    itemLevels, // array (if any) of index numbers of nested <li> items (with respect to their own <ol>) that contain the "olList"
+    olList) {
         let lic = 1;
         for (let ol of olList) {
             let category = getCategoryFromClass(ol, false);
@@ -373,93 +387,21 @@ export class Instructions {
             }
         }
     }
+    /**
+     * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
+     */
     collectInstructions(section, sectionElement, sectionLabel, parent) {
         let olList = sectionElement.querySelectorAll(":scope > ol.Instruction, :scope > ul.Instruction");
         const itemLevels = new Array;
         this.collectInstructions_recursive(section, sectionElement, sectionLabel, parent, itemLevels, olList);
     }
     /**
-     * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
-     */
-    collectInstructions_old(section, sectionElement, sectionLabel, parent) {
-        let l1c = 1, l2c = 1, l3c = 1;
-        /*
-        **  Create Instruction for <section> 'section'
-        */
-        const h = (sectionElement.querySelector(":scope > h" + section.level.toFixed(0)));
-        /*
-        **  Collection <li> Instructions in <section> 'section'
-        */
-        let olList = sectionElement.querySelectorAll(":scope > ol.Instruction, :scope > ul.Instruction");
-        //section.id = "";
-        if (olList !== null && olList.length !== 0) {
-            /*
-            **  Collection level 1 <li> Instructions
-            */
-            for (let ol of olList) {
-                let li1List = ol.querySelectorAll(":scope > li");
-                let category = getCategoryFromClass(ol, false);
-                l1c = 1;
-                const equalFraction1 = 1.0 / li1List.length * 100;
-                /*
-                **  Collection level 1 <li> Instructions
-                */
-                for (let li1_ of li1List) {
-                    let li1 = li1_;
-                    let tmp, cat = (tmp = getCategoryFromClass(li1, true)) !== null ? tmp : category;
-                    if (tmp === Category.NON_RUBRIC)
-                        continue;
-                    this.instructions.push(new Instruction(sectionLabel, itemString(l1c), li1.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li1.dataset ? parseFloat(li1.dataset.pointFraction) : equalFraction1, parent));
-                    const parent1 = this.instructions[instructions.instructions.length - 1];
-                    li1.id = this.instructions[this.instructions.length - 1].id;
-                    let ol1 = li1.querySelector(":scope > ol");
-                    /*
-                    **  Collection level 2 <li> Instructions
-                    */
-                    if (ol1 !== null) { //&& ol1.length !== 0) {
-                        let category1 = getCategoryFromClass(ol1, false);
-                        let li2List = ol1.querySelectorAll(":scope > li"); // only children, no nested descendants
-                        l2c = 1;
-                        const equalFraction2 = 1.0 / li2List.length * 100;
-                        for (let li2_ of li2List) {
-                            const li2 = li2_;
-                            let tmp, cat = (tmp = getCategoryFromClass(li2, true)) !== null ? tmp : category1;
-                            this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c), li2.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li2.dataset ? parseFloat(li2.dataset.pointFraction) : equalFraction2, parent1));
-                            const parent2 = this.instructions[instructions.instructions.length - 1];
-                            li2.id = this.instructions[this.instructions.length - 1].id;
-                            let ol2 = li2.querySelector(":scope > ol");
-                            if (ol2 !== null) { // && ol2.length !== 0) {
-                                /*
-                                **  Collection level 3 <li> Instructions
-                                */
-                                let category2 = getCategoryFromClass(ol2, false);
-                                let li3List = ol2.querySelectorAll(":scope > li"); // only children, no nested descendants
-                                l3c = 1;
-                                const equalFraction3 = 1.0 / li3List.length * 100;
-                                for (let li3_ of li3List) {
-                                    const li3 = li3_;
-                                    let tmp, cat = (tmp = getCategoryFromClass(li3, true)) !== null ? tmp : category2;
-                                    this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c, l3c), li3.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li3.dataset ? parseFloat(li3.dataset.pointFraction) : equalFraction3, parent2));
-                                    li3.id = this.instructions[this.instructions.length - 1].id;
-                                    l3c++;
-                                }
-                            }
-                            l2c++;
-                        }
-                    }
-                    l1c++;
-                }
-            }
-        }
-        // remove section if it contains no <ol class=Instruction>
-        //if (nInstructions === instructions.instructions.length)
-        //instructions.instructions.pop();
-    }
-    /**
-     *
-     - Lost track of history of this relative to Rubric.js.  I suspect Rubric.js is 'old' since it is not .ts code.
+     * @brief extractSectionsAndRubric resusively traverses nested <section> elements in the DOM, creation Section objectss and constructing Instruction objects
+     * the corresponding to <ol.Instruction> <li> HTML elements.
      **/
-    extractSectionsAndRubric(parent, sectionElement, level) {
+    extractSectionsAndRubric(parent, // the Section who we will recursively search for sub-<section>
+    sectionElement, // <section> corresponding the Section object 'parent'
+    level) {
         /**
          *   <section> <h1>
          */
@@ -485,6 +427,10 @@ export class Instructions {
             }
         }
     }
+    /**
+     * @brief extractSectionsAndRubricAll traverses the DOM and all nested <section> elements and all nested <ol.Instruction> <li> elements, constructing
+     * a corresponding tree of Section objects and Instruction objects.
+     **/
     extractSectionsAndRubricAll(totalPoints) {
         this.totalPoints = totalPoints;
         this.extractSectionsAndRubric(null, document.body, 1);
@@ -502,6 +448,9 @@ export class Instructions {
         this.displayRubric();
     }
     //console.log("instructions.length:"+instructions.length);
+    /**
+     * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
+     */
     displayRubric() {
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add

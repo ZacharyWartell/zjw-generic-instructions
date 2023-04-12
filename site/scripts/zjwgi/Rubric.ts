@@ -443,6 +443,9 @@ export class Instructions {
         }
     }
 
+    /**
+     * \brief recalculate all Instruction.points based on Instruction subStep hierarchy
+     */
     recalc_points_resursive( i : Instruction ) : number
     {
         //if (i.pointCalculation === PointCalculation.COMPOSITE)
@@ -456,6 +459,10 @@ export class Instructions {
         else    
             return i.awarded;
     }
+
+    /**
+     * @brief recalculate all Instruction.points based on Instruction subStep hierarchy
+     */    
     recalc_points()
     {
         for (let i of this.instructions)
@@ -464,8 +471,16 @@ export class Instructions {
         this.gui_update_awarded();
     }
 
-
-    private collectInstructions_recursive(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction, itemLevels : Array<number>, olList : NodeList) 
+    /**
+     * @brief collectInstructions_recursive resursively extracts Instructions from nested ol.Instructions within the <section> of the document "section"     
+     **/
+    private collectInstructions_recursive(
+        section: Section,             // the Section object we are extracting from
+        sectionElement : HTMLElement, // the HTML <section> element corresponding to the above "section"
+        sectionLabel: string,   // name of the section , e.g. 4.1 or 4.2.3
+        parent: Instruction,    // parent Instruction (if any) that contains (as subSteps) all Instructions being extracted from the "olList"
+        itemLevels : Array<number>,  // array (if any) of index numbers of nested <li> items (with respect to their own <ol>) that contain the "olList"
+        olList : NodeList)  //  NodeList of all <ol> elements in the <section> "section"  from which we are recursively extracting more <li> items
     {
         let lic = 1
 
@@ -517,10 +532,14 @@ export class Instructions {
 
 
     /**
-     *
-     - Lost track of history of this relative to Rubric.js.  I suspect Rubric.js is 'old' since it is not .ts code.
+     * @brief extractSectionsAndRubric resusively traverses nested <section> elements in the DOM, creation Section objectss and constructing Instruction objects
+     * the corresponding to <ol.Instruction> <li> HTML elements.
      **/
-    extractSectionsAndRubric(parent : Section, sectionElement : HTMLElement, level : number) {        
+    extractSectionsAndRubric(
+            parent : Section,               // the Section who we will recursively search for sub-<section>
+            sectionElement : HTMLElement,   // <section> corresponding the Section object 'parent'
+            level : number)                 // the depth of recursion into the DOM's nesting of <section> HTML elements
+        {        
         /**
          *   <section> <h1>
          */
@@ -553,7 +572,10 @@ export class Instructions {
         }
     }
 
-
+    /**
+     * @brief extractSectionsAndRubricAll traverses the DOM and all nested <section> elements and all nested <ol.Instruction> <li> elements, constructing 
+     * a corresponding tree of Section objects and Instruction objects.
+     **/
     extractSectionsAndRubricAll(totalPoints:number) 
     {        
         this.totalPoints = totalPoints;
@@ -573,6 +595,9 @@ export class Instructions {
     }
     //console.log("instructions.length:"+instructions.length);
 
+    /**
+     * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
+     */
     displayRubric() {
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
