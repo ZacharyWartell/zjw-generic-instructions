@@ -170,22 +170,37 @@ export class Instruction {
             if (p in this)
                 this[p] = jsonObject[p];
     }
+    /**
+     * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
+     *  propagation of checkbox changes based on Instruction hierarchy
+     * @param input
+     */
     gui_checkbox(input) {
-        if (input.checked) {
+        const oldAwarded = this.awarded;
+        if (input.checked) { // checkbox change, set awarded points to this.points
             this.awarded = this.points;
             input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+            if (oldAwarded !== this.awarded) { // box was unchecked and now checked, so set child Instructions to max credit (this.points)                    
+                for (let c of this.subSteps) {
+                    input = input.parentElement.parentElement.nextElementSibling.querySelector(":scope input");
+                    if (input !== null) {
+                        input.setAttribute('checked', 'true');
+                        c.gui_checkbox(input);
+                    }
+                }
+            }
         }
-        else {
-            const oldAwarded = this.awarded;
+        else { // checkbox change, reset awarded points 0                
             this.awarded = 0;
             input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
-            if (oldAwarded === this.points) { // box was checked and now unchecked, so reset all parent Instructions                    
+            if (oldAwarded !== this.awarded) { // box was checked and now unchecked, so reset all parent Instructions                    
                 if (this.parent !== null) // && propogate)
                  {
                     for (let p = this.parent; p !== null; p = p.parent) {
                         let thisLevel = parseInt(input.parentElement.parentElement.dataset.level);
                         if (thisLevel !== 0) {
-                            while (parseInt(input.parentElement.parentElement.dataset.level) == thisLevel)
+                            /* get GUI <tr> element contains Instruction at level above this Instruction */
+                            while (parseInt(input.parentElement.parentElement.dataset.level) >= thisLevel)
                                 input = input.parentElement.parentElement.previousElementSibling.querySelector(":scope input");
                             console.log(input.parentElement);
                             console.log(input.parentElement.parentElement);
