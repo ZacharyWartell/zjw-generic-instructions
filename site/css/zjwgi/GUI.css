@@ -160,6 +160,13 @@ div.Menu
     display: flex;
     flex-direction: row;
 }
+
+div.Menu > div.DocButton, div.Menu div
+{
+    display: inherit;
+    flex-direction: row;
+}
+
 ul.SubMenu
 {
     list-style-type: none;
