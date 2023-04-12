@@ -32,28 +32,6 @@ var Category;
     Category["NON_RUBRIC"] = "NON_RUBRIC";
     Category["GIT_COMMIT"] = "GIT_COMMIT";
 })(Category || (Category = {}));
-/*
-export const CategoryToString =
-    [
-        "QUESTION",
-        "GENERAL",
-        "READ",
-        "TODO",
-        "OVERVIEW",
-        "NON_RUBRIC",
-        "REMINDER",
-        "cOMPOSITE"
-    ];
-*/
-/*
-const Category = Object.freeze({
-    QUESTION: Symbol("Question"),
-    GENERAL: Symbol("General"),
-    READ: Symbol("Read"),
-    TODO: Symbol("Todo"),
-    OVERVIEW: Symbol("Overview")
-})
-*/
 function getCategoryFromClass(element, returnNull) {
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;
@@ -90,7 +68,7 @@ export class OptionSet {
     }
 }
 /**
- * \brief Section corresponding to a <section> in the document
+ * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects and child Section's
  */
 export class Section {
     constructor(name, parent, number) {
@@ -145,6 +123,7 @@ Section.sections = new Array();
         static READ = 2;
            static TODO = 3;
     };*/
+// 4/12/2023: unused , delete if still unsed after a few months, brainstorming idea
 var PointCalculation;
 (function (PointCalculation) {
     PointCalculation[PointCalculation["MANUAL_OVERRIDE"] = 0] = "MANUAL_OVERRIDE";
@@ -259,7 +238,9 @@ export class Instruction {
     }
 }
 /**
- * \author Zachary Wartell
+ * @author Zachary Wartell
+ * @brief BreadCrumb is used to navigate precisely (forward and back) within the page uses the DOM .scrollIntoView() function which is much more precise
+ * then simply letting the browser jump to within page hyperlinks
  */
 export class BreadCrumb {
     constructor(target) {
@@ -280,7 +261,8 @@ export class BreadCrumb {
     }
 }
 /**
- * \author Zachary Wartell
+ * @author Zachary Wartell
+ * @brief set of BreadCrumb's
  */
 export class BreadCrumbs {
     constructor() {

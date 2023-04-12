@@ -33,31 +33,6 @@ enum Category {
     GIT_COMMIT = "GIT_COMMIT"
 }
 
-/*
-export const CategoryToString =
-    [
-        "QUESTION",
-        "GENERAL",
-        "READ",
-        "TODO",
-        "OVERVIEW",
-        "NON_RUBRIC",
-        "REMINDER",
-        "cOMPOSITE"
-    ];
-*/
-
-/*
-const Category = Object.freeze({
-    QUESTION: Symbol("Question"),
-    GENERAL: Symbol("General"),
-    READ: Symbol("Read"),
-    TODO: Symbol("Todo"),
-    OVERVIEW: Symbol("Overview")
-})
-*/
-
-
 function getCategoryFromClass(element, returnNull) {
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;
@@ -102,7 +77,7 @@ export class OptionSet {
 
 
 /**
- * \brief Section corresponding to a <section> in the document
+ * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects and child Section's 
  */
 export class Section
 {    
@@ -190,7 +165,7 @@ Section.sections = new Array<Section>();
     };*/
 
 
-
+// 4/12/2023: unused , delete if still unsed after a few months, brainstorming idea
 enum PointCalculation 
     {
         MANUAL_OVERRIDE,     /* Instruction.awarded value manually entered */
@@ -208,7 +183,7 @@ export class Instruction {
     section: string;        // \todo [refactor] replace with class Section object
 
     number: string;         
-    id: string;             // HTML id attribute for hyperlinking
+    id: string;             // HTML id attribute that hyperlinks to <li> containing this Instruction
 
     pointFraction: number;  // percentage of parent instruction's total points that this instruction item is worth
     points: number;         // actual points this Instructions's task is worth out of assignment total points.
@@ -341,7 +316,9 @@ export class Instruction {
 }
 
 /**
- * \author Zachary Wartell
+ * @author Zachary Wartell
+ * @brief BreadCrumb is used to navigate precisely (forward and back) within the page uses the DOM .scrollIntoView() function which is much more precise
+ * then simply letting the browser jump to within page hyperlinks
  */
 export class BreadCrumb
 {
@@ -370,7 +347,8 @@ export class BreadCrumb
 }
 
 /**
- * \author Zachary Wartell
+ * @author Zachary Wartell
+ * @brief set of BreadCrumb's
  */
 export class BreadCrumbs
 {
@@ -393,7 +371,7 @@ BreadCrumbs.singleton = new BreadCrumbs();
  */
 export class Instructions {
     instructions: Array<Instruction>;
-    optionSets: Array<OptionSet>;
+    optionSets: Array<OptionSet>;  // not used yet, just idea in planning
 
     totalPoints: number;
     constructor() {
