@@ -236,7 +236,7 @@ export class Instruction {
      *  propagation of checkbox changes based on Instruction hierarchy
      * @param input 
      */
-    gui_checkbox(input : HTMLInputElement) : void
+    gui_checkbox(input : HTMLInputElement) : HTMLInputElement
     {
         const oldAwarded = this.awarded;
         if (input.checked)
@@ -253,9 +253,10 @@ export class Instruction {
                     {
                         //input.setAttribute('checked','true');
                         input.checked = true;
-                        c.gui_checkbox(input);
+                        input = c.gui_checkbox(input);
                     }
-                }                
+                } 
+                return input;               
             }
         }
         else
@@ -283,6 +284,7 @@ export class Instruction {
                             }
                         }            
                 }
+                return null;
             }            
         }
     }
@@ -548,6 +550,9 @@ export class Instructions {
             for (let i=instruction.parent; i != null; i = i.parent)
                 {levelPrefix += "-|-"; level++; }
             row.setAttribute("data-level", level.toString());
+            let disabled = "";
+            if (instruction.points === 0.0)
+                disabled = "disabled";
             if (instruction.section === prevSection)
             {
                 row.innerHTML =
@@ -557,7 +562,7 @@ export class Instructions {
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></td>
                  <td class="Instructor_Mode" hidden></td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
                  const input = <HTMLInputElement>row.querySelector('input');
