@@ -39,6 +39,7 @@ pushd $site_path/..
 mkdir -p www-site-mirror
 cp -r -u -L $site_path/*.html www-site-mirror
 cp -r -u -L $site_path/css www-site-mirror
+cp -r -u -L $site_path/html www-site-mirror
 cp -r -u -L $site_path/scripts www-site-mirror
 cp -r -u -L $site_path/images www-site-mirror
 cp -r -u -L $site_path/videos www-site-mirror
