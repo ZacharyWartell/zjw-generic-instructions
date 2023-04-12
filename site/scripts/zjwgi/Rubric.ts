@@ -189,6 +189,15 @@ Section.sections = new Array<Section>();
            static TODO = 3;
     };*/
 
+
+
+enum PointCalculation 
+    {
+        MANUAL_OVERRIDE,     /* Instruction.awarded value manually entered */
+        COMPOSITE,           /* Instruction.awarded calculated as sum of descendents */
+        FULL_OR_ZERO         /* Instruction.awarded value is full credit or zero */
+    }    
+
 /**
  * \brief Instruction is a instruction (or task) in assignment.  Instructions are hhierarchical composites of other sub Instructions and of different
  * Category's. 
@@ -206,6 +215,7 @@ export class Instruction {
     comment: string;
     short: string;
     category: Category;
+    pointCalculation : PointCalculation;
 
     subSteps: Array<Instruction>;   // sub Instructions (children)
     parent: Instruction;            // parent Instruction
@@ -220,10 +230,15 @@ export class Instruction {
         this.points = 0;
         this.awarded = 0;
         this.comment = "";
+        this.pointCalculation = PointCalculation.FULL_OR_ZERO;
         this.parent = parent;
         this.subSteps = new Array<Instruction>();
         if (this.parent !== null)
+        {
+            parent.pointCalculation = PointCalculation.COMPOSITE;
+            parent.category = Category.COMPOSITE;
             this.parent.subSteps.push(this);
+        }
     }
     assign(jsonObject: Object) {
         for (let p in Object)
@@ -231,12 +246,25 @@ export class Instruction {
                 this[p] = jsonObject[p]
     }
 
+
+   
+    /**
+     * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
+     *  propagation of checkbox changes based on Instruction hierarchy
+     * @param input 
+     */    
+    gui_checkbox(input : HTMLInputElement) : void
+    {
+        this.gui_checkbox_recursive(input);
+        instructions.recalc_points();
+    }
+
     /**
      * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
      *  propagation of checkbox changes based on Instruction hierarchy
      * @param input 
      */
-    gui_checkbox(input : HTMLInputElement) : HTMLInputElement
+    gui_checkbox_recursive(input : HTMLInputElement) : HTMLInputElement
     {
         const oldAwarded = this.awarded;
         if (input.checked)
@@ -244,6 +272,7 @@ export class Instruction {
 
             this.awarded = this.points;
             input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+            input.classList.remove("Grey");
             //if(oldAwarded !== this.awarded)
             {// box was unchecked and now checked, so set child Instructions to max credit (this.points)                    
                 for (let c of this.subSteps)
@@ -253,7 +282,7 @@ export class Instruction {
                     {
                         //input.setAttribute('checked','true');
                         input.checked = true;
-                        input = c.gui_checkbox(input);
+                        input = c.gui_checkbox_recursive(input);
                     }
                 } 
                 return input;               
@@ -263,6 +292,7 @@ export class Instruction {
             {// checkbox change, reset awarded points 0                
                 this.awarded = 0;
                 input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+                input.classList.remove("Grey");
                 if(oldAwarded !== this.awarded)
                 {// box was checked and now unchecked, so reset all parent Instructions                    
                     if (this.parent !== null)// && propogate)
@@ -279,8 +309,9 @@ export class Instruction {
                                 console.log(input.parentElement); 
                                 console.log(input.parentElement.parentElement);        
                                 console.log(input.parentElement.parentElement.previousElementSibling);                
-                                input.checked = false;
-                                p.gui_checkbox(input);
+                                input.checked = false;                                
+                                p.gui_checkbox_recursive(input);
+                                input.classList.add("Grey");
                             }
                         }            
                 }
@@ -360,10 +391,48 @@ export class Instructions {
         this.totalPoints = 100;
     }
 
-    push(i: Instruction) {
+    push(i: Instruction) 
+    {
         this.instructions.push(i);
     }
 
+    gui_update_awarded()
+    {
+        let rubric: HTMLTableSectionElement = document.querySelector("#RubricTable > tbody");
+        let trs : NodeList = rubric.querySelectorAll("tr");
+        let i=0;
+        for (let tr of trs)
+        {
+            const td : HTMLElement = (<HTMLElement>tr).querySelector(":scope td:nth-child(8)");
+            if (td !== null)
+            {
+                td.innerText = this.instructions[i].awarded.toFixed(2);
+                i++;
+            }            
+            
+        }
+    }
+
+    recalc_points_resursive( i : Instruction ) : number
+    {
+        //if (i.pointCalculation === PointCalculation.COMPOSITE)
+        if (i.category === Category.COMPOSITE)
+        {
+            i.awarded = 0;
+            for (let c of i.subSteps)
+                i.awarded += this.recalc_points_resursive(c);
+            return i.awarded;
+        }
+        else    
+            return i.awarded;
+    }
+    recalc_points()
+    {
+        for (let i of this.instructions)
+            if (i.parent === null)
+                this.recalc_points_resursive(i);            
+        this.gui_update_awarded();
+    }
 
     /**
      * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
@@ -562,8 +631,8 @@ export class Instructions {
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></td>
-                 <td class="Instructor_Mode" hidden></td>
+                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*18}px; " type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></td>
+                 <td class="Instructor_Mode" hidden> 0.00</td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
                  const input = <HTMLInputElement>row.querySelector('input');
                  input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
@@ -577,8 +646,8 @@ export class Instructions {
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*15}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
-                 <td class="Instructor_Mode" hidden></td>
+                 <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*18}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td class="Instructor_Mode" hidden>0.00</td>
                  <td class="Instructor_Mode" hidden><input type="text"></td>`;
                  const input = <HTMLInputElement>row.querySelector('input');
                  input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
