@@ -152,19 +152,6 @@ export class Section
 
 Section.sections = new Array<Section>();
 
-/*class Category
-    {
-        constructor(e)
-        {
-            this.value=e;
-        }
-        static QUESTION = 0;
-        static GENERAL = 1;
-        static READ = 2;
-           static TODO = 3;
-    };*/
-
-
 // 4/12/2023: unused , delete if still unsed after a few months, brainstorming idea
 enum PointCalculation 
     {
@@ -673,6 +660,12 @@ export const instructions = new Instructions();
  **
  */
 
+ /**
+  * @brief convert list (an array) of item numbers for a set of nested items into a string using the convention of
+  *                    [Decimal Number] . [Lower Case Letter] . [Lower Case Roman Numeral]
+  * @param args 
+  * @returns string
+  */
 function itemString(...args: number[]) {
     const aCode = "a".charCodeAt(0);
     switch (arguments.length) {
