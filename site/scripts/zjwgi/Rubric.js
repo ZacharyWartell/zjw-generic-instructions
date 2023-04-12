@@ -180,11 +180,13 @@ export class Instruction {
         if (input.checked) { // checkbox change, set awarded points to this.points
             this.awarded = this.points;
             input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
-            if (oldAwarded !== this.awarded) { // box was unchecked and now checked, so set child Instructions to max credit (this.points)                    
+            //if(oldAwarded !== this.awarded)
+            { // box was unchecked and now checked, so set child Instructions to max credit (this.points)                    
                 for (let c of this.subSteps) {
                     input = input.parentElement.parentElement.nextElementSibling.querySelector(":scope input");
                     if (input !== null) {
-                        input.setAttribute('checked', 'true');
+                        //input.setAttribute('checked','true');
+                        input.checked = true;
                         c.gui_checkbox(input);
                     }
                 }
