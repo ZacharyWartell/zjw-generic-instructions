@@ -201,6 +201,7 @@ enum PointCalculation
 /**
  * \brief Instruction is a instruction (or task) in assignment.  Instructions are hhierarchical composites of other sub Instructions and of different
  * Category's. 
+ * \author Zachary Wartell
  */    
 export class Instruction {
 
@@ -339,6 +340,9 @@ export class Instruction {
     }
 }
 
+/**
+ * \author Zachary Wartell
+ */
 export class BreadCrumb
 {
     target : HTMLElement ;
@@ -364,6 +368,10 @@ export class BreadCrumb
         BreadCrumbs.singleton.cursor += 2;
     }    
 }
+
+/**
+ * \author Zachary Wartell
+ */
 export class BreadCrumbs
 {
     array : Array<BreadCrumb>;
@@ -380,6 +388,9 @@ export class BreadCrumbs
 
 BreadCrumbs.singleton = new BreadCrumbs();
 
+/**
+ * \author Zachary Wartell
+ */
 export class Instructions {
     instructions: Array<Instruction>;
     optionSets: Array<OptionSet>;
@@ -396,6 +407,9 @@ export class Instructions {
         this.instructions.push(i);
     }
 
+    /**
+     *   Update the awared points column in the Rubric <table> as well as any Grey check boxes
+     */
     gui_update_awarded()
     {
         let rubric: HTMLTableSectionElement = document.querySelector("#RubricTable > tbody");
@@ -406,7 +420,23 @@ export class Instructions {
             const td : HTMLElement = (<HTMLElement>tr).querySelector(":scope td:nth-child(8)");
             if (td !== null)
             {
-                td.innerText = this.instructions[i].awarded.toFixed(2);
+                const instruction=this.instructions[i];
+                td.innerText = instruction.awarded.toFixed(2);
+                if (instruction.category === Category.COMPOSITE)
+                {
+                    const checkbox : HTMLInputElement = (<HTMLElement>tr).querySelector(":scope input[type='checkbox']");
+                    if ( Math.abs(instruction.awarded-instruction.points) < 1e-5)
+                    {                        
+                        instruction.awarded = instruction.points;
+                        checkbox.classList.remove("Grey");
+                        checkbox.checked = true;    
+                    }
+                    else
+                    {
+                        checkbox.classList.add("Grey");
+                        checkbox.checked = false;    
+                    }
+                }
                 i++;
             }            
             
@@ -434,10 +464,58 @@ export class Instructions {
         this.gui_update_awarded();
     }
 
+
+    private collectInstructions_recursive(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction, itemLevels : Array<number>, olList : NodeList) 
+    {
+        let lic = 1
+
+        for (let ol of olList) 
+        {            
+            let category = getCategoryFromClass(<HTMLElement>ol, false);
+            const li1List = (<HTMLOListElement>ol).querySelectorAll(":scope > li");
+
+            lic = 1;
+            const equalFraction1: number = 1.0 / li1List.length * 100;
+            /*
+            **  Collection level 1 <li> Instructions
+            */
+            for (let li_ of li1List)
+            {
+                const li: HTMLElement = <HTMLElement>li_;
+                let tmp, cat = (tmp = getCategoryFromClass(li, true)) !== null ? tmp : category;
+
+                if (tmp === Category.NON_RUBRIC)
+                    continue;
+
+                itemLevels.push(lic);
+                this.instructions.push(new Instruction(sectionLabel, itemString(...itemLevels),
+                    li.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li.dataset ? parseFloat(li.dataset.pointFraction) : equalFraction1, parent));
+
+                const parentLI = this.instructions[instructions.instructions.length - 1];
+                li.id = this.instructions[this.instructions.length - 1].id;
+                
+                const liOList  = li.querySelectorAll(":scope > ol, :scope > ul");
+                if (liOList !== null && liOList.length !== 0)
+                    this.collectInstructions_recursive(section,sectionElement,sectionLabel,parentLI,itemLevels,liOList);
+
+                itemLevels.pop();
+                lic++;
+            }
+        }
+
+    }
+
+    private collectInstructions(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction) 
+    {
+        let olList = sectionElement.querySelectorAll(":scope > ol.Instruction, :scope > ul.Instruction");
+        const itemLevels = new Array<number>;
+        this.collectInstructions_recursive(section,sectionElement,sectionLabel,parent,itemLevels,olList);
+    }
+
     /**
      * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
      */
-    private collectInstructions(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction) {
+    private collectInstructions_old(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction) {
         let l1c = 1, l2c = 1, l3c = 1;
 
         /*
@@ -461,7 +539,7 @@ export class Instructions {
                 l1c = 1;
                 const equalFraction1: number = 1.0 / li1List.length * 100;
                 /*
-                **  Collection level 2 <li> Instructions
+                **  Collection level 1 <li> Instructions
                 */
                 for (let li1_ of li1List) {
                     let li1: HTMLElement = <HTMLElement>li1_;
@@ -470,13 +548,13 @@ export class Instructions {
                     if (tmp === Category.NON_RUBRIC)
                         continue;
                     this.instructions.push(new Instruction(sectionLabel, itemString(l1c),
-                        li1.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li1.dataset ? parseInt(li1.dataset.pointFraction) : equalFraction1, parent));
+                        li1.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li1.dataset ? parseFloat(li1.dataset.pointFraction) : equalFraction1, parent));
                     const parent1 = this.instructions[instructions.instructions.length - 1];
                     li1.id = this.instructions[this.instructions.length - 1].id;
 
                     let ol1: HTMLElement = li1.querySelector(":scope > ol");
                     /*
-                    **  Collection level 3 <li> Instructions
+                    **  Collection level 2 <li> Instructions
                     */
                     if (ol1 !== null) { //&& ol1.length !== 0) {
                         let category1 = getCategoryFromClass(ol1, false);
@@ -489,7 +567,7 @@ export class Instructions {
                             let tmp, cat = (tmp = getCategoryFromClass(li2, true)) !== null ? tmp : category1;
 
                             this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c),
-                                li2.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li2.dataset ? parseInt(li2.dataset.pointFraction) : equalFraction2, parent1));
+                                li2.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li2.dataset ? parseFloat(li2.dataset.pointFraction) : equalFraction2, parent1));
                             const parent2 = this.instructions[instructions.instructions.length - 1];
                             li2.id = this.instructions[this.instructions.length - 1].id;
                             let ol2: HTMLOListElement = <HTMLOListElement>li2.querySelector(":scope > ol");
@@ -507,7 +585,7 @@ export class Instructions {
                                     let tmp, cat = (tmp = getCategoryFromClass(li3, true)) !== null ? tmp : category2;
 
                                     this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c, l3c),
-                                        li3.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li3.dataset ? parseInt(li3.dataset.pointFraction) : equalFraction3, parent2));
+                                        li3.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li3.dataset ? parseFloat(li3.dataset.pointFraction) : equalFraction3, parent2));
                                     li3.id = this.instructions[this.instructions.length - 1].id;
                                     l3c++;
                                 }
@@ -551,7 +629,7 @@ export class Instructions {
     
                 if (sectionElement.classList.contains("Instruction_Section"))
                 {   
-                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseInt(sectionElement.dataset.pointFraction) : 0);             
+                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0);             
                     this.instructions.push (ISectionParent1);
                 }
                 this.collectInstructions(section,sectionElement, section.sectionNumber, ISectionParent1);
@@ -572,9 +650,10 @@ export class Instructions {
          *  compute points from fraction hierarchy
          */
         for (let instruction of this.instructions) {
-            instruction.points = this.totalPoints;
+            let fraction : number = 1.0;
             for (let p = instruction; p != null; p = p.parent)
-                instruction.points *= p.pointFraction / 100;
+                fraction = fraction * (p.pointFraction / 100.0);
+            instruction.points = this.totalPoints * fraction;
         }        
         console.log(this.instructions);
         console.log(Section.sections);
