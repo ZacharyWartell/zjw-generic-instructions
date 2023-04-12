@@ -227,32 +227,28 @@ export class Instruction {
      *  propagation of checkbox changes based on Instruction hierarchy
      * @param input 
      */
-    gui_checkbox_recursive(input : HTMLInputElement) : HTMLInputElement
+    gui_checkbox_recursive(input : HTMLInputElement, processChildren  : Boolean = true)
     {
         const oldAwarded = this.awarded;
         if (input.checked)
-        {// checkbox change, set awarded points to this.points
+            {// checkbox chedked, set awarded points, this.awarded, to this.points
 
-            this.awarded = this.points;
-            input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
-            input.classList.remove("Grey");
-            //if(oldAwarded !== this.awarded)
-            {// box was unchecked and now checked, so set child Instructions to max credit (this.points)                    
+                this.awarded = this.points;
+                input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
+                input.classList.remove("Grey");            
                 for (let c of this.subSteps)
-                {
-                    input = input.parentElement.parentElement.nextElementSibling.querySelector(":scope input");
-                    if (input !== null)
                     {
-                        //input.setAttribute('checked','true');
-                        input.checked = true;
-                        input = c.gui_checkbox_recursive(input);
-                    }
-                } 
-                return input;               
+                    const i = instructions.instructions.findIndex((element) => element == c);
+                    const tr : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'");
+                    console.assert(tr !== null);
+                    const cInput : HTMLInputElement = tr.querySelector(":scope input");
+                    console.assert(cInput !== null);                                            
+                    cInput.checked = true;
+                    c.gui_checkbox_recursive(cInput);
+                    }                
             }
-        }
         else
-            {// checkbox change, reset awarded points 0                
+            {// checkbox unchecked, reset Instruction.awarded points to 0 (and adjust Instruction.subStep hierarchy as needed)                
                 this.awarded = 0;
                 input.parentElement.nextElementSibling.innerHTML = this.awarded.toFixed(2);
                 input.classList.remove("Grey");
@@ -273,14 +269,29 @@ export class Instruction {
                                 console.log(input.parentElement.parentElement);        
                                 console.log(input.parentElement.parentElement.previousElementSibling);                
                                 input.checked = false;                                
-                                p.gui_checkbox_recursive(input);
+                                p.gui_checkbox_recursive(input,false);
                                 input.classList.add("Grey");
                             }
                         }            
+                    }
+                    /*
+                    Goal:  uncheck child Instructions 
+                    Bug:   right now this code causes all sorts of problems , disabled for now
+                    */
+                    if (processChildren)
+                        for (let c of this.subSteps)
+                        {
+                            const i = instructions.instructions.findIndex((element) => element == c);
+                            const tr : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'");
+                            console.assert(tr !== null);
+                            const cInput : HTMLInputElement = tr.querySelector(":scope input");
+                            console.assert(cInput !== null);                        
+                            cInput.checked = false;
+                            c.gui_checkbox_recursive(cInput);                        
+                        }                                                     
                 }
-                return null;
-            }            
-        }
+                    
+            }                    
     }
 
     /**
@@ -304,8 +315,10 @@ export class Instruction {
 
 /**
  * @author Zachary Wartell
- * @brief BreadCrumb is used to navigate precisely (forward and back) within the page uses the DOM .scrollIntoView() function which is much more precise
+ * @brief BreadCrumb and BreadCrumbs are used to navigate precisely (forward and back) within the page uses the DOM .scrollIntoView() function which is much more precise
  * then simply letting the browser jump to within page hyperlinks
+ * 
+ * @status [IN PROGRESS] partial implementation, disabled except in "TA Mode"
  */
 export class BreadCrumb
 {
@@ -335,7 +348,7 @@ export class BreadCrumb
 
 /**
  * @author Zachary Wartell
- * @brief set of BreadCrumb's
+ * @brief set of BreadCrumb's  
  */
 export class BreadCrumbs
 {
