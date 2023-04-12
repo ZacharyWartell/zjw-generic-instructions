@@ -505,6 +505,9 @@ export class Instructions {
 
     }
 
+    /**
+     * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
+     */
     private collectInstructions(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction) 
     {
         let olList = sectionElement.querySelectorAll(":scope > ol.Instruction, :scope > ul.Instruction");
@@ -512,97 +515,6 @@ export class Instructions {
         this.collectInstructions_recursive(section,sectionElement,sectionLabel,parent,itemLevels,olList);
     }
 
-    /**
-     * @brief collectInstructions extracts all the instructions embedded in the HTML document <section> "section"
-     */
-    private collectInstructions_old(section: Section, sectionElement : HTMLElement, sectionLabel: string, parent: Instruction) {
-        let l1c = 1, l2c = 1, l3c = 1;
-
-        /*
-        **  Create Instruction for <section> 'section'
-        */
-        const h : HTMLHeadingElement = <HTMLHeadingElement>(sectionElement.querySelector(":scope > h" + section.level.toFixed(0)));                
-
-        /*
-        **  Collection <li> Instructions in <section> 'section'
-        */        
-        let olList = sectionElement.querySelectorAll(":scope > ol.Instruction, :scope > ul.Instruction");
-        //section.id = "";
-        if (olList !== null && olList.length !== 0) {
-            /*
-            **  Collection level 1 <li> Instructions
-            */
-            for (let ol of olList) {
-                let li1List = ol.querySelectorAll(":scope > li");
-                let category = getCategoryFromClass(<HTMLElement>ol, false);
-
-                l1c = 1;
-                const equalFraction1: number = 1.0 / li1List.length * 100;
-                /*
-                **  Collection level 1 <li> Instructions
-                */
-                for (let li1_ of li1List) {
-                    let li1: HTMLElement = <HTMLElement>li1_;
-                    let tmp, cat = (tmp = getCategoryFromClass(li1, true)) !== null ? tmp : category;
-
-                    if (tmp === Category.NON_RUBRIC)
-                        continue;
-                    this.instructions.push(new Instruction(sectionLabel, itemString(l1c),
-                        li1.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li1.dataset ? parseFloat(li1.dataset.pointFraction) : equalFraction1, parent));
-                    const parent1 = this.instructions[instructions.instructions.length - 1];
-                    li1.id = this.instructions[this.instructions.length - 1].id;
-
-                    let ol1: HTMLElement = li1.querySelector(":scope > ol");
-                    /*
-                    **  Collection level 2 <li> Instructions
-                    */
-                    if (ol1 !== null) { //&& ol1.length !== 0) {
-                        let category1 = getCategoryFromClass(ol1, false);
-
-                        let li2List = ol1.querySelectorAll(":scope > li"); // only children, no nested descendants
-                        l2c = 1;
-                        const equalFraction2: number = 1.0 / li2List.length * 100;
-                        for (let li2_ of li2List) {
-                            const li2: HTMLElement = <HTMLElement>li2_;
-                            let tmp, cat = (tmp = getCategoryFromClass(li2, true)) !== null ? tmp : category1;
-
-                            this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c),
-                                li2.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li2.dataset ? parseFloat(li2.dataset.pointFraction) : equalFraction2, parent1));
-                            const parent2 = this.instructions[instructions.instructions.length - 1];
-                            li2.id = this.instructions[this.instructions.length - 1].id;
-                            let ol2: HTMLOListElement = <HTMLOListElement>li2.querySelector(":scope > ol");
-                            if (ol2 !== null) {// && ol2.length !== 0) {
-                                /*
-                                **  Collection level 3 <li> Instructions
-                                */
-                                let category2 = getCategoryFromClass(ol2, false);
-
-                                let li3List = ol2.querySelectorAll(":scope > li"); // only children, no nested descendants
-                                l3c = 1;
-                                const equalFraction3: number = 1.0 / li3List.length * 100;
-                                for (let li3_ of li3List) {
-                                    const li3: HTMLOListElement = <HTMLOListElement>li3_;
-                                    let tmp, cat = (tmp = getCategoryFromClass(li3, true)) !== null ? tmp : category2;
-
-                                    this.instructions.push(new Instruction(sectionLabel, itemString(l1c, l2c, l3c),
-                                        li3.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li3.dataset ? parseFloat(li3.dataset.pointFraction) : equalFraction3, parent2));
-                                    li3.id = this.instructions[this.instructions.length - 1].id;
-                                    l3c++;
-                                }
-                            }
-                            l2c++;
-                        }
-                    }
-                    l1c++;
-                }
-            }
-        }
-
-
-        // remove section if it contains no <ol class=Instruction>
-        //if (nInstructions === instructions.instructions.length)
-            //instructions.instructions.pop();
-    }
 
     /**
      *
