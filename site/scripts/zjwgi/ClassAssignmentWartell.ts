@@ -313,7 +313,7 @@ export function main(totalPoints : number)
     let input = <HTMLInputElement> document.getElementById("Beta_Mode");
     input.addEventListener('change',
         (e : Event )=>{
-            let list = document.querySelectorAll('div#BetaModeGUI button');
+            let list = document.querySelectorAll('div#BetaModeGUI button, div#BetaModeGUI input');
             for (let l of list)
                 if (!input.checked)
                     (<HTMLElement>l).setAttribute('disabled','');

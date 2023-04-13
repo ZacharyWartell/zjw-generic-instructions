@@ -257,7 +257,7 @@ export function main(totalPoints) {
     });
     let input = document.getElementById("Beta_Mode");
     input.addEventListener('change', (e) => {
-        let list = document.querySelectorAll('div#BetaModeGUI button');
+        let list = document.querySelectorAll('div#BetaModeGUI button, div#BetaModeGUI input');
         for (let l of list)
             if (!input.checked)
                 l.setAttribute('disabled', '');

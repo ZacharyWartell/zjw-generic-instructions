@@ -472,8 +472,9 @@ export class Instructions {
              */
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString()); // 'ri' abbr. 'rowIndex'
-            let levelPrefix = ""; // string that adjusts position of point fraction
+            let levelPrefix = ""; // string used to display ASCII art tree diagram
             let level = 0; // 'level' is the depth in the Instruction tree of 'instruction'
+            // construct ASCCI art tree diagram
             for (let i = instruction; i != null; i = i.parent) {
                 if (level > 0) {
                     if (i.parent) {
@@ -491,12 +492,18 @@ export class Instructions {
             }
             if (instruction.parent !== null)
                 levelPrefix += "|---";
+            // add level info to <td> HTML elment -- might be useful in future                
             row.setAttribute("data-level", level.toString());
             // pad pointFraction string representation to length of 4 using spaces
-            let pf = instruction.pointFraction.toFixed(0);
+            let pf = instruction.pointFraction.toFixed(0); // abbr. 'pointFraction'
             let len = 4 - pf.length;
             for (let i = 0; i < len; i++)
                 pf = "&nbsp" + pf;
+            // pad point string representation to length of 4 using spaces
+            let ps = instruction.points.toFixed(2); // abbr. 'pointString'
+            len = 4 - ps.length;
+            for (let i = 0; i < len; i++)
+                ps = "&nbsp" + ps;
             // disable checkbox for instructions worth 0 points.                
             let disabled = "";
             if (instruction.points === 0.0)
@@ -513,17 +520,26 @@ export class Instructions {
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td style='width:fit-content;'><span>${levelPrefix}</span>${pf}&percnt;</td>
-                 <td><div style="vertical-align: 2px; display : inline-block; color:white; border : ${level != 0 ? 'solid' : 'none'} 1px black; height: 5px; width : ${level * 25}px"></div>${instruction.points.toFixed(2)}
-                    <span hidden class="Instructor_Mode" style="padding: 4px; border: solid 1px black">
+                 <td>
+                    <span>${levelPrefix}</span>${ps}
+                     <span hidden class="Instructor_Mode" style="padding: 4px; border: solid 1px black">
                         <span><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></span>
-                        <span style="margin-left:10px"> 0.00 </span>
-                    </span>
-                 </td>                                  
+                        <span style="margin-left:10px"> 0.00 
+                    </span>                        
+                </td>                                                                        
                  <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
             //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
             //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
             //<td><span style="color:white; border : ${level!=0?'solid':'none'} 1px black;">${levelPrefix}</span>${instruction.pointFraction.toFixed(0)}&percnt;</td>
             //<td><div style="vertical-align: 2px; display : inline-block; color:white; border : ${level!=0?'solid':'none'} 1px black; height: 5px; width : ${level*25}px"></div>${instruction.pointFraction.toFixed(0)}&percnt;</td>
+            /*
+            <td><div style="vertical-align: 2px; display : inline-block; color:white; border : ${level!=0?'solid':'none'} 1px black; height: 5px; width : ${level*25}px"></div>${instruction.points.toFixed(2)}
+                    <span hidden class="Instructor_Mode" style="padding: 4px; border: solid 1px black">
+                        <span><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></span>
+                        <span style="margin-left:10px"> 0.00 </span>
+                    </span>
+            </td>
+            */
             const input = row.querySelector("input[type='checkbox']");
             input.addEventListener('change', (e) => { instruction.gui_checkbox(e.target); });
             prevSection = instruction.section;
