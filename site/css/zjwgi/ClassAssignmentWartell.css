@@ -88,11 +88,16 @@ table.Rubric tr
     max-height: fit-content;
 }
 
-div#Div_Rubric > div
+div#Div_Rubric 
 {    
+    display : flex;
+    flex-direction: column;
+    width: fit-content;
     align-items:center;
-    align-self: center;
-    text-align: center;        
+}
+
+div#Div_Rubric > div
+{            
     width: fit-content;
 }
 div#Div_Rubric > div div
@@ -100,6 +105,7 @@ div#Div_Rubric > div div
     border: 1px solid black;
 }
 
+/*
 table.Rubric > tbody > tr:nth-child(1)
 {
     align-content: center;
@@ -107,6 +113,7 @@ table.Rubric > tbody > tr:nth-child(1)
     align-items: center;
     background-color: turquoise;
 }
+*/
 
 table.Rubric td
 {
@@ -143,31 +150,33 @@ table.Rubric td.Empty
 REFERENCE:
     - https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
 */
-table.Rubric > tbody > tr > td > input[type="checkbox"]::before
+table.Rubric > tbody > tr > td  input[type="checkbox"]::before
 {
     position: relative;
     display: block;
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
+
+    top: -2px;
     
     border: 4px solid black;
     content: "";
     background: #FFF;
 }
 
-table.Rubric > tbody > tr > td > input.Grey[type="checkbox"]::before
+table.Rubric > tbody > tr > td  input.Grey[type="checkbox"]::before
 {
-    border: 4px dotted black;
+    border: 4px dotted black;    
 }
 
-table.Rubric > tbody > tr > td > input[type="checkbox"]::after
+table.Rubric > tbody > tr > td  input[type="checkbox"]::after
 {
     position: relative;
     display: block;
-    left: 4px;
-    top: -19px;
-    width: 11px;
-    height: 11px;
+    left: 6px;
+    top: -17px;
+    width: 8px;
+    height: 7px;
     border-width: 1px;
     border-style: solid;
     border-color: #B3B3B3 #dcddde #dcddde #B3B3B3;
@@ -177,7 +186,7 @@ table.Rubric > tbody > tr > td > input[type="checkbox"]::after
     background-position: center;
 }
 
-table.Rubric > tbody > tr > td > input[type="checkbox"]:checked::after
+table.Rubric > tbody > tr > td  input[type="checkbox"]:checked::after
 {        
     content: "\2713";
     font-weight: bolder;
@@ -191,11 +200,11 @@ table.Rubric > tbody > tr > td > input[type="checkbox"]:checked::after
     */
 }
 
-table.Rubric > tbody > tr > td > input[type="checkbox"]:disabled::before
+table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::before
 {
     border: 4px solid #808080;
 }
-table.Rubric > tbody > tr > td > input[type="checkbox"]:disabled::after
+table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::after
 {
     opacity: 0.5;
 }

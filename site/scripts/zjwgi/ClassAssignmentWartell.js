@@ -315,6 +315,8 @@ export function main(totalPoints) {
                                 border: solid 1px;                                
                                 }
                             </style>
+                            <script>                            
+                            </script>
                         </head>
                         <body>
                         ${document.getElementById("Div_Rubric").outerHTML}
