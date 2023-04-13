@@ -83,15 +83,36 @@ table.Rubric > thead > tr > th
     font-weight: bold;
 }
 
+table.Rubric tr
+{ 
+    max-height: fit-content;
+}
+
+
 table.Rubric td
 {
     border: solid 1px;
+    max-height: fit-content;
 }
 
 table.Rubric tr td:nth-child(3)
 {
     /* align-content: center; */
     text-align: center;
+}
+
+table.Rubric > tbody > tr > td:nth-child(7)
+{
+    /*
+     align-content: center; 
+     background-color: #F1EA35;
+     */
+    width : 100px;    
+}
+
+table.Rubric > tbody > tr > td > textarea
+{
+    resize: both;            
 }
 
 table.Rubric td.Empty

@@ -625,10 +625,12 @@ export class Instructions {
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*18}px; " type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></td>
+                 <td class="Instructor_Mode" hidden><input style="margin-left: ${level*20}px; " type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></td>
                  <td class="Instructor_Mode" hidden> 0.00</td>
-                 <td class="Instructor_Mode" hidden><input type="text"></td>`;
-                 const input = <HTMLInputElement>row.querySelector('input');
+                 <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+                 //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
+                 //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
+                 const input = <HTMLInputElement>row.querySelector("input[type='checkbox']");
                  input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
             }
             else
@@ -640,13 +642,29 @@ export class Instructions {
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
                  <td>${levelPrefix}${instruction.pointFraction.toFixed(0)}&percnt;</td>
                  <td>${levelPrefix}${instruction.points.toFixed(2)}</td>
-                 <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*18}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
+                 <td class="Instructor_Mode" hidden>${levelPrefix}<input style="margin-left: ${level*20}px;" type="checkbox" id="#CB_${instruction.id}" name="scales"></td>
                  <td class="Instructor_Mode" hidden>0.00</td>
-                 <td class="Instructor_Mode" hidden><input type="text"></td>`;
-                 const input = <HTMLInputElement>row.querySelector('input');
+                 <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+                 //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
+                 const input = <HTMLInputElement>row.querySelector("input[type='checkbox']");
                  input.addEventListener('change',(e : InputEvent)=>{instruction.gui_checkbox(<HTMLInputElement>e.target);});
             }
-            prevSection = instruction.section;
+            prevSection = instruction.section;                        
+            row.querySelector('textarea').addEventListener('change',
+                (e: Event) => {
+                    const ta = (<HTMLTextAreaElement>e.target);
+                    console.log( ta.value) ;
+                    ta.innerText = ta.value;
+                    /*
+                    const itemID = (<HTMLInputElement>(e.target)).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
+                    const rowIndex = parseInt((<HTMLInputElement>(e.target)).parentElement.parentElement.getAttribute("data-ri"));
+                    console.log(itemID.slice(1) + ":" + rowIndex + ":" + e);
+                    console.log(instructions.instructions[rowIndex]);
+                    instructions.instructions[rowIndex].comment = (<HTMLInputElement>(e.target)).value;
+                    */
+                });
+
+            /*
             row.querySelector('input[type="text"]').addEventListener('input',
                 (e: Event) => {
                     const itemID = (<HTMLInputElement>(e.target)).parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('a').getAttribute('href');
@@ -655,6 +673,7 @@ export class Instructions {
                     console.log(instructions.instructions[rowIndex]);
                     instructions.instructions[rowIndex].comment = (<HTMLInputElement>(e.target)).value;
                 });
+            */
             rubric.append(row);
             ri++;
         }

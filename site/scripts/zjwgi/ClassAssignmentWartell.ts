@@ -345,18 +345,26 @@ export function main(totalPoints : number)
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
 
-    button = document.getElementById("save");
+    button = document.getElementById("Export");
     button.addEventListener('click',
         (e:MouseEvent)=>
         {
             const options = {
                 types: [
+                    /*
                     {
                         description: 'json files',
                         accept: {
                             'text/json': ['.json'],
                         },
                     },
+                    */
+                    {
+                        description: 'html files',
+                        accept: {
+                            'text/html': ['.html'],
+                        },
+                    }
                 ],
             };
             (<any>window).showSaveFilePicker(options).
@@ -364,11 +372,30 @@ export function main(totalPoints : number)
                 (handle)=>
                 {
                     console.log("Save " + handle);
-                    //return writeFile(handle,document.getElementById("RubricTable").outerHTML);
-                    return writeFile(handle,JSON.stringify(Rubric.instructions));
+                    return writeFile(handle,
+                        `<!DOCTYPE html>
+                        <html>
+                        <head>
+                            <style>
+                            table {
+                                border: solid 2px black;
+                                border-collapse: collapse;
+                                width: fit-content;
+                                }
+                            td {
+                                border: solid 1px;                                
+                                }
+                            </style>
+                        </head>
+                        <body>
+                        ${document.getElementById("Div_Rubric").outerHTML}
+                        </body>
+                        </html>
+                        `);                      
+                    //return writeFile(handle,JSON.stringify(Rubric.instructions));
                 }).
             catch(
-                (e)=> { throw e;}
+                (e)=> { alert(e); throw e;}
             );
             (<HTMLElement>e.target).parentElement.parentElement.hidden = true;
         });

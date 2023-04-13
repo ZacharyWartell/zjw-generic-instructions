@@ -279,25 +279,51 @@ export function main(totalPoints) {
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
-    button = document.getElementById("save");
+    button = document.getElementById("Export");
     button.addEventListener('click', (e) => {
         const options = {
             types: [
+                /*
                 {
                     description: 'json files',
                     accept: {
                         'text/json': ['.json'],
                     },
                 },
+                */
+                {
+                    description: 'html files',
+                    accept: {
+                        'text/html': ['.html'],
+                    },
+                }
             ],
         };
         window.showSaveFilePicker(options).
             then((handle) => {
             console.log("Save " + handle);
-            //return writeFile(handle,document.getElementById("RubricTable").outerHTML);
-            return writeFile(handle, JSON.stringify(Rubric.instructions));
+            return writeFile(handle, `<!DOCTYPE html>
+                        <html>
+                        <head>
+                            <style>
+                            table {
+                                border: solid 2px black;
+                                border-collapse: collapse;
+                                width: fit-content;
+                                }
+                            td {
+                                border: solid 1px;                                
+                                }
+                            </style>
+                        </head>
+                        <body>
+                        ${document.getElementById("Div_Rubric").outerHTML}
+                        </body>
+                        </html>
+                        `);
+            //return writeFile(handle,JSON.stringify(Rubric.instructions));
         }).
-            catch((e) => { throw e; });
+            catch((e) => { alert(e); throw e; });
         e.target.parentElement.parentElement.hidden = true;
     });
     /*
