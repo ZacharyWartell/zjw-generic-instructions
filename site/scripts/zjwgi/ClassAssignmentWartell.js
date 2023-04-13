@@ -15,11 +15,22 @@ import { Instruction } from "./Rubric.js";
  *  These is are set the HTMLElement.innerText of various <span> elements which are distinguished by their having a number of special data- attributes.
  **/
 export class AssignmentName {
-    constructor(div) {
-        this.courseNumber = div.children[0].innerText;
-        this.number = div.children[1].innerText;
-        this.numberLongDir = div.children[2].innerText;
-        this.name = div.children[3].innerText;
+    constructor(ele) {
+        if (ele instanceof HTMLDivElement) {
+            const div = ele;
+            this.courseNumber = div.children[0].innerText;
+            this.number = div.children[1].innerText;
+            this.numberLongDir = div.children[2].innerText;
+            this.name = div.children[3].innerText;
+        }
+        else if (ele instanceof HTMLScriptElement) {
+            const script = ele;
+            const jsonObject = JSON.parse(script.innerText);
+            this.courseNumber = jsonObject.AssignmentName.courseNumber;
+            this.number = jsonObject.AssignmentName.number;
+            this.numberLongDir = jsonObject.AssignmentName.numberLongDir;
+            this.name = jsonObject.AssignmentName.name;
+        }
         this.git = this.courseNumber + "-" + this.numberLongDir;
     }
     insertText(doc) {

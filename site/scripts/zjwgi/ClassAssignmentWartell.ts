@@ -27,14 +27,27 @@ class AssignmentName
     name: string;
     git: string;
 
-    constructor(div : HTMLDivElement)
+    constructor(ele : HTMLElement)
     {
-        this.courseNumber   = (<HTMLElement>div.children[0]).innerText;
-        this.number         = (<HTMLElement>div.children[1]).innerText;
-        this.numberLongDir  = (<HTMLElement>div.children[2]).innerText;
-        this.name           = (<HTMLElement>div.children[3]).innerText;
-
-        this.git = this.courseNumber + "-" + this.numberLongDir;
+        if (ele instanceof HTMLDivElement)
+        {
+            const div = <HTMLDivElement>ele;
+            this.courseNumber   = (<HTMLElement>div.children[0]).innerText;
+            this.number         = (<HTMLElement>div.children[1]).innerText;
+            this.numberLongDir  = (<HTMLElement>div.children[2]).innerText;
+            this.name           = (<HTMLElement>div.children[3]).innerText;            
+        }
+        else if (ele instanceof HTMLScriptElement)
+        {
+            const script = <HTMLScriptElement>ele;
+            const jsonObject = JSON.parse(script.innerText);
+            this.courseNumber   = jsonObject.AssignmentName.courseNumber;
+            this.number         = jsonObject.AssignmentName.number;
+            this.numberLongDir  = jsonObject.AssignmentName.numberLongDir;
+            this.name           = jsonObject.AssignmentName.name;
+            
+        }
+        this.git = this.courseNumber + "-" + this.numberLongDir;    
     }
 
     insertText( doc : HTMLDocument) : void
