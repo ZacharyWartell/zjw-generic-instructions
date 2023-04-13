@@ -157,6 +157,7 @@ export class Instruction {
     gui_checkbox(input) {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
+        instructions.gui_update_awarded();
         document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2);
     }
     /**
@@ -174,13 +175,13 @@ export class Instruction {
             td.innerHTML = this.awarded.toFixed(2);
             input.classList.remove("Grey");
             for (let c of this.subSteps) {
-                const i = instructions.instructions.findIndex((element) => element == c);
-                const tr = document.querySelector("table.Rubric > tbody > tr[data-ri='" + i.toString() + "'");
+                const ci = instructions.instructions.findIndex((element) => element == c);
+                const tr = document.querySelector("table.Rubric > tbody > tr[data-ri='" + ci.toString() + "'");
                 console.assert(tr !== null);
-                const cInput = tr.querySelector(":scope input[type='checkbox']");
-                console.assert(cInput !== null);
-                cInput.checked = true;
-                c.gui_checkbox_recursive(cInput);
+                const childCB = tr.querySelector(":scope input[type='checkbox']");
+                console.assert(childCB !== null);
+                childCB.checked = true;
+                c.gui_checkbox_recursive(childCB);
             }
         }
         else { // checkbox unchecked, reset Instruction.awarded points to 0 (and adjust Instruction.subStep hierarchy as needed)                
@@ -190,22 +191,16 @@ export class Instruction {
             td.innerHTML = this.awarded.toFixed(2);
             input.classList.remove("Grey");
             if (oldAwarded !== this.awarded) { // box was checked and now unchecked, so reset all parent Instructions                    
-                if (this.parent !== null) // && propogate)
-                 {
-                    for (let p = this.parent; p !== null; p = p.parent) {
-                        let thisLevel = parseInt(input.parentElement.parentElement.dataset.level);
-                        if (thisLevel !== 0) {
-                            /* get GUI <tr> element contains Instruction at level above this Instruction */
-                            while (parseInt(input.parentElement.parentElement.dataset.level) >= thisLevel)
-                                input = input.parentElement.parentElement.previousElementSibling.querySelector(":scope input[type='checkbox']");
-                            console.log(input.parentElement);
-                            console.log(input.parentElement.parentElement);
-                            console.log(input.parentElement.parentElement.previousElementSibling);
-                            input.checked = false;
-                            p.gui_checkbox_recursive(input, false);
-                            input.classList.add("Grey");
-                        }
-                    }
+                for (let p = this.parent; p !== null; p = p.parent) {
+                    /* get GUI <tr> element contains Instruction at level above this Instruction */
+                    const pi = instructions.instructions.findIndex((element) => element == p);
+                    console.assert(pi !== -1);
+                    const parentCB = document.querySelector("table.Rubric > tbody > tr[data-ri='" + pi.toString() + "'] input[type='checkbox']");
+                    console.assert(parentCB !== null);
+                    parentCB.checked = false;
+                    parentCB.classList.add("Grey");
+                    p.gui_checkbox_recursive(parentCB, false);
+                    parentCB.classList.add("Grey");
                 }
                 /*
                 Goal:  uncheck child Instructions
@@ -220,6 +215,7 @@ export class Instruction {
                         console.assert(cInput !== null);
                         cInput.checked = false;
                         c.gui_checkbox_recursive(cInput);
+                        cInput.classList.remove("Grey");
                     }
             }
         }
@@ -343,7 +339,6 @@ export class Instructions {
                 this.recalc_points_resursive(i);
                 this.awardedPoints += i.awarded;
             }
-        this.gui_update_awarded();
     }
     /**
      * @brief collectInstructions_recursive resursively extracts Instructions from nested ol.Instructions within the <section> of the document "section"
