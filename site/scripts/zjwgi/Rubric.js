@@ -157,6 +157,7 @@ export class Instruction {
     gui_checkbox(input) {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
+        document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2);
     }
     /**
      * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
@@ -280,6 +281,7 @@ export class Instructions {
         this.instructions = [];
         this.optionSets = [];
         this.totalPoints = 100;
+        this.awardedPoints = 0;
     }
     push(i) {
         this.instructions.push(i);
@@ -330,9 +332,12 @@ export class Instructions {
      * @brief recalculate all Instruction.points based on Instruction subStep hierarchy
      */
     recalc_points() {
+        this.awardedPoints = 0;
         for (let i of this.instructions)
-            if (i.parent === null)
+            if (i.parent === null) {
                 this.recalc_points_resursive(i);
+                this.awardedPoints += i.awarded;
+            }
         this.gui_update_awarded();
     }
     /**

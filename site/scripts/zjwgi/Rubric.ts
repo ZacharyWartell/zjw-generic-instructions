@@ -220,6 +220,7 @@ export class Instruction {
     {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
+        (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2);
     }
 
     /**
@@ -374,10 +375,12 @@ export class Instructions {
     optionSets: Array<OptionSet>;  // not used yet, just idea in planning
 
     totalPoints: number;
+    awardedPoints : number;
     constructor() {
         this.instructions = [];
         this.optionSets = [];
         this.totalPoints = 100;
+        this.awardedPoints = 0;
     }
 
     push(i: Instruction) 
@@ -443,9 +446,13 @@ export class Instructions {
      */    
     recalc_points()
     {
+        this.awardedPoints = 0;
         for (let i of this.instructions)
             if (i.parent === null)
+            {
                 this.recalc_points_resursive(i);            
+                this.awardedPoints += i.awarded;
+            }
         this.gui_update_awarded();
     }
 
