@@ -608,10 +608,16 @@ export class Instructions {
                     points = "." + points.split('.')[1];                
 
                 if (instruction.category === Category.COMPOSITE)
-                    ptDiv.innerHTML="| &#x2211;" + points + "| ";                        
+                ptDiv.innerHTML="[" + points + " pt]"; //ptDiv.innerHTML="[ &#x2211;" + points + " pt]";                        
                 else
-                    ptDiv.innerHTML="|" + points + "| ";                        
-                iElement.firstChild.before(ptDiv);
+                    ptDiv.innerHTML="[" + points + " pt]";                        
+                if (iElement.firstElementChild instanceof HTMLSpanElement && iElement.firstElementChild.classList.contains("Instruction_Title"))
+                {
+                    ptDiv.innerHTML = "&nbsp;" + ptDiv.innerHTML;
+                    iElement.firstElementChild.after(ptDiv);
+                }
+                else
+                    iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
             }
             
             /**

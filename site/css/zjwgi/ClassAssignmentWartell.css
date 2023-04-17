@@ -377,6 +377,12 @@ span.Shell_Code_Comment {
     margin-top: 0;
 }
 
+
+span.Instruction_Title
+{
+    text-decoration: underline;
+}
+
 /*
 *  Hierarchical List of Instructions
 */
