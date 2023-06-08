@@ -222,6 +222,11 @@ export class Instruction {
         instructions.recalc_points();
         instructions.gui_update_awarded();
         (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2);
+
+        /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
+           set to the DOM checkbox's run-time state
+         */
+        input.defaultChecked = input.checked;
     }
 
     /**
@@ -250,7 +255,12 @@ export class Instruction {
                     console.assert(childCB !== null);                                            
                     childCB.checked = true;
                     c.gui_checkbox_recursive(childCB);
-                    }                
+                    }
+
+                /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
+                    set to the DOM checkbox's run-time state
+                */
+                input.defaultChecked = input.checked;
             }
         else
             {// checkbox unchecked, reset Instruction.awarded points to 0 (and adjust Instruction.subStep hierarchy as needed)                

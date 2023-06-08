@@ -291,12 +291,7 @@ export function QandAModeHover(e : MouseEvent) : void
         p.addEventListener('mouseleave',(e)=>{ (<HTMLElement>e.target).removeAttribute('style'); });
         QandAModeTarget = p;            
     }
-
  }
-
-
-
-
 
 export function main(totalPoints : number)
 {

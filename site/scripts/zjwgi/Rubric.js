@@ -159,6 +159,10 @@ export class Instruction {
         instructions.recalc_points();
         instructions.gui_update_awarded();
         document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2);
+        /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
+           set to the DOM checkbox's run-time state
+         */
+        input.defaultChecked = input.checked;
     }
     /**
      * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
@@ -183,6 +187,10 @@ export class Instruction {
                 childCB.checked = true;
                 c.gui_checkbox_recursive(childCB);
             }
+            /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
+                set to the DOM checkbox's run-time state
+            */
+            input.defaultChecked = input.checked;
         }
         else { // checkbox unchecked, reset Instruction.awarded points to 0 (and adjust Instruction.subStep hierarchy as needed)                
             const i = instructions.instructions.findIndex((element) => element == this);
