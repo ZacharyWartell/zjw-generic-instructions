@@ -353,6 +353,12 @@ code.Shell_Code_Prompt {
     color: cyan;
 }
 
+/*   Shell Code Output  */
+code.Shell_Code_PWD {
+    font-family: "Courier", monospace;
+    color: rgb(255, 0, 255);
+}
+
 /*  User Input Required
 */
 .User_Input {

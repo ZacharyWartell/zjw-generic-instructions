@@ -37,12 +37,29 @@ fi
 
 pushd $site_path/..
 mkdir -p www-site-mirror
-cp -r -u -L $site_path/*.html www-site-mirror
-cp -r -u -L $site_path/css www-site-mirror
-cp -r -u -L $site_path/html www-site-mirror
-cp -r -u -L $site_path/scripts www-site-mirror
-cp -r -u -L $site_path/images www-site-mirror
-cp -r -u -L $site_path/videos www-site-mirror
+if [ $3 == 'old-org' ] ; then
+    cp -r -u -L $site_path/*.html www-site-mirror
+    cp -r -u -L $site_path/css www-site-mirror
+    cp -r -u -L $site_path/html www-site-mirror
+    cp -r -u -L $site_path/scripts www-site-mirror
+    cp -r -u -L $site_path/images www-site-mirror
+    cp -r -u -L $site_path/videos www-site-mirror
+    mkdir -p www-site-mirror/git-modules/zjw-generic-instructions/site/css/zjwgi
+    mkdir -p www-site-mirror/git-modules/zjw-generic-instructions/site/html/zjwgi
+    mkdir -p www-site-mirror/git-modules/zjw-generic-instructions/site/scripts/zjwgi
+    mkdir -p www-site-mirror/git-modules/zjw-generic-instructions/site/video/zjwgi
+    cp -r -u -L $site_path/git-modules/zjw-generic-instructions/site/css/zjwgi www-site-mirror/git-modules/zjw-generic-instructions/site/css/
+    cp -r -u -L $site_path/git-modules/zjw-generic-instructions/site/scripts/zjwgi www-site-mirror/git-modules/zjw-generic-instructions/site/scripts/
+    cp -r -u -L $site_path/git-modules/zjw-generic-instructions/site/html/zjwgi www-site-mirror/git-modules/zjw-generic-instructions/site/html/   
+    cp -r -u -L $site_path/git-modules/zjw-generic-instructions/site/video/zjwgi www-site-mirror/git-modules/zjw-generic-instructions/site/video/
+else
+    cp -r -u -L $site_path/*.html www-site-mirror
+    cp -r -u -L $site_path/css www-site-mirror
+    cp -r -u -L $site_path/html www-site-mirror
+    cp -r -u -L $site_path/scripts www-site-mirror
+    cp -r -u -L $site_path/images www-site-mirror
+    cp -r -u -L $site_path/videos www-site-mirror
+fi    
 popd
 
 read -p 'www-site-mirror Update.  Proceed with sftp? [y/n]' yn
