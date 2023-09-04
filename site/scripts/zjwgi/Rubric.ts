@@ -483,9 +483,21 @@ export class Instructions {
         {            
             let category = getCategoryFromClass(<HTMLElement>ol, false);
             const li1List = (<HTMLOListElement>ol).querySelectorAll(":scope > li");
+            
+            /*
+            count number of items that contribute points to the rubric
+            */
+            let rubricItems : number = 0;
+            for (let li_ of li1List)
+            {
+                const li: HTMLElement = <HTMLElement>li_;
+                let tmp, cat = (tmp = getCategoryFromClass(li, true)) !== null ? tmp : category;
+                if (tmp !== Category.NON_RUBRIC)
+                    rubricItems++;
+            }                
 
+            const equalFraction1: number = 1.0 / rubricItems * 100;
             lic = 1;
-            const equalFraction1: number = 1.0 / li1List.length * 100;
             /*
             **  Collection level 1 <li> Instructions
             */

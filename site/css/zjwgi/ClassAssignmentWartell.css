@@ -5,6 +5,114 @@
  - http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
+ /* SHIT */
+body {
+    counter-reset: h1-Section h1-Appendix;
+}
+
+h1.Section {
+    counter-reset: h2-Section;
+    font-size: larger;
+}
+
+h2.Section {
+    counter-reset: h3-Section;
+    font-size: medium;
+}
+
+h3.Section {
+    counter-reset: h4-Section;
+}
+
+h4.Section {
+    counter-reset: h5-Section;
+}
+
+h5.Section {
+    counter-reset: h6-Section;
+}
+
+h1.Section:before {
+    counter-increment: h1-Section;
+    content: counter(h1-Section) ". "
+}
+
+h2.Section:before {
+    counter-increment: h2-Section;
+    content: counter(h1-Section) "." counter(h2-Section) ". "
+}
+
+h3.Section:before {
+    counter-increment: h3-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h3-Section) ". "
+}
+
+h4.Section:before {
+    counter-increment: h4-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h4-Section) "." counter(h4-Section) ". "
+}
+
+h5.Section:before {
+    counter-increment: h5-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h4-Section) "." counter(h4-Section) "." counter(h5-Section) ". "
+}
+
+h1.nocount:before, h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before {
+    content: "";
+    counter-increment: none
+}
+
+/* 
+Heading Numbering (Resource [R2])
+*/
+h1.Appendix {
+    counter-reset: h2-Appendix;
+    font-size: x-large;
+}
+
+h2.Appendix {
+    counter-reset: h3-Appendix;
+    font-size: larger;
+}
+
+h3.Appendix {
+    counter-reset: h4-Appendix 
+}
+
+h4.Appendix {
+    counter-reset: h5-Appendix 
+}
+
+h5.Appendix {
+    counter-reset: h6-Appendix 
+}
+
+h1.Appendix:before {
+    counter-increment: h1-Appendix;
+    content: "Appendix " counter(h1-Appendix, upper-roman) ". ";
+}
+
+h2.Appendix:before {
+    counter-increment: h2-Appendix;
+    content: counter( h1-Appendix , upper-roman ) "-" counter(h2-Appendix) ". ";
+}
+
+h3.Appendix:before {
+    counter-increment: h3-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) ". ";
+}
+
+h4.Appendix:before {
+    counter-increment: h4-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) "." counter(h4-Appendix) ". ";
+}
+
+h5.Appendix:before {
+    counter-increment: h5-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) "." counter(h4-Appendix) "." counter(h5-Appendix) ". ";
+}
+/* END SHIT */
+
 /*   Shell Code Output  */
 .File_Name {
     font-family: "Courier", monospace;
@@ -282,8 +390,7 @@ figure.Screen_Capture img {
 }
 
 figure.Screen_Capture:hover {
-    -webkit-box-shadow: 0 3px 10px #F1EA35;
-    -moz-box-shadow: 0 3px 10px #F1EA35;
+    box-shadow: 0 3px 10px #F1EA35;    
 }
 
 figure.Screen_Capture figcaption
@@ -292,10 +399,8 @@ figure.Screen_Capture figcaption
 }
 figure.Screen_Capture:focus {
     outline: none;
-    -webkit-transform: translate(500px, 350px) scale(3.0);
-    -moz-transform: translate(500px, 350px) scale(3.0);
-    -webkit-box-shadow: 0 3px 10px #666;
-    -moz-box-shadow: 0 3px 10px #666;
+    transform: translate(500px, 350px) scale(3.0);    
+    box-shadow: 0 3px 10px #666;
     z-index: 9999;
 }
 
@@ -449,7 +554,7 @@ ol.Instruction li.Git_Commit
 
 span.Instruction_Tool
 {
-
+    color :black;
 }
 
 /*
@@ -495,7 +600,7 @@ span.Extra_Credit_Points:after {
 
 a.Term
 {
-    text-underline: darkgray dash;
+    text-decoration: darkgray dash;
 }
 
 /*
@@ -571,64 +676,8 @@ span.MDN_h2
     font-weight : bold;
 }
 
-/*
-Heading Numbering (Resource [R2])
-*/
-body {
-    counter-reset: h1;
-}
 
-h1 {
-    counter-reset: h2;
-    font-size: larger;
-}
 
-h2 {
-    counter-reset: h3;
-    font-size: medium;
-}
-
-h3 {
-    counter-reset: h4;
-}
-
-h4 {
-    counter-reset: h5;
-}
-
-h5 {
-    counter-reset: h6;
-}
-
-h1:before {
-    counter-increment: h1;
-    content: counter(h1) ". "
-}
-
-h2:before {
-    counter-increment: h2;
-    content: counter(h1) "." counter(h2) ". "
-}
-
-h3:before {
-    counter-increment: h3;
-    content: counter(h1) "." counter(h2) "." counter(h3) ". "
-}
-
-h4:before {
-    counter-increment: h4;
-    content: counter(h1) "." counter(h2) "." counter(h4) "." counter(h4) ". "
-}
-
-h5:before {
-    counter-increment: h5;
-    content: counter(h1) "." counter(h2) "." counter(h4) "." counter(h4) "." counter(h5) ". "
-}
-
-h1.nocount:before, h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before {
-    content: "";
-    counter-increment: none
-}
 
 /*
  * \brief div.Data is not displayed.  It contains an HTML structure that stores some type of data processed by the documents associated JavaScript code.
@@ -723,3 +772,5 @@ span.Updated_Text_Popup_Note {
     border: black solid 1px;
     padding: 5px;
 }
+
+

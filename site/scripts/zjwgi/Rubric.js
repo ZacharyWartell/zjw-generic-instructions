@@ -361,8 +361,18 @@ export class Instructions {
         for (let ol of olList) {
             let category = getCategoryFromClass(ol, false);
             const li1List = ol.querySelectorAll(":scope > li");
+            /*
+            count number of items that contribute points to the rubric
+            */
+            let rubricItems = 0;
+            for (let li_ of li1List) {
+                const li = li_;
+                let tmp, cat = (tmp = getCategoryFromClass(li, true)) !== null ? tmp : category;
+                if (tmp !== Category.NON_RUBRIC)
+                    rubricItems++;
+            }
+            const equalFraction1 = 1.0 / rubricItems * 100;
             lic = 1;
-            const equalFraction1 = 1.0 / li1List.length * 100;
             /*
             **  Collection level 1 <li> Instructions
             */
