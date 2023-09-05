@@ -712,7 +712,7 @@ figcaption:before
          - https://developer.mozilla.org/en-US/docs/Web/CSS/:hover
          - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del
      */
-del:hover ~ span.Updated_Text_Popup_Note:before {
+del:hover + span.Updated_Text_Popup_Note:before {
     content: "\2196";
     font-weight: bold;
 }
@@ -721,15 +721,18 @@ del {
     text-decoration: line-through;
     color: red;
     background-color: white;
+    position: relative;
 }
 
+/*
 del:hover:before {
     content: "DELETE [" attr(datetime) "]: ";
     background-color: lightblue;
     text-decoration: none !important;
 }
-del:hover ~ span.Updated_Text_Popup_Note {
-    display: block;
+*/
+del:hover span.Updated_Text_Popup_Note {
+    display: inline-block;
 }
 
 ins:hover + span.Updated_Text_Popup_Note:before {
@@ -769,6 +772,7 @@ span.Updated_Text_Popup_Note {
     display: none;
     width: fit-content;
     background-color: rgb(88, 197, 209);
+    color: black;
     border: black solid 1px;
     padding: 5px;
     z-index: 100;
