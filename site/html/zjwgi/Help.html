@@ -101,23 +101,34 @@
             grading.&nbsp; This include alternate display of the Rubric table
             and GUI menu for exporting the graded rubric to a local .html file.<br>
             <strong></strong>
-            <ol>
-              <li><strong> Rubric</strong>&nbsp; -&nbsp;
+            <ul>
+              <li><strong>Menu Bar</strong>
                 <ul>
-                  <li><strong>Points</strong> table column -&nbsp; <br>
+                <li><button class="DocButton">Rubric</button>
+                  Opens TA Rubric drop down menu.
+                  <ul>
+                    <li><strong>Choose File</strong> - unimplemented</li>
+                    <li><strong>Export</strong> - exports the current rubric to a self contained .html with the rubric checkbox scoring and feedback comments</li>
+                  </ul>
+                </li>
+                </ul>
+              </li>
+              <li><strong> Rubric Table</strong>&nbsp; -&nbsp;
+                <ul>                
+                  <li><strong>Points Table Column</strong>  -&nbsp; <br>
                     <ul>
                       <li>Checkbox toggling: </li>
                       <ul>
                         <li>A checkbox can be checked or unchecked with a border
                           style: solid or dashed</li>
-                        <li>Manually checking a checkbox-awards full points for
-                          the Instruction item and sets the style solid.. <br>
-                          If the Instruction Composite, all descendent substep
-                          Instructions are each awarded full points, box
-                          checked, and style solid.</li>
+                        <li>Manually checking a checkbox |  Awards full points for
+                          the Instruction item and sets the checkbox border style solid.. <br>
+                          If the Instruction is Composite, all descendent substep
+                          Instructions are each awarded full points, their boxes are
+                          checked, and with solid line style.</li>
                       </ul>
                       <ul>
-                        <li>Manually unchecking a checkbox-awards zero points
+                        <li>Manually unchecking a checkbox | Awards zero points
                           (style remains solid)..&nbsp; Further:</li>
                         <ul>
                           <li>All ancestor Composite Instructions are set to
@@ -132,7 +143,7 @@
                   </li>
                 </ul>
               </li>
-            </ol>
+            </ul>
           </li>
         </ul>
         <br>
