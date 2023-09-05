@@ -771,6 +771,7 @@ span.Updated_Text_Popup_Note {
     background-color: rgb(88, 197, 209);
     border: black solid 1px;
     padding: 5px;
+    z-index: 100;
 }
 
 
