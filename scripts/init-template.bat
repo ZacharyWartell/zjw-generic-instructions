@@ -1,15 +1,77 @@
+@echo off
 REM  This script should be run from the directory containing it, i.e. zjw-generic-instructions-template\site\git_modules\zjwgi\scripts\zjwgi
+REM init-template.bat [%1] [%2]
+
+REM %1 is an opational prefix for the directory name containing the files published to the public website
+REM     one common option is:
+REM         www-
+
+
+goto :init
 
 echo This script should be run from the directory containing it, i.e. zjw-generic-instructions-template\site\git_modules\zjwgi\scripts\zjwgi
 
-pushd ..\..\..\..
+:usage
+    echo USAGE:
+    echo   %__BAT_NAME% [flags] 
+    REM echo   %__BAT_NAME% [flags] "required argument" "optional argument" 
+    echo.
+    echo.  /?, --help               shows this help
+    echo.  --dir-prefix value       optional prefix to name of directory name containing the files published to the public website [Default: "", which is prepended to standard name directory name: 'site']
+    echo.  --root-path value        optional relative path too root directory of the project folder [Default:  ..\..\..\..]
+    goto :eof
 
-rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi         ..\site\git_modules\zjwgi\scripts\
-rmdir site\css\zjwgi 2>null & mklink /D site\css\zjwgi        ..\..\site\git_modules\zjwgi\site\css\zjwgi
-rmdir site\html\zjwgi 2>null & mklink /D site\html\zjwgi       ..\..\site\git_modules\zjwgi\site\html\zjwgi
-rmdir site\scripts\zjwgi 2>null & mklink /D site\scripts\zjwgi    ..\..\site\git_modules\zjwgi\site\scripts\zjwgi
-rmdir site\images\zjwgi 2>null & mklink /D site\images\zjwgi     ..\..\site\git_modules\zjwgi\site\images\zjwgi
-rmdir site\videos\zjwgi 2>null & mklink /D site\videos\zjwgi     ..\..\site\git_modules\zjwgi\site\videos\zjwgi
-copy site\git_modules\zjwgi\site\index.html site\           
+:init
+    set "__NAME=%~n0"
+    set "__VERSION=1.24"
+    set "__YEAR=2023"
+
+    set "__BAT_FILE=%~0"
+    set "__BAT_PATH=%~dp0"
+    set "__BAT_NAME=%~nx0"
+
+    set "DirPrefix="
+    set "RootPath=..\..\..\.."
+
+:parse
+    if "%~1"=="" goto :validate
+
+    REM if /i "%~1"=="/?"         call :header & call :usage "%~2" & goto :end
+    REM if /i "%~1"=="-?"         call :header & call :usage "%~2" & goto :end
+    REM if /i "%~1"=="--help"     call :header & call :usage "%~2" & goto :end
+
+    REM if /i "%~1"=="/v"         call :version      & goto :end
+    REM if /i "%~1"=="-v"         call :version      & goto :end
+    REM if /i "%~1"=="--dir-prefix"  call :version full & goto :end
+
+    REM  if /i "%~1"=="/e"         set "OptVerbose=yes"  & shift & goto :parse
+    REM     if /i "%~1"=="-e"         set "OptVerbose=yes"  & shift & goto :parse
+    REM if /i "%~1"=="--verbose"  set "OptVerbose=yes"  & shift & goto :parse
+
+    if /i "%~1"=="--dir-prefix"     set "DirPrefix=%~2"   & shift & shift & goto :parse    
+
+    if /i "%~1"=="--root-path"     set "RootPath=%~2"   & shift & shift & goto :parse    
+
+    REM if not defined UnNamedArgument     set "UnNamedArgument=%~1"     & shift & goto :parse
+    REM  if not defined UnNamedOptionalArg  set "UnNamedOptionalArg=%~1"  & shift & goto :parse
+
+    shift
+    goto :parse
+
+:validate
+
+:main
+
+pushd %RootPath%
+
+set SITE=%DirPrefix%site
+
+rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi         ..\%SITE%\git_modules\zjwgi\scripts\
+rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi        ..\..\%SITE%\git_modules\zjwgi\site\css\zjwgi
+rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi       ..\..\%SITE%\git_modules\zjwgi\site\html\zjwgi
+rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi    ..\..\%SITE%\git_modules\zjwgi\site\scripts\zjwgi
+rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\images\zjwgi
+rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\videos\zjwgi
+copy site\git_modules\zjwgi\site\index.html %1site\           
 
 popd
