@@ -446,6 +446,22 @@ code.Shell_Code_Input {
     color: white;
 }
 
+code.Shell_Code_Input-v2 {
+    font-family: "Courier", monospace;
+    color: white;
+}
+
+code.Shell_Code_Input-v2::before
+{
+    content:  "$ "
+}
+
+code.Shell_Code_Input-v2::after
+{
+    content:  "\A"; white-space: pre-line
+}
+
+
 /*   Shell Code Output  */
 code.Shell_Code_Output {
     font-family: "Courier", monospace;
@@ -457,6 +473,16 @@ code.Shell_Code_Prompt {
     font-family: "Courier", monospace;
     color: cyan;
 }
+
+code.Shell_Code_Prompt-v2 {
+    font-family: "Courier", monospace;
+    color: cyan;
+}
+code.Shell_Code_Prompt-v2::after
+{
+    content:  "\A"; white-space: pre-line
+}
+
 
 /*   Shell Code Output  */
 code.Shell_Code_PWD {
