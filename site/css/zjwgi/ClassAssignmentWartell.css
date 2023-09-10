@@ -399,7 +399,7 @@ figure.Screen_Capture figcaption
 }
 figure.Screen_Capture:focus {
     outline: none;
-    transform: translate(500px, 350px) scale(3.0);    
+    transform: scale(3.0);    
     box-shadow: 0 3px 10px #666;
     z-index: 9999;
 }
@@ -503,9 +503,8 @@ code.Shell_Code_PWD {
 /*
 * Comments in Shell Code
 */
-span.Shell_Code_Comment {
-    font-family: Courier, monospace;
-    text-align: center;
+span.Shell_Code_Comment , div.Shell_Code_Comment{
+    font-family: Courier, monospace;    
     color: pink;
     background-color: grey;
     font-style: italic;
@@ -804,4 +803,12 @@ span.Updated_Text_Popup_Note {
     z-index: 100;
 }
 
-
+a.WindowOpenLeft
+{
+    color: -webkit-link;
+    text-decoration: underline;
+}
+a.WindowOpenLeft:hover
+{
+    cursor:pointer;
+}
