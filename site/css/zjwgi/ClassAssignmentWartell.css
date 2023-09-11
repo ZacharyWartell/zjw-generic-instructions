@@ -513,6 +513,18 @@ span.Shell_Code_Comment , div.Shell_Code_Comment{
     margin-top: 0;
 }
 
+span.Git_Commit_Message::before
+{
+    content: "$  ";
+    background-color: white;    
+    color: black;
+}
+span.Git_Commit_Message {
+    width: 100%;
+    background-color: black;
+    border: black 1px solid;
+    color: white;
+}
 
 span.Instruction_Title
 {
