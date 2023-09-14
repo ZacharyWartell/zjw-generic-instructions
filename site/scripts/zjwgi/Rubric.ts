@@ -14,6 +14,7 @@
  * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
  */
 enum Category {
+    AUTO = "AUTO",
     /* Instruction instance is associated with a a HTML <section> */
     SECTION = "SECTION",
     /* Instruction instance is associated with a  HTML <li> that has a child instructional <ol> tree */
@@ -58,7 +59,7 @@ function getCategoryFromClass(element, returnNull) {
     if (returnNull)
         return null;
     else
-        return Category.COMPOSITE;
+        return Category.AUTO;
 }
 
 
@@ -514,10 +515,14 @@ export class Instructions {
                     li.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li.dataset ? parseFloat(li.dataset.pointFraction) : equalFraction1, parent));
 
                 const parentLI = this.instructions[instructions.instructions.length - 1];
+                if (parentLI.category == Category.AUTO)
+                    parentLI.category = Category.TODO;
+
                 li.id = this.instructions[this.instructions.length - 1].id;
                 
                 const liOList  = li.querySelectorAll(":scope > ol, :scope > ul");
-                if (liOList !== null && liOList.length !== 0)
+                if (liOList !== null && liOList.length)
+                    parentLI.category = Category.COMPOSITE;
                     this.collectInstructions_recursive(section,sectionElement,sectionLabel,parentLI,itemLevels,liOList);
 
                 itemLevels.pop();
