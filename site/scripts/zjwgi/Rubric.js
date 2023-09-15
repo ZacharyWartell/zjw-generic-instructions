@@ -9,6 +9,35 @@
  **  EXPORTED FUNCTIONS, CLASSES, ETC.
  **
  */
+function AUTO_DOC() {
+    //stub
+    return new String;
+}
+AUTO_DOC["Instruction Category"] =
+    `
+    <ol> CSS class for ol, li or section elements.
+        <li> Instruction_Question - the li element asks a question the student must answer.   The method of submitting the must be descrbed within li element content.
+        </li>
+        <li> Instruction_Read - the li element listed required reading only.
+        </li>
+        <li> Instruction_Todo - the li element is a specific todo action item instruction
+        </li>
+        <li> Instruction_Overview - the li element is an textual overview of the nested set of li Instruction elememnts
+        </li>        
+        <li> Instruction_General - the li element is an general instruction 
+        </li>        
+        <li> Instruction_Reminder - the li element has no points assigned to it in the Rubric
+        </li>        
+        <li> Instruction_Section - the section element will have its own entry in the Rubric table
+        </li>        
+        <li> Instruction_Composite - the li element will is tagged as a composition instruction, and li element containing at nest ol element and containing nested instructions
+        </li>  
+        <li> Instruction_Git_Commit - the li element will is tagged as a git commit operation
+        </li>        
+        <li> Instruction_NonRubric - the li element will be ignored by the Rubric generation algorithm
+        </li>        
+    </ol>
+ `;
 /*
  * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
  */
@@ -68,11 +97,13 @@ export class OptionSet {
         this.options = [];
     }
 }
+OptionSet.optionSetByName = new Map();
 /**
- * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects and child Section's
+ * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */
 export class Section {
     constructor(name, parent, number) {
+        this.optionSet = null;
         this.name = name;
         this.parent = parent;
         this.children = new Array();
@@ -406,7 +437,7 @@ export class Instructions {
         this.collectInstructions_recursive(section, sectionElement, sectionLabel, parent, itemLevels, olList);
     }
     /**
-     * @brief extractSectionsAndRubric resusively traverses nested <section> elements in the DOM, creation Section objectss and constructing Instruction objects
+     * @brief extractSectionsAndRubric recursively traverses nested <section> elements in the DOM, creation Section objects and constructing Instruction objects
      * the corresponding to <ol.Instruction> <li> HTML elements.
      **/
     extractSectionsAndRubric(parent, // the Section who we will recursively search for sub-<section>
@@ -425,6 +456,21 @@ export class Instructions {
                 console.log(`h${level}: `, sectionName);
                 console.assert(sectionElement.tagName === "SECTION");
                 const section = new Section(sectionName, parent, hc);
+                if (level === 1) {
+                    if (sectionElement.dataset['optionset'] !== undefined) {
+                        let osJSON = JSON.parse(sectionElement.dataset['optionset']);
+                        if (osJSON.name !== undefined) {
+                            let os = OptionSet.optionSetByName.get(osJSON.name);
+                            if (os === undefined) {
+                                os = new OptionSet(osJSON.name);
+                                OptionSet.optionSetByName.set(os.name, os);
+                            }
+                            section.optionSet = os;
+                            os.options.push(section);
+                            console.log(section.optionSet);
+                        }
+                    }
+                }
                 sectionElement.setAttribute("id", section.id);
                 if (sectionElement.classList.contains("Instruction_Section")) {
                     ISectionParent1 = new Instruction(section.sectionNumber, "", sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION, 'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0);
