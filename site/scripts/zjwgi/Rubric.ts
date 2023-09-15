@@ -72,13 +72,13 @@ enum Category {
     GIT_COMMIT = "GIT_COMMIT"
 }
 
-/**
- * 
+/** 
  * @param element 
  * @param returnNull - this is a vestigate of earlier code, eventually this parameter should be removed and all code refactored
  * @returns 
  */
-function getCategoryFromClass(element : HTMLElement, returnNull : boolean) {
+function getCategoryFromClass(element : HTMLElement, returnNull : boolean)
+{
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;
     if (element.className.includes("Instruction_Read"))
@@ -663,6 +663,10 @@ export class Instructions
                 {   
                     ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0);             
                     this.instructions.push (ISectionParent1);
+                    console.log(sectionElement.dataset.pointFraction);
+                    console.log(parent);
+                    if (level === 1)
+                        section.cumulativeFraction = parseFloat(sectionElement.dataset.pointFraction);                                            
                 }
                 this.collectInstructions(section,sectionElement, section.sectionNumber, ISectionParent1);
                 this.extractSectionsAndRubric(section,sectionElement,section.level+1);
@@ -896,6 +900,7 @@ export class Instructions
                 }
             [last,next] = [next,last];
         }
+        let sequenceFraction = 1.0;
         for (let s of sequences[last])
         {
             const tbody=<HTMLTableSectionElement> rapTable.querySelector(":scope tbody");
@@ -904,13 +909,15 @@ export class Instructions
             let innerHTML : string = "";
             innerHTML="<td>";
             let si = 0;
+            let sequenceFraction = 0;
             for (let se of s.sections)
             {
                 innerHTML += `${se.optionSet?.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex+1,Roman.UPPER)}`) + ",";
+                sequenceFraction += se.cumulativeFraction;
                 si++;
             }
             innerHTML +="</td>";
-            innerHTML +="<td></td><td></td>";
+            innerHTML +=`<td>${sequenceFraction}</td><td></td>`;
             tr.innerHTML = innerHTML;
             
         }

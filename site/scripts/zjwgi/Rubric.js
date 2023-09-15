@@ -67,7 +67,6 @@ var Category;
     Category["GIT_COMMIT"] = "GIT_COMMIT";
 })(Category || (Category = {}));
 /**
- *
  * @param element
  * @param returnNull - this is a vestigate of earlier code, eventually this parameter should be removed and all code refactored
  * @returns
@@ -500,6 +499,10 @@ export class Instructions {
                 if (sectionElement.classList.contains("Instruction_Section")) {
                     ISectionParent1 = new Instruction(section.sectionNumber, "", sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION, 'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0);
                     this.instructions.push(ISectionParent1);
+                    console.log(sectionElement.dataset.pointFraction);
+                    console.log(parent);
+                    if (level === 1)
+                        section.cumulativeFraction = parseFloat(sectionElement.dataset.pointFraction);
                 }
                 this.collectInstructions(section, sectionElement, section.sectionNumber, ISectionParent1);
                 this.extractSectionsAndRubric(section, sectionElement, section.level + 1);
@@ -705,6 +708,7 @@ export class Instructions {
                 }
             [last, next] = [next, last];
         }
+        let sequenceFraction = 1.0;
         for (let s of sequences[last]) {
             const tbody = rapTable.querySelector(":scope tbody");
             const tr = document.createElement('tr');
@@ -712,12 +716,14 @@ export class Instructions {
             let innerHTML = "";
             innerHTML = "<td>";
             let si = 0;
+            let sequenceFraction = 0;
             for (let se of s.sections) {
                 innerHTML += `${(_a = se.optionSet) === null || _a === void 0 ? void 0 : _a.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex + 1, Roman.UPPER)}`) + ",";
+                sequenceFraction += se.cumulativeFraction;
                 si++;
             }
             innerHTML += "</td>";
-            innerHTML += "<td></td><td></td>";
+            innerHTML += `<td>${sequenceFraction}</td><td></td>`;
             tr.innerHTML = innerHTML;
         }
     }
