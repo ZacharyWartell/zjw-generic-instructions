@@ -100,14 +100,13 @@ function getCategoryFromClass(element, returnNull) {
 /**
  * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
  */
-class OptionSet {
+export class OptionSet {
     constructor(n) {
         this.name = n;
         this.options = [];
     }
 }
 OptionSet.optionSetByName = new Map();
-export { OptionSet };
 /**
  * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */
@@ -143,11 +142,11 @@ export class Section {
         li.innerHTML = `${section.sectionNumber} <a href="#${section.id}">${section.name}</a>`;
         ul.appendChild(li);
         if (section.children.length !== 0) {
-            const ul = document.createElement("ul");
-            li.appendChild(ul);
-            ul.classList.add("side-nav-bar");
+            const ul1 = document.createElement("ul");
+            li.appendChild(ul1);
+            ul1.classList.add("side-nav-bar");
             for (let s of section.children)
-                Section.buildList(s, ul);
+                Section.buildList(s, ul1);
         }
     }
     static displayTableOfContents() {
@@ -156,8 +155,10 @@ export class Section {
             const ul = document.createElement("ul");
             snb.appendChild(ul);
             ul.classList.add("side-nav-bar");
-            for (let s of Section.sections)
-                Section.buildList(s, ul);
+            for (let s of Section.sections) {
+                if (s.level === 1)
+                    Section.buildList(s, ul);
+            }
         }
     }
 }
@@ -232,7 +233,6 @@ export class Instruction {
         if (input.checked) { // checkbox chedked, set awarded points, this.awarded, to this.points                
             const i = instructions.instructions.findIndex((element) => element == this);
             const td = document.querySelector("table.Rubric > tbody > tr[data-ri='" + i.toString() + "'] > td:nth-child(6) > span:nth-child(2) > span:nth-child(2)");
-            34;
             this.awarded = this.points;
             td.innerHTML = this.awarded.toFixed(2);
             input.classList.remove("Grey");
@@ -734,7 +734,7 @@ export class Instructions {
                 si++;
             }
             innerHTML += "</td>";
-            innerHTML += `<td>${sequenceFraction}</td><td></td>`;
+            innerHTML += `<td><input type="checkbox"></input></td><td>${sequenceFraction}</td><td></td>`;
             tr.innerHTML = innerHTML;
         }
     }

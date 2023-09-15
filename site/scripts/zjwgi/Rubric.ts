@@ -181,12 +181,12 @@ export class Section
         ul.appendChild(li);    
         if (section.children.length !== 0)
         {
-            const ul : HTMLUListElement = document.createElement("ul");                    
-            li.appendChild(ul);              
+            const ul1 : HTMLUListElement = document.createElement("ul");                    
+            li.appendChild(ul1);              
                                               
-            ul.classList.add("side-nav-bar");
+            ul1.classList.add("side-nav-bar");
             for(let s of section.children)
-                Section.buildList(s,ul);
+                Section.buildList(s,ul1);
         }
     }
 
@@ -199,7 +199,10 @@ export class Section
             snb.appendChild(ul);
             ul.classList.add("side-nav-bar");
             for (let s of Section.sections)        
-                Section.buildList(s,ul);
+            {
+                if (s.level===1)
+                    Section.buildList(s,ul);
+            }
         }
     }
     /**
@@ -311,7 +314,7 @@ export class Instruction {
             {// checkbox chedked, set awarded points, this.awarded, to this.points                
                 const i = instructions.instructions.findIndex((element) => element == this);
                 const td : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'] > td:nth-child(6) > span:nth-child(2) > span:nth-child(2)");
-34
+
                 this.awarded = this.points;
                 td.innerHTML = this.awarded.toFixed(2);
 
@@ -929,9 +932,8 @@ export class Instructions
                 si++;
             }
             innerHTML +="</td>";
-            innerHTML +=`<td>${sequenceFraction}</td><td></td>`;
-            tr.innerHTML = innerHTML;
-            
+            innerHTML +=`<td><input type="checkbox"></input></td><td>${sequenceFraction}</td><td></td>`;
+            tr.innerHTML = innerHTML;            
         }
 
     }

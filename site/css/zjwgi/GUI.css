@@ -25,7 +25,7 @@ div.main-container
 {        
     display: flex;
     flex-direction: row;
-
+    
 
     
     /*
@@ -81,21 +81,21 @@ div#side-nav-bar
     color: black;    
     font-weight: bold;
         
-    /* height : 98vh; */
+    height : 98vh; 
     flex-basis : initial ;           
-    overflow-x: hidden;
+    overflow-x: scroll;
+    overflow-y: scroll;
     
     /*
     width: fit-content;         
     min-width: fit-content;
     width: fit-content; 
     max-width: fit-content;
+    height: 100%;        
     */
     max-width: max-content;
     width: 100%;
-    resize: horizontal;
-
-    height: fit-content;        
+    resize: horizontal;    
 }
 
 div#side-nav-bar > div
