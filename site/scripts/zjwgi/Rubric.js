@@ -91,19 +91,21 @@ function getCategoryFromClass(element, returnNull) {
 /**
  * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
  */
-export class OptionSet {
+class OptionSet {
     constructor(n) {
         this.name = n;
         this.options = [];
     }
 }
 OptionSet.optionSetByName = new Map();
+export { OptionSet };
 /**
  * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */
 export class Section {
     constructor(name, parent, number) {
         this.optionSet = null;
+        this.optionIndex = 0;
         this.name = name;
         this.parent = parent;
         this.children = new Array();
@@ -141,6 +143,11 @@ export class Section {
             for (let s of Section.sections)
                 Section.buildList(s, ul);
         }
+    }
+}
+export class Sequence {
+    constructor() {
+        this.sections = new Array;
     }
 }
 Section.sections = new Array();
@@ -467,6 +474,7 @@ export class Instructions {
                             }
                             section.optionSet = os;
                             os.options.push(section);
+                            section.optionIndex = os.options.length - 1;
                             console.log(section.optionSet);
                         }
                     }
@@ -508,6 +516,7 @@ export class Instructions {
      * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
      */
     displayRubric() {
+        var _a;
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
          * various <input> HTML elements to certain <table> columns
@@ -645,6 +654,54 @@ export class Instructions {
         const tps = document.querySelectorAll("span[data-total-points]");
         for (let tp of tps)
             tp.innerText = this.totalPoints.toString();
+        /************************************************************************************
+         *  Generate Sequences
+         *  [wip] 9/15/2023
+         ************************************************************************************/
+        const rapTable = document.getElementById("RubricAwardedPoints");
+        const sequences0 = new Array(), sequences1 = new Array();
+        const sequences = [sequences0, sequences1];
+        let last = 0, next = 1;
+        sequences[last];
+        for (let osPair of OptionSet.optionSetByName) {
+            const os = osPair[1];
+            console.log(os);
+            sequences[next].length = 0;
+            if (sequences[last].length === 0) {
+                for (let so of os.options) {
+                    const se = new Sequence();
+                    se.sections.push(so);
+                    sequences[next].push(se);
+                }
+                console.log(sequences[next]);
+            }
+            else
+                for (let i = 0; i < sequences[last].length; i++) {
+                    for (let so of os.options) {
+                        const se = new Sequence();
+                        se.sections = Array.from(sequences[last][i].sections);
+                        se.sections.push(so);
+                        sequences[next].push(se);
+                    }
+                    console.log(sequences[next]);
+                }
+            [last, next] = [next, last];
+        }
+        for (let s of sequences[last]) {
+            const tbody = rapTable.querySelector(":scope tbody");
+            const tr = document.createElement('tr');
+            tbody.appendChild(tr);
+            let innerHTML = "";
+            innerHTML = "<td>";
+            let si = 0;
+            for (let se of s.sections) {
+                innerHTML += `${(_a = se.optionSet) === null || _a === void 0 ? void 0 : _a.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex + 1, Roman.UPPER)}`) + ",";
+                si++;
+            }
+            innerHTML += "</td>";
+            innerHTML += "<td>1</td><td>2</td><td>3</td>";
+            tr.innerHTML = innerHTML;
+        }
     }
 }
 export const instructions = new Instructions();
@@ -667,7 +724,7 @@ function itemString(...args) {
         case 2:
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1);
         case 3:
-            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman_lower(args[2]);
+            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]);
     }
 }
 const ROMAN_VALUE = Uint16Array.from([
@@ -685,28 +742,21 @@ const ROMAN_VALUE = Uint16Array.from([
     4,
     1
 ]);
-const ROMAN_SYMBOL = [
-    "m",
-    "cm",
-    "d",
-    "cd",
-    "c",
-    "xc",
-    "l",
-    "xl",
-    "x",
-    "ix",
-    "v",
-    "iv",
-    "i"
-];
-function roman_lower(n) {
+const ROMAN_SYMBOL = new Array("m", "cm", "d", "cd", "c", "xc", "l", "xl", "x", "ix", "v", "iv", "i");
+var Roman;
+(function (Roman) {
+    Roman[Roman["UPPER"] = 0] = "UPPER";
+    Roman[Roman["LOWER"] = 1] = "LOWER";
+})(Roman || (Roman = {}));
+;
+function roman(n, r = Roman.LOWER) {
     let str = "";
     for (let i = 0; i < 13; i++) {
         const v = ROMAN_VALUE[i];
         let q = Math.floor(n / v);
         n -= q * v;
-        str += ROMAN_SYMBOL[i].repeat(q);
+        const rs = r === Roman.LOWER ? ROMAN_SYMBOL[i] : ROMAN_SYMBOL[i].toUpperCase();
+        str += rs.repeat(q);
     }
     return str;
 }

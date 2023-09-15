@@ -101,10 +101,12 @@ function getCategoryFromClass(element, returnNull) {
 /**
  * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
  */
-export class OptionSet {
+export class OptionSet 
+{
     name: string;
-    options: Array<Section>;
-    constructor(n) {
+    options: Array<Section>;    
+    constructor(n : string)   
+    {
         this.name = n;
         this.options = [];
     }
@@ -124,6 +126,7 @@ export class Section
     number: number;  // number within current level
     level : number;  // depth of nesting in <section> tree
     optionSet : OptionSet | null =null;
+    optionIndex : number = 0;
     id: string;      // HTML id attribute of <section>
 
     parent : Section;          // parent Section
@@ -188,6 +191,15 @@ export class Section
     static sections : Array<Section>;
 } 
 
+export class Sequence
+{
+    sections : Array<Section> = new Array<Section>;
+    constructor()
+    {
+
+    }
+
+}
 Section.sections = new Array<Section>();
 
 // 4/12/2023: unused , delete if still unsed after a few months, brainstorming idea
@@ -620,6 +632,7 @@ export class Instructions {
                             }
                             section.optionSet = os;
                             os.options.push(section);
+                            section.optionIndex = os.options.length-1;
                             console.log(section.optionSet);
                         }
                     }
@@ -822,6 +835,65 @@ export class Instructions {
         for ( let tp of tps)
             (<HTMLElement>tp).innerText = this.totalPoints.toString();
 
+        /************************************************************************************
+         *  Generate Sequences
+         *  [wip] 9/15/2023
+         ************************************************************************************/
+        const rapTable = <HTMLTableElement>document.getElementById("RubricAwardedPoints");
+        const sequences0 : Array<Sequence> = new Array<Sequence>(),
+              sequences1 : Array<Sequence> = new Array<Sequence>();
+        const sequences = [sequences0,sequences1];
+        let last=0,next=1;
+
+        sequences[last] 
+        for (let osPair of OptionSet.optionSetByName)
+        {
+            const os = osPair[1];
+            console.log(os);                      
+            sequences[next].length=0;             
+            if (sequences[last].length === 0)
+            {                                    
+                for (let so of os.options)
+                {              
+                    const se = new Sequence();                    
+                    se.sections.push(so);
+                    sequences[next].push(se);         
+                }
+                console.log(sequences[next]);     
+            }
+            else
+                for (let i=0;i< sequences[last].length;i++)
+                {                                    
+                    for (let so of os.options)
+                    {
+                        const se = new Sequence();
+                        se.sections = Array.from(sequences[last][i].sections);
+                        se.sections.push(so);
+                        sequences[next].push(se);         
+                    }
+                    console.log(sequences[next]);     
+                }
+            [last,next] = [next,last];
+        }
+        for (let s of sequences[last])
+        {
+            const tbody=<HTMLTableSectionElement> rapTable.querySelector(":scope tbody");
+            const tr = document.createElement('tr');
+            tbody.appendChild(tr);
+            let innerHTML : string = "";
+            innerHTML="<td>";
+            let si = 0;
+            for (let se of s.sections)
+            {
+                innerHTML += `${se.optionSet?.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex+1,Roman.UPPER)}`) + ",";
+                si++;
+            }
+            innerHTML +="</td>";
+            innerHTML +="<td>1</td><td>2</td><td>3</td>";
+            tr.innerHTML = innerHTML;
+            
+        }
+
     }
 }
 export const instructions = new Instructions();
@@ -846,7 +918,7 @@ function itemString(...args: number[]) {
         case 2:
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1);
         case 3:
-            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman_lower(args[2]);
+            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]);
     }
 }
 
@@ -867,8 +939,8 @@ const ROMAN_VALUE = Uint16Array.from(
         1
     ]);
 
-const ROMAN_SYMBOL =
-    [
+const ROMAN_SYMBOL : Array<string> = new Array<string>(
+    
         "m",
         "cm",
         "d",
@@ -882,15 +954,23 @@ const ROMAN_SYMBOL =
         "v",
         "iv",
         "i"
-    ];
+    );
 
-function roman_lower(n): string {
+enum Roman
+{
+    UPPER,
+    LOWER
+};
+
+function roman(n : number,r : Roman = Roman.LOWER): string 
+{
     let str = "";
     for (let i = 0; i < 13; i++) {
         const v = ROMAN_VALUE[i];
         let q = Math.floor(n / v);
         n -= q * v;
-        str += ROMAN_SYMBOL[i].repeat(q);
+        const rs : string = r === Roman.LOWER ? ROMAN_SYMBOL[i] : ROMAN_SYMBOL[i].toUpperCase();
+        str += rs.repeat(q);
     }
     return str;
 }
