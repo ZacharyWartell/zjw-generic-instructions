@@ -116,6 +116,7 @@ export class Section {
         this.optionSet = null;
         this.optionIndex = 0;
         this.cumulativeFraction = 0;
+        this.instruction = null; // associated Instruction
         this.name = name;
         this.parent = parent;
         this.children = new Array();
@@ -501,6 +502,7 @@ export class Instructions {
                 if (sectionElement.classList.contains("Instruction_Section")) {
                     ISectionParent1 = new Instruction(section.sectionNumber, "", sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION, 'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0, parent === null ? null : parent.instruction);
                     this.instructions.push(ISectionParent1);
+                    section.instruction = ISectionParent1;
                     console.log(sectionElement.dataset.pointFraction);
                     console.log(parent);
                     if (level === 1)
@@ -549,7 +551,7 @@ export class Instructions {
         let ri = 0;
         for (let instruction of this.instructions) {
             /**
-             *  Insert display of points allocated to this Instruction in the <li> text of the Instruction
+             *  In the innerText of the Instruction <li> HTML::Element's, insert display of points allocated to this Instruction in the
              */
             const iElement = document.getElementById(instruction.id);
             if (iElement !== null) {
@@ -572,7 +574,7 @@ export class Instructions {
                     iElement.insertAdjacentHTML("afterbegin", "|<sup>" + ptDiv.innerHTML + "</sup>| &nbsp;");
             }
             /**
-             *   insert rubric table row
+             *   In the Rubric table, insert rows corresponding to all Instructions
              */
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString()); // 'ri' abbr. 'rowIndex'
@@ -580,7 +582,7 @@ export class Instructions {
             let level = 0; // 'level' is the depth in the Instruction tree of 'instruction'
             // construct ASCCI art tree diagram
             for (let i = instruction; i != null; i = i.parent) {
-                if (level > 0) {
+                if (level >= 0) {
                     if (i.parent) {
                         let pi = i.parent.subSteps.findIndex((e) => e == i); // 'parentIndex'
                         if (pi < i.parent.subSteps.length - 1)
@@ -677,7 +679,7 @@ export class Instructions {
         for (let tp of tps)
             tp.innerText = this.totalPoints.toString();
         /************************************************************************************
-         *  Generate Sequences
+         *  In the Rubric Awarded Points Table, add the generate Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
         const rapTable = document.getElementById("RubricAwardedPoints");
@@ -693,7 +695,14 @@ export class Instructions {
                 for (let so of os.options) {
                     const se = new Sequence();
                     se.sections.push(so);
-                    se.totalPoints += so.totalPoints;
+                    try {
+                        //console.assert(so.instruction !== undefined);
+                        se.totalPoints += so.instruction.points;
+                    }
+                    catch (e) {
+                        throw e;
+                    }
+                    se.totalPoints += so.instruction.points;
                     sequences[next].push(se);
                 }
                 console.log(sequences[next]);

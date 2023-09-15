@@ -144,7 +144,7 @@ export class Section
     parent : Section;          // parent Section
     children : Array<Section>; // child Section    
 
-    instruction : Instruction;  // associated Instruction
+    instruction : Instruction | null = null;  // associated Instruction
 
     constructor(name : string, parent : Section, number : number)
     {
@@ -629,7 +629,7 @@ export class Instructions
         if (hList !== null && hList.length !== 0)
         {
             let hc = 1; // 'headingCount'
-            let ISectionParent1 = null;                    
+            let ISectionParent1 : Instruction | null = null;                    
             for (let h of hList) 
             {
                 const sectionElement: HTMLElement = h.parentElement;
@@ -665,6 +665,7 @@ export class Instructions
                 {   
                     ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);             
                     this.instructions.push (ISectionParent1);
+                    section.instruction = ISectionParent1;
                     console.log(sectionElement.dataset.pointFraction);
                     console.log(parent);
                     if (level === 1)
@@ -717,7 +718,7 @@ export class Instructions
         let ri = 0;
         for (let instruction of this.instructions) {
             /**
-             *  Insert display of points allocated to this Instruction in the <li> text of the Instruction 
+             *  In the innerText of the Instruction <li> HTML::Element's, insert display of points allocated to this Instruction in the 
              */
             const iElement : HTMLElement = document.getElementById(instruction.id);
             if (iElement !== null)
@@ -744,7 +745,7 @@ export class Instructions
             }
             
             /**
-             *   insert rubric table row 
+             *   In the Rubric table, insert rows corresponding to all Instructions
              */              
             let row = document.createElement("tr");
             row.setAttribute("data-ri", ri.toString());    // 'ri' abbr. 'rowIndex'
@@ -754,7 +755,7 @@ export class Instructions
             // construct ASCCI art tree diagram
             for (let i=instruction; i != null; i = i.parent)
                 {
-                    if (level>0)
+                    if (level>=0)
                     {
                         if (i.parent)
                         {
@@ -771,7 +772,7 @@ export class Instructions
                     level++; 
                 }
             if (instruction.parent !== null)                
-                levelPrefix += "|---"
+                levelPrefix += "|---";
 
             // add level info to <td> HTML elment -- might be useful in future                
             row.setAttribute("data-level", level.toString());
@@ -862,7 +863,7 @@ export class Instructions
             (<HTMLElement>tp).innerText = this.totalPoints.toString();
 
         /************************************************************************************
-         *  Generate Sequences
+         *  In the Rubric Awarded Points Table, add the generate Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
         const rapTable = <HTMLTableElement>document.getElementById("RubricAwardedPoints");
@@ -883,7 +884,16 @@ export class Instructions
                 {              
                     const se = new Sequence();                    
                     se.sections.push(so);
-                    se.totalPoints += so.totalPoints;
+                    try{
+                        //console.assert(so.instruction !== undefined);
+                        se.totalPoints += so.instruction.points;
+                    }
+                    catch (e)
+                    {
+                        throw e; 
+                    }
+                    
+                    se.totalPoints += so.instruction.points;
                     sequences[next].push(se);         
                 }
                 console.log(sequences[next]);     
