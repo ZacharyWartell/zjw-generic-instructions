@@ -66,6 +66,12 @@ var Category;
     Category["NON_RUBRIC"] = "NON_RUBRIC";
     Category["GIT_COMMIT"] = "GIT_COMMIT";
 })(Category || (Category = {}));
+/**
+ *
+ * @param element
+ * @param returnNull - this is a vestigate of earlier code, eventually this parameter should be removed and all code refactored
+ * @returns
+ */
 function getCategoryFromClass(element, returnNull) {
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;

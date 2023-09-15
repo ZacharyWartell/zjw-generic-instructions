@@ -72,7 +72,13 @@ enum Category {
     GIT_COMMIT = "GIT_COMMIT"
 }
 
-function getCategoryFromClass(element, returnNull) {
+/**
+ * 
+ * @param element 
+ * @param returnNull - this is a vestigate of earlier code, eventually this parameter should be removed and all code refactored
+ * @returns 
+ */
+function getCategoryFromClass(element : HTMLElement, returnNull : boolean) {
     if (element.className.includes("Instruction_Question"))
         return Category.QUESTION;
     if (element.className.includes("Instruction_Read"))
@@ -91,7 +97,7 @@ function getCategoryFromClass(element, returnNull) {
         return Category.SECTION;
     if (element.className.includes("Instruction_Composite"))
         return Category.COMPOSITE;
-        if (element.className.includes("Instruction_Git_Commit"))
+    if (element.className.includes("Instruction_Git_Commit"))
         return Category.GIT_COMMIT;        
 
     if (returnNull)
