@@ -13,9 +13,12 @@ function AUTO_DOC() {
     //stub
     return new String;
 }
+/**
+ * [wip] \todo AUTO_DOC a mechanism for generating user documentation and writing the text next the source code that directly implements the user visible concepts.
+ */
 AUTO_DOC["Instruction Category"] =
     `
-    <ol> CSS class for ol, li or section elements.
+    <ol> These are the CSS class for ol, li or section HTML::Elements that map to Instruction object (of enum Category that is either individual or composite)
         <li> Instruction_Question - the li element asks a question the student must answer.   The method of submitting the must be descrbed within li element content.
         </li>
         <li> Instruction_Read - the li element listed required reading only.
@@ -39,7 +42,8 @@ AUTO_DOC["Instruction Category"] =
     </ol>
  `;
 /*
- * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
+ * @brief Category is a kind of Instruction.  There is a 1-to-1 mapping between enum Category values and CSS classes with names matching the regex "Instruction.*"
+ * @see AUTO_DOC["Instruction Category"]
  */
 var Category;
 (function (Category) {
@@ -106,6 +110,7 @@ export class Section {
     constructor(name, parent, number) {
         this.optionSet = null;
         this.optionIndex = 0;
+        this.cumulativeFraction = 0;
         this.name = name;
         this.parent = parent;
         this.children = new Array();
@@ -122,6 +127,11 @@ export class Section {
         this.id = "Section_" + this.sectionNumber;
         Section.sections.push(this);
     }
+    /**
+     * @brief [wip?] buildList construct TableOfContents HTML elements
+     * @param section
+     * @param ul
+     */
     static buildList(section, ul) {
         const li = document.createElement("li");
         li.innerHTML = `${section.sectionNumber} <a href="#${section.id}">${section.name}</a>`;
@@ -148,6 +158,7 @@ export class Section {
 export class Sequence {
     constructor() {
         this.sections = new Array;
+        this.totalPoints = 0;
     }
 }
 Section.sections = new Array();
@@ -159,8 +170,8 @@ var PointCalculation;
     PointCalculation[PointCalculation["FULL_OR_ZERO"] = 2] = "FULL_OR_ZERO"; /* Instruction.awarded value is full credit or zero */
 })(PointCalculation || (PointCalculation = {}));
 /**
- * \brief Instruction is a instruction (or task) in assignment.  Instructions are hhierarchical composites of other sub Instructions and of different
- * Category's.
+ * \brief Instruction is a instruction (or task) in assignment.  Instructions can be hierarchical composites of other sub Instructions and of different
+ * enum Category.
  * \author Zachary Wartell
  */
 export class Instruction {
@@ -671,6 +682,7 @@ export class Instructions {
                 for (let so of os.options) {
                     const se = new Sequence();
                     se.sections.push(so);
+                    se.totalPoints += so.totalPoints;
                     sequences[next].push(se);
                 }
                 console.log(sequences[next]);
@@ -699,7 +711,7 @@ export class Instructions {
                 si++;
             }
             innerHTML += "</td>";
-            innerHTML += "<td>1</td><td>2</td><td>3</td>";
+            innerHTML += "<td></td><td></td>";
             tr.innerHTML = innerHTML;
         }
     }

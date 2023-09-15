@@ -18,9 +18,12 @@
     return new String;
  }
 
+ /**
+  * [wip] \todo AUTO_DOC a mechanism for generating user documentation and writing the text next the source code that directly implements the user visible concepts.
+  */
  AUTO_DOC["Instruction Category"]=
  `
-    <ol> CSS class for ol, li or section elements.
+    <ol> These are the CSS class for ol, li or section HTML::Elements that map to Instruction object (of enum Category that is either individual or composite)
         <li> Instruction_Question - the li element asks a question the student must answer.   The method of submitting the must be descrbed within li element content.
         </li>
         <li> Instruction_Read - the li element listed required reading only.
@@ -45,7 +48,8 @@
  `;
  
 /*
- * @type {Readonly<{READ: symbol, TODO: symbol, OVERVIEW: symbol, GENERAL: symbol, QUESTION: symbol}>}
+ * @brief Category is a kind of Instruction.  There is a 1-to-1 mapping between enum Category values and CSS classes with names matching the regex "Instruction.*"
+ * @see AUTO_DOC["Instruction Category"] 
  */
 enum Category {
     AUTO = "AUTO",
@@ -129,6 +133,8 @@ export class Section
     optionIndex : number = 0;
     id: string;      // HTML id attribute of <section>
 
+    cumulativeFraction : number = 0;
+
     parent : Section;          // parent Section
     children : Array<Section>; // child Section    
 
@@ -157,6 +163,11 @@ export class Section
         Section.sections.push(this);
     }
     
+    /**
+     * @brief [wip?] buildList construct TableOfContents HTML elements 
+     * @param section 
+     * @param ul 
+     */
     static buildList(section : Section , ul : HTMLUListElement)
     {
         const li : HTMLLIElement = document.createElement("li");            
@@ -194,6 +205,7 @@ export class Section
 export class Sequence
 {
     sections : Array<Section> = new Array<Section>;
+    totalPoints : number = 0;
     constructor()
     {
 
@@ -211,8 +223,8 @@ enum PointCalculation
     }    
 
 /**
- * \brief Instruction is a instruction (or task) in assignment.  Instructions are hhierarchical composites of other sub Instructions and of different
- * Category's. 
+ * \brief Instruction is a instruction (or task) in assignment.  Instructions can be hierarchical composites of other sub Instructions and of different
+ * enum Category. 
  * \author Zachary Wartell
  */    
 export class Instruction {
@@ -431,7 +443,8 @@ BreadCrumbs.singleton = new BreadCrumbs();
 /**
  * \author Zachary Wartell
  */
-export class Instructions {
+export class Instructions 
+{
     instructions: Array<Instruction>;
     optionSets: Array<OptionSet>;  // not used yet, just idea in planning
 
@@ -671,6 +684,7 @@ export class Instructions {
                 fraction = fraction * (p.pointFraction / 100.0);
             instruction.points = this.totalPoints * fraction;
         }        
+
         console.log(this.instructions);
         console.log(Section.sections);
         this.displayRubric();        
@@ -857,6 +871,7 @@ export class Instructions {
                 {              
                     const se = new Sequence();                    
                     se.sections.push(so);
+                    se.totalPoints += so.totalPoints;
                     sequences[next].push(se);         
                 }
                 console.log(sequences[next]);     
@@ -889,7 +904,7 @@ export class Instructions {
                 si++;
             }
             innerHTML +="</td>";
-            innerHTML +="<td>1</td><td>2</td><td>3</td>";
+            innerHTML +="<td></td><td></td>";
             tr.innerHTML = innerHTML;
             
         }
