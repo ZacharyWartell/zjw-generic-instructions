@@ -268,6 +268,8 @@ export class Instruction {
         {
             parent.pointCalculation = PointCalculation.COMPOSITE;
             parent.category = Category.COMPOSITE;
+            console.assert(this.parent !== undefined);
+            console.assert(this.parent.subSteps !== undefined);
             this.parent.subSteps.push(this);
         }
     }
@@ -661,7 +663,7 @@ export class Instructions
     
                 if (sectionElement.classList.contains("Instruction_Section"))
                 {   
-                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0);             
+                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);             
                     this.instructions.push (ISectionParent1);
                     console.log(sectionElement.dataset.pointFraction);
                     console.log(parent);
