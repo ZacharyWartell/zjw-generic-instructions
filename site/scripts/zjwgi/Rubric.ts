@@ -755,7 +755,7 @@ export class Instructions
             // construct ASCCI art tree diagram
             for (let i=instruction; i != null; i = i.parent)
                 {
-                    if (level>=0)
+                    if (level>0)
                     {
                         if (i.parent)
                         {

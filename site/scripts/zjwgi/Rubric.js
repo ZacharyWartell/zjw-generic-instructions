@@ -582,7 +582,7 @@ export class Instructions {
             let level = 0; // 'level' is the depth in the Instruction tree of 'instruction'
             // construct ASCCI art tree diagram
             for (let i = instruction; i != null; i = i.parent) {
-                if (level >= 0) {
+                if (level > 0) {
                     if (i.parent) {
                         let pi = i.parent.subSteps.findIndex((e) => e == i); // 'parentIndex'
                         if (pi < i.parent.subSteps.length - 1)
