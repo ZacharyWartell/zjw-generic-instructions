@@ -450,10 +450,19 @@ export function main(totalPoints) {
      */
     onload(totalPoints);
 }
-function copyToClipboard(e) {
-    var _a;
-    const b = e.target;
-    console.log((_a = b.previousElementSibling) === null || _a === void 0 ? void 0 : _a.innerText);
+/**
+ * @brief Git_Commit_Message collection of method used for span.Git_Commit_Message elements
+ */
+class Git_Commit_Message {
+    static copyToClipboard(e) {
+        var _a;
+        const b = e.target;
+        //console.log(b.previousElementSibling?.innerText);
+        navigator.clipboard.writeText(((_a = b.parentElement) === null || _a === void 0 ? void 0 : _a.previousElementSibling).innerText);
+        if (b.nextElementSibling !== null)
+            b.nextElementSibling.style.display = 'block';
+        setTimeout(() => { b.nextElementSibling.style.display = 'none'; }, 2000);
+    }
 }
 let assignmentName;
 export function onload(totalPoints) {
@@ -518,14 +527,23 @@ export function onload(totalPoints) {
             e.innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + e.innerText;
     }
     /**
-     *   insert the <ins> element datetime attribute info into the associate span.Updated_Text_Popup_Note innerText
+     *  insert "copy to clipboard" button after span.Git_Commit_Message elements.
      */
     elements = document.querySelectorAll('span.Git_Commit_Message');
     for (let e of elements) {
+        const span = document.createElement('div');
         const b = document.createElement('button');
+        const msg = document.createElement('span');
+        span.style.display = 'inline';
+        span.style.position = 'relative';
         b.style.height = "20px";
-        b.addEventListener('click', copyToClipboard);
-        e.after(b);
+        b.addEventListener('click', Git_Commit_Message.copyToClipboard);
+        span.appendChild(b);
+        e.after(span);
+        msg.setAttribute('class', 'CopiedToClipboardPopup');
+        msg.setAttribute('role', 'alert');
+        msg.innerText = "Copied to Clipboard";
+        b.after(msg);
     }
     /**
      *  Initialize <table id="RubricTable">

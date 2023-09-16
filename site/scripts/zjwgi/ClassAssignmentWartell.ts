@@ -542,10 +542,20 @@ export function main(totalPoints : number)
     onload(totalPoints);
 }
 
-function copyToClipboard(e : Event)
+/**
+ * @brief Git_Commit_Message collection of method used for span.Git_Commit_Message elements
+ */
+class Git_Commit_Message
 {
-    const b : HTMLButtonElement = e.target;
-    console.log(b.previousElementSibling?.innerText);
+    static copyToClipboard(e : Event)
+    {
+        const b : HTMLButtonElement = e.target;
+        //console.log(b.previousElementSibling?.innerText);
+        navigator.clipboard.writeText((<HTMLSpanElement>(b.parentElement?.previousElementSibling)).innerText);
+        if (b.nextElementSibling !== null)
+            (<HTMLSpanElement>b.nextElementSibling).style.display = 'block';
+        setTimeout(()=>{(<HTMLSpanElement>b.nextElementSibling).style.display = 'none'},2000);
+    }    
 }
 let assignmentName : AssignmentName;
 export
@@ -625,15 +635,24 @@ function onload(totalPoints : number)
     }
 
     /**
-     *   insert the <ins> element datetime attribute info into the associate span.Updated_Text_Popup_Note innerText
+     *  insert "copy to clipboard" button after span.Git_Commit_Message elements.
      */
     elements = document.querySelectorAll('span.Git_Commit_Message');
     for (let e of elements)
     {
+        const span = document.createElement('div');
         const b = document.createElement('button');
+        const msg = document.createElement('span');
+        span.style.display = 'inline';
+        span.style.position = 'relative';
         b.style.height = "20px";
-        b.addEventListener('click',copyToClipboard)
-        e.after(b);
+        b.addEventListener('click',Git_Commit_Message.copyToClipboard);        
+        span.appendChild(b);
+        e.after(span);
+        msg.setAttribute('class','CopiedToClipboardPopup');        
+        msg.setAttribute('role','alert');        
+        msg.innerText = "Copied to Clipboard";
+        b.after(msg);                
     }
 
 

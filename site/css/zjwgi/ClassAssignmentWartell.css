@@ -531,6 +531,10 @@ span.Shell_Code_Comment , div.Shell_Code_Comment{
     margin-top: 0;
 }
 
+
+/*
+* span.Git_Commit_Message
+*/
 span.Git_Commit_Message::before
 {
     content: "$  ";
@@ -544,6 +548,20 @@ span.Git_Commit_Message {
     color: white;
 }
 
+span.CopiedToClipboardPopup
+{
+    display : none;
+    position : absolute;
+    top : 15px;    
+    right : -20px;    
+    background-color: grey;    
+    color: white;
+    width: fit-content;
+}
+
+/**
+*   ?
+*/
 span.Instruction_Title
 {
     text-decoration: underline;
