@@ -548,6 +548,11 @@ span.Git_Commit_Message {
     color: white;
 }
 
+div.CopiedToClipboardPopup
+{
+    display: inline;
+    position : relative;
+}
 span.CopiedToClipboardPopup
 {
     display : none;
