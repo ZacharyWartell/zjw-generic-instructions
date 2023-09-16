@@ -1,7 +1,7 @@
 /**
- * \author Zachary Wartell
- * \copyright Copyright 2015. Zachary Wartell.
- * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+ * @author Zachary Wartell
+ * @copyright Copyright 2015. Zachary Wartell.
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
  - http://creativecommons.org/licenses/by-nc-sa/4.0/
 
  \status [STATUS=not deployed] work-in-progress
@@ -10,7 +10,7 @@ import "./third-party/jquery-3.5.1.min.js";
 import * as Rubric from "./Rubric.js";
 import { Instruction } from "./Rubric.js";
 /**
- ** \brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
+ ** @brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
  *
  *  These is are set the HTMLElement.innerText of various <span> elements which are distinguished by their having a number of special data- attributes.
  **/
@@ -64,8 +64,9 @@ export class AssignmentName {
         }
     }
 }
-/*  \author Zachary Wartell
- *  \brief toggle the "hidden" attribute of all elements of class "Class"
+/**
+ *  @author Zachary Wartell
+ *  @brief toggle the "hidden" attribute of all elements of class "Class"
  *  @param {String} - name of class
  */
 export function Visibility_Toggle(Class, visible) {
@@ -123,9 +124,9 @@ function apiCheck() {
         alert("Browser does not support window.showSaveFilePicker");
 }
 /**
- * \status   [experimental , non-deploy]
+ * @status   [experimental , deployed only in 'Beta' mode]
  *
- * \brief See USAGE
+ * @brief See USAGE
  *
  * Notes:   From what I have read it is not possible to use the ?body= query parameter to pass html code that will be displayed as rendered HTML
  * Other more complex mechanisms would be needed to get the users selection from the HTML document to be auto-inserted at HTML into an email.
@@ -449,6 +450,11 @@ export function main(totalPoints) {
      */
     onload(totalPoints);
 }
+function copyToClipboard(e) {
+    var _a;
+    const b = e.target;
+    console.log((_a = b.previousElementSibling) === null || _a === void 0 ? void 0 : _a.innerText);
+}
 let assignmentName;
 export function onload(totalPoints) {
     /**
@@ -476,7 +482,7 @@ export function onload(totalPoints) {
     /**
      **  Create video cue buttons
      *
-     **  \todo [PRIORITY=AS_NEEDED][GENERALIZE] Generalize for cases of multiple embedded video's
+     **  @todo [PRIORITY=AS_NEEDED][GENERALIZE] Generalize for cases of multiple embedded video's
      **/
     elements = document.querySelectorAll('span.VideoCue');
     for (let n of elements) {
@@ -504,7 +510,7 @@ export function onload(totalPoints) {
         e.after(button);
     }
     /**
-     *   insert the <ins> element datatime attribute info into the associate span.Updated_Text_Popup_Note inner text
+     *   insert the <ins> element datetime attribute info into the associate span.Updated_Text_Popup_Note innerText
      */
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements) {
@@ -512,8 +518,18 @@ export function onload(totalPoints) {
             e.innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + e.innerText;
     }
     /**
-     ***  Initialize <table id="RubricTable">
-     **/
+     *   insert the <ins> element datetime attribute info into the associate span.Updated_Text_Popup_Note innerText
+     */
+    elements = document.querySelectorAll('span.Git_Commit_Message');
+    for (let e of elements) {
+        const b = document.createElement('button');
+        b.style.height = "20px";
+        b.addEventListener('click', copyToClipboard);
+        e.after(b);
+    }
+    /**
+     *  Initialize <table id="RubricTable">
+     */
     //init_rubric();
     Rubric.instructions.extractSectionsAndRubricAll(totalPoints);
     Rubric.Section.displayTableOfContents();
