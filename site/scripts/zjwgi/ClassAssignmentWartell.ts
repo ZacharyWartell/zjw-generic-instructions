@@ -549,7 +549,7 @@ class Git_Commit_Message
 {
     static copyToClipboard(e : Event)
     {
-        const b : HTMLButtonElement = e.currentTarget;
+        const b : HTMLButtonElement = <HTMLButtonElement> e.currentTarget;
         //console.log(b.previousElementSibling?.innerText);
         navigator.clipboard.writeText((<HTMLSpanElement>(b.parentElement?.previousElementSibling)).innerText);
         if (b.nextElementSibling !== null)

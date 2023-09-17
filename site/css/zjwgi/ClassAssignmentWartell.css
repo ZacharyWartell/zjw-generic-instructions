@@ -562,6 +562,7 @@ span.CopiedToClipboardPopup
     background-color: grey;    
     color: white;
     width: fit-content;
+    z-index: 1000;
 }
 
 /**

@@ -118,7 +118,7 @@ export class OptionSet
     constructor(n : string)   
     {
         this.name = n;
-        this.options = [];
+        this.options = new Array<Section>;
     }
 
     static optionSetByName : Map<string,OptionSet> = new Map<string,OptionSet>();
@@ -135,8 +135,8 @@ export class Section
     numeral : string; // number within current level, could be Arabic or Roman number, upper or lower case
     number: number;  // number within current level
     level : number;  // depth of nesting in <section> tree
-    optionSet : OptionSet | null =null;
-    optionIndex : number = 0;
+    optionSet : OptionSet | null =null;  // can only be !== null when this.level === 1
+    optionIndex : number = 0;  // index of this Section within it's OptionSet (if optionSet !== null)
     id: string;      // HTML id attribute of <section>
 
     cumulativeFraction : number = 0;
@@ -433,6 +433,7 @@ export class BreadCrumb
 
 /**
  * @author Zachary Wartell
+ * @bug this is BreadCrumb mechanism is failing occasionally for certain internal links
  * @brief set of BreadCrumb's  
  */
 export class BreadCrumbs
@@ -647,17 +648,18 @@ export class Instructions
                     {
                         let osJSON = JSON.parse(sectionElement.dataset['optionset']);
                         if (osJSON.name !== undefined)
-                        {
+                        {// HTML <section> has data-optionset, so treat is as an class Section optionSet member
                             let os : OptionSet | undefined = OptionSet.optionSetByName.get(osJSON.name);
                             if (os === undefined)
                             {
                                 os = new OptionSet(osJSON.name);
                                 OptionSet.optionSetByName.set(os.name,os);
                             }
+                            console.assert(os !== null);
                             section.optionSet = os;
                             os.options.push(section);
                             section.optionIndex = os.options.length-1;
-                            console.log(section.optionSet);
+                            console.log("os.name: ",os.name,section.optionSet);
                         }
                     }
                 }
@@ -666,7 +668,10 @@ export class Instructions
     
                 if (sectionElement.classList.contains("Instruction_Section"))
                 {   
-                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);             
+                    //if (level === 1 && section.optionSet !== null)
+                    //  ISectionParent1 = new Instruction(section.sectionNumber + " (" + section.optionSet.name + (section.optionSet.options.length === 1 ? "" : ": Opt. " +  roman(section.optionIndex+1,Roman.UPPER)) + ")","",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);
+                    //else
+                    ISectionParent1 = new Instruction(section.sectionNumber,"",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);
                     this.instructions.push (ISectionParent1);
                     section.instruction = ISectionParent1;
                     console.log(sectionElement.dataset.pointFraction);
@@ -710,11 +715,26 @@ export class Instructions
     /**
      * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
      */
-    displayRubric() {
+    displayRubric() 
+    {
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
          * various <input> HTML elements to certain <table> columns
          */
+        for (let osPair of OptionSet.optionSetByName)
+        {
+            const os = osPair[1]; 
+            
+            // append option suffix to instruction names.
+            for (let o of os.options)
+            {
+                if (os.options.length === 1)
+                    o.instruction.section += " - " + os.name + "";
+                else
+                    o.instruction.section += " - " + os.name + ": Opt. " +  roman(o.optionIndex+1,Roman.UPPER);
+            }
+        }
+
         let rubric: HTMLTableSectionElement = document.querySelector("#RubricTable > tbody");
         let prevSection: string = "";
         const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
@@ -755,7 +775,7 @@ export class Instructions
             let levelPrefix="";  // string used to display ASCII art tree diagram
             let level=0;  // 'level' is the depth in the Instruction tree of 'instruction'
 
-            // construct ASCCI art tree diagram
+            // construct ASCII art tree diagram
             for (let i=instruction; i != null; i = i.parent)
                 {
                     if (level>0)
@@ -802,9 +822,12 @@ export class Instructions
                 row.innerHTML = 
                 `<td class="Empty"></td>`;
             else
+            {
+                //if (instruction.gui_checkbox)
                 row.innerHTML =
-                `<td>${instruction.section}</td>`;
-            row.innerHTML +=                 
+                `   <td>${instruction.section}</td>`;
+            }
+                row.innerHTML +=                 
                  `<td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
 				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
@@ -817,6 +840,7 @@ export class Instructions
                     </span>                        
                 </td>                                                                        
                  <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+
             //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
             //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
             //<td><span style="color:white; border : ${level!=0?'solid':'none'} 1px black;">${levelPrefix}</span>${instruction.pointFraction.toFixed(0)}&percnt;</td>
@@ -866,7 +890,7 @@ export class Instructions
             (<HTMLElement>tp).innerText = this.totalPoints.toString();
 
         /************************************************************************************
-         *  In the Rubric Awarded Points Table, add the generate Sequences
+         *  In the Rubric Awarded Points Table, add the generated Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
         const rapTable = <HTMLTableElement>document.getElementById("RubricAwardedPoints");
@@ -879,7 +903,9 @@ export class Instructions
         for (let osPair of OptionSet.optionSetByName)
         {
             const os = osPair[1];
-            console.log(os);                      
+            console.log(os);   
+            
+            // construct and update the sequences
             sequences[next].length=0;             
             if (sequences[last].length === 0)
             {                                    

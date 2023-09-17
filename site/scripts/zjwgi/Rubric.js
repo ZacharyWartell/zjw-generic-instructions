@@ -103,7 +103,7 @@ function getCategoryFromClass(element, returnNull) {
 export class OptionSet {
     constructor(n) {
         this.name = n;
-        this.options = [];
+        this.options = new Array;
     }
 }
 OptionSet.optionSetByName = new Map();
@@ -112,8 +112,8 @@ OptionSet.optionSetByName = new Map();
  */
 export class Section {
     constructor(name, parent, number) {
-        this.optionSet = null;
-        this.optionIndex = 0;
+        this.optionSet = null; // can only be !== null when this.level === 1
+        this.optionIndex = 0; // index of this Section within it's OptionSet (if optionSet !== null)
         this.cumulativeFraction = 0;
         this.instruction = null; // associated Instruction
         this.name = name;
@@ -331,6 +331,7 @@ export class BreadCrumb {
 }
 /**
  * @author Zachary Wartell
+ * @bug this is BreadCrumb mechanism is failing occasionally for certain internal links
  * @brief set of BreadCrumb's
  */
 export class BreadCrumbs {
@@ -485,21 +486,25 @@ export class Instructions {
                 if (level === 1) {
                     if (sectionElement.dataset['optionset'] !== undefined) {
                         let osJSON = JSON.parse(sectionElement.dataset['optionset']);
-                        if (osJSON.name !== undefined) {
+                        if (osJSON.name !== undefined) { // HTML <section> has data-optionset, so treat is as an class Section optionSet member
                             let os = OptionSet.optionSetByName.get(osJSON.name);
                             if (os === undefined) {
                                 os = new OptionSet(osJSON.name);
                                 OptionSet.optionSetByName.set(os.name, os);
                             }
+                            console.assert(os !== null);
                             section.optionSet = os;
                             os.options.push(section);
                             section.optionIndex = os.options.length - 1;
-                            console.log(section.optionSet);
+                            console.log("os.name: ", os.name, section.optionSet);
                         }
                     }
                 }
                 sectionElement.setAttribute("id", section.id);
                 if (sectionElement.classList.contains("Instruction_Section")) {
+                    //if (level === 1 && section.optionSet !== null)
+                    //  ISectionParent1 = new Instruction(section.sectionNumber + " (" + section.optionSet.name + (section.optionSet.options.length === 1 ? "" : ": Opt. " +  roman(section.optionIndex+1,Roman.UPPER)) + ")","",sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION,'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0,parent === null ? null : parent.instruction);
+                    //else
                     ISectionParent1 = new Instruction(section.sectionNumber, "", sectionName.trimStart().slice(0, 10) + " ...", Category.SECTION, 'pointFraction' in sectionElement.dataset ? parseFloat(sectionElement.dataset.pointFraction) : 0, parent === null ? null : parent.instruction);
                     this.instructions.push(ISectionParent1);
                     section.instruction = ISectionParent1;
@@ -545,6 +550,16 @@ export class Instructions {
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
          * various <input> HTML elements to certain <table> columns
          */
+        for (let osPair of OptionSet.optionSetByName) {
+            const os = osPair[1];
+            // append option suffix to instruction names.
+            for (let o of os.options) {
+                if (os.options.length === 1)
+                    o.instruction.section += " - " + os.name + "";
+                else
+                    o.instruction.section += " - " + os.name + ": Opt. " + roman(o.optionIndex + 1, Roman.UPPER);
+            }
+        }
         let rubric = document.querySelector("#RubricTable > tbody");
         let prevSection = "";
         const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
@@ -580,7 +595,7 @@ export class Instructions {
             row.setAttribute("data-ri", ri.toString()); // 'ri' abbr. 'rowIndex'
             let levelPrefix = ""; // string used to display ASCII art tree diagram
             let level = 0; // 'level' is the depth in the Instruction tree of 'instruction'
-            // construct ASCCI art tree diagram
+            // construct ASCII art tree diagram
             for (let i = instruction; i != null; i = i.parent) {
                 if (level > 0) {
                     if (i.parent) {
@@ -618,9 +633,11 @@ export class Instructions {
             if (instruction.section === prevSection)
                 row.innerHTML =
                     `<td class="Empty"></td>`;
-            else
+            else {
+                //if (instruction.gui_checkbox)
                 row.innerHTML =
-                    `<td>${instruction.section}</td>`;
+                    `   <td>${instruction.section}</td>`;
+            }
             row.innerHTML +=
                 `<td>${instruction.number}</td>
 				 <td>${Category[instruction.category].toLowerCase()}</td>
@@ -679,7 +696,7 @@ export class Instructions {
         for (let tp of tps)
             tp.innerText = this.totalPoints.toString();
         /************************************************************************************
-         *  In the Rubric Awarded Points Table, add the generate Sequences
+         *  In the Rubric Awarded Points Table, add the generated Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
         const rapTable = document.getElementById("RubricAwardedPoints");
@@ -690,6 +707,7 @@ export class Instructions {
         for (let osPair of OptionSet.optionSetByName) {
             const os = osPair[1];
             console.log(os);
+            // construct and update the sequences
             sequences[next].length = 0;
             if (sequences[last].length === 0) {
                 for (let so of os.options) {
