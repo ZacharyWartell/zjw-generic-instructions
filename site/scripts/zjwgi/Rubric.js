@@ -100,13 +100,14 @@ function getCategoryFromClass(element, returnNull) {
 /**
  * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
  */
-export class OptionSet {
+class OptionSet {
     constructor(n) {
         this.name = n;
         this.options = new Array;
     }
 }
 OptionSet.optionSetByName = new Map();
+export { OptionSet };
 /**
  * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */
@@ -747,12 +748,13 @@ export class Instructions {
             let si = 0;
             let sequenceFraction = 0;
             for (let se of s.sections) {
-                innerHTML += `${(_a = se.optionSet) === null || _a === void 0 ? void 0 : _a.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex + 1, Roman.UPPER)}`) + ",";
+                innerHTML += `${(_a = se.optionSet) === null || _a === void 0 ? void 0 : _a.name}` + (se.optionSet.options.length === 1 ? "" : `-${roman(se.optionIndex + 1, Roman.UPPER)}`) + ", ";
                 sequenceFraction += se.cumulativeFraction;
                 si++;
             }
             innerHTML += "</td>";
-            innerHTML += `<td><input type="checkbox"></input></td><td>${sequenceFraction}</td><td></td>`;
+            //innerHTML +=`<td><input type="checkbox" disabled></input></td>`;
+            innerHTML += `<td>${sequenceFraction / 100 * this.totalPoints}</td><td></td>`;
             tr.innerHTML = innerHTML;
         }
     }

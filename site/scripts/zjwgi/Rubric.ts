@@ -292,6 +292,7 @@ export class Instruction {
     gui_checkbox(input : HTMLInputElement) : void
     {
         this.gui_checkbox_recursive(input);
+        
         instructions.recalc_points();
         instructions.gui_update_awarded();
         (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2);
@@ -953,12 +954,13 @@ export class Instructions
             let sequenceFraction = 0;
             for (let se of s.sections)
             {
-                innerHTML += `${se.optionSet?.name}` + (se.optionSet.options.length === 1 ? "" : `.${roman(se.optionIndex+1,Roman.UPPER)}`) + ",";
+                innerHTML += `${se.optionSet?.name}` + (se.optionSet.options.length === 1 ? "" : `-${roman(se.optionIndex+1,Roman.UPPER)}`) + ", ";
                 sequenceFraction += se.cumulativeFraction;
                 si++;
             }
             innerHTML +="</td>";
-            innerHTML +=`<td><input type="checkbox"></input></td><td>${sequenceFraction}</td><td></td>`;
+            //innerHTML +=`<td><input type="checkbox" disabled></input></td>`;
+            innerHTML +=`<td>${sequenceFraction/100*this.totalPoints}</td><td></td>`;
             tr.innerHTML = innerHTML;            
         }
 

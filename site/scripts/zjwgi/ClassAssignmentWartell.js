@@ -365,16 +365,17 @@ export function main(totalPoints) {
         }
     });
     button = document.getElementById("back");
-    button.addEventListener('click', (e) => {
-        console.log("back", window.history.state);
-        if (false) {
-            window.history.scrollRestoration = "auto";
-            window.history.go(-1);
-        }
-        else {
-            Rubric.BreadCrumbs.singleton.array[Rubric.BreadCrumbs.singleton.array.length - 1].target.scrollIntoView(true);
-        }
-    });
+    if (button !== null)
+        button.addEventListener('click', (e) => {
+            console.log("back", window.history.state);
+            if (false) {
+                window.history.scrollRestoration = "auto";
+                window.history.go(-1);
+            }
+            else {
+                Rubric.BreadCrumbs.singleton.array[Rubric.BreadCrumbs.singleton.array.length - 1].target.scrollIntoView(true);
+            }
+        });
     const inputFile = document.getElementById("loadFile");
     inputFile.addEventListener('change', (e) => {
         const reader = new FileReader();

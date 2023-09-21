@@ -443,18 +443,19 @@ export function main(totalPoints : number)
 
 
     button = document.getElementById("back");
-    button.addEventListener('click',
-        (e:MouseEvent)=>        
-            {
-                console.log("back", window.history.state);
-                if (false){
-                    window.history.scrollRestoration = "auto";
-                    window.history.go(-1);                    
-                }
-                else {
-                    Rubric.BreadCrumbs.singleton.array[Rubric.BreadCrumbs.singleton.array.length-1].target.scrollIntoView(true);
-                }
-            });
+    if (button !== null)
+        button.addEventListener('click',
+            (e:MouseEvent)=>        
+                {
+                    console.log("back", window.history.state);
+                    if (false){
+                        window.history.scrollRestoration = "auto";
+                        window.history.go(-1);                    
+                    }
+                    else {
+                        Rubric.BreadCrumbs.singleton.array[Rubric.BreadCrumbs.singleton.array.length-1].target.scrollIntoView(true);
+                    }
+                });
 
 
     const inputFile : HTMLInputElement = <HTMLInputElement> document.getElementById("loadFile");
