@@ -960,7 +960,7 @@ export class Instructions
             }
             innerHTML +="</td>";
             //innerHTML +=`<td><input type="checkbox" disabled></input></td>`;
-            innerHTML +=`<td>${sequenceFraction/100*this.totalPoints}</td><td></td>`;
+            innerHTML +=`<td>${(sequenceFraction/100*this.totalPoints).toFixed(2)}</td><td></td>`;
             tr.innerHTML = innerHTML;            
         }
 
