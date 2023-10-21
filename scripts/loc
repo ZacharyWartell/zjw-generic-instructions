@@ -1,3 +1,4 @@
 #!/bin/bash
+# 'loc' - lines of code - hack scripted to estimate lines of code in project
 echo wc \`find . \( -name "*.ts" -o -name "*.css" -o -name "*.html" \) -a ! -path "*/third-party/*"\` -l
 wc `find . \( -name "*.ts" -o -name "*.css" -o -name "*.html" \) -a ! -path "*/third-party/*"` -l
