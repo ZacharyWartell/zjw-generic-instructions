@@ -586,6 +586,7 @@ export class Instructions {
                     iElement.firstElementChild.after(ptDiv);
                 }
                 else
+                    //iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
                     iElement.insertAdjacentHTML("afterbegin", "|<sup>" + ptDiv.innerHTML + "</sup>| &nbsp;");
             }
             /**
@@ -779,6 +780,8 @@ function itemString(...args) {
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1);
         case 3:
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]);
+        case 4:
+            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]) + "." + args[3].toString();
     }
 }
 const ROMAN_VALUE = Uint16Array.from([

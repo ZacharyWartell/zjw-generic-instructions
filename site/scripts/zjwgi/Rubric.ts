@@ -756,7 +756,7 @@ export class Instructions
                     points = "." + points.split('.')[1];                
 
                 if (instruction.category === Category.COMPOSITE)
-                ptDiv.innerHTML="[" + points + " pt]"; //ptDiv.innerHTML="[ &#x2211;" + points + " pt]";                        
+                    ptDiv.innerHTML="[" + points + " pt]"; //ptDiv.innerHTML="[ &#x2211;" + points + " pt]";                        
                 else
                     ptDiv.innerHTML="[" + points + " pt]";                        
                 if (iElement.firstElementChild instanceof HTMLSpanElement && iElement.firstElementChild.classList.contains("Instruction_Title"))
@@ -765,6 +765,7 @@ export class Instructions
                     iElement.firstElementChild.after(ptDiv);
                 }
                 else
+                    //iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
                     iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
             }
             
@@ -989,6 +990,8 @@ function itemString(...args: number[]) {
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1);
         case 3:
             return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]);
+        case 4:
+            return args[0].toString() + "." + String.fromCharCode(aCode + args[1] - 1) + "." + roman(args[2]) + "." + args[3].toString();           
     }
 }
 
