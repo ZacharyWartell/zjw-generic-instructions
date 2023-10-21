@@ -1,0 +1,3 @@
+#!/bin/bash
+echo wc \`find . \( -name "*.ts" -o -name "*.css" -o -name "*.html" \) -a ! -path "*/third-party/*"\` -l
+wc `find . \( -name "*.ts" -o -name "*.css" -o -name "*.html" \) -a ! -path "*/third-party/*"` -l
