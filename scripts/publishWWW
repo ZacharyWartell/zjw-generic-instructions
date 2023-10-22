@@ -71,7 +71,7 @@ if [ $yn != "y" -a $yn != "Y" ] ; then
     exit
 fi
 
-pushd $site_full_path/..
+pushd "$site_full_path/.."
 
 echo cd "$ftpdir"                   > ftp.cmd
 echo lcd www-site-mirror            >> ftp.cmd
