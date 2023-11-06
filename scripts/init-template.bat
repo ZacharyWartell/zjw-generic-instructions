@@ -67,11 +67,18 @@ pushd %RootPath%
 set SITE=%DirPrefix%site
 
 rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi         ..\%SITE%\git_modules\zjwgi\scripts\
+mkdir %SITE%\css > nul 2>&1
 rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi        ..\..\%SITE%\git_modules\zjwgi\site\css\zjwgi
+mkdir %SITE%\html > nul 2>&1
 rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi       ..\..\%SITE%\git_modules\zjwgi\site\html\zjwgi
+mkdir %SITE%\scripts > nul 2>&1
 rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi    ..\..\%SITE%\git_modules\zjwgi\site\scripts\zjwgi
+
+mkdir %SITE%\images > nul 2>&1
 rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\images\zjwgi
+
+mkdir %SITE%\videos > nul 2>&1
 rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\videos\zjwgi
-copy site\git_modules\zjwgi\site\index.html %1site\           
+copy %SITE%\git_modules\zjwgi\site\index.html %SITE%           
 
 popd
