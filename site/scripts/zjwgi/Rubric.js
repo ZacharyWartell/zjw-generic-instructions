@@ -421,16 +421,25 @@ export class Instructions {
             let category = getCategoryFromClass(ol, false);
             const li1List = ol.querySelectorAll(":scope > li");
             /*
-            count number of items that contribute points to the rubric
+            count number of items with an unassigned data-point-fraction that contribute points to the rubric
             */
             let rubricItems = 0;
+            let unassignedRubricItems = 0;
+            let assignedTotal = 0;
             for (let li_ of li1List) {
                 const li = li_;
                 let tmp, cat = (tmp = getCategoryFromClass(li, true)) !== null ? tmp : category;
-                if (tmp !== Category.NON_RUBRIC)
+                if (tmp !== Category.NON_RUBRIC) {
+                    if ('pointFraction' in li.dataset)
+                        assignedTotal += parseFloat(li.dataset.pointFraction);
+                    else
+                        unassignedRubricItems++;
                     rubricItems++;
+                }
             }
-            const equalFraction1 = 1.0 / rubricItems * 100;
+            console.log("rubricItems:", rubricItems);
+            console.log("unassigned rubricItems:", unassignedRubricItems);
+            const equalFraction1 = (100 - assignedTotal) / unassignedRubricItems;
             lic = 1;
             /*
             **  Collection level 1 <li> Instructions
