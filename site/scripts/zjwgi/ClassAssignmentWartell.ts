@@ -47,7 +47,7 @@ class AssignmentName
             this.name           = jsonObject.AssignmentName.name;
             
         }
-        this.git = this.courseNumber + "-" + this.numberLongDir;    
+        this.git = this.numberLongDir;    
     }
 
     insertText( doc : HTMLDocument) : void
@@ -71,6 +71,11 @@ class AssignmentName
         for (let e of elements) {
             (<HTMLElement>e).innerText = this.name;
         }
+
+        elements = doc.querySelectorAll('span[data-project-number-name-dir]');
+        for (let e of elements) {
+            (<HTMLElement>e).innerText = this.number + "-" + this.name;
+        }        
 
         elements = doc.querySelectorAll('span[data-project-git]');
         for (let e of elements) {
