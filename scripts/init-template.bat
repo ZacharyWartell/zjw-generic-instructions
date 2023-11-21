@@ -19,6 +19,8 @@ echo This script should be run from the directory containing it, i.e. zjw-generi
     echo.  /?, --help               shows this help
     echo.  --dir-prefix value       optional prefix to name of directory name containing the files published to the public website [Default: "", which is prepended to standard name directory name: 'site']
     echo.  --root-path value        optional relative path too root directory of the project folder [Default:  ..\..\..\..]
+    echo.  --zjwgi-path value       optional relative path too root directory of the zjwgi folder [Default:  ..\..\%SITE%\git_modules\zjwgi]
+    
     goto :eof
 
 :init
@@ -32,6 +34,7 @@ echo This script should be run from the directory containing it, i.e. zjw-generi
 
     set "DirPrefix="
     set "RootPath=..\..\..\.."
+    set "ZJWGIPath="
 
 :parse
     if "%~1"=="" goto :validate
@@ -52,6 +55,8 @@ echo This script should be run from the directory containing it, i.e. zjw-generi
 
     if /i "%~1"=="--root-path"     set "RootPath=%~2"   & shift & shift & goto :parse    
 
+    if /i "%~1"=="--zjwgi-path"     set "ZJWGIPath=%~2"   & shift & shift & goto :parse    
+
     REM if not defined UnNamedArgument     set "UnNamedArgument=%~1"     & shift & goto :parse
     REM  if not defined UnNamedOptionalArg  set "UnNamedOptionalArg=%~1"  & shift & goto :parse
 
@@ -66,19 +71,23 @@ pushd %RootPath%
 
 set SITE=%DirPrefix%site
 
-rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi         ..\%SITE%\git_modules\zjwgi\scripts\
+if ZJWGIPath=="" set "ZJWGIPath=..\..\%SITE%\git_modules\zjwgi"
+
+cd
+
+rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi                %ZJWGIPath%\scripts\
 mkdir %SITE%\css > nul 2>&1
-rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi        ..\..\%SITE%\git_modules\zjwgi\site\css\zjwgi
+rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi          %ZJWGIPath%\site\css\zjwgi
 mkdir %SITE%\html > nul 2>&1
-rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi       ..\..\%SITE%\git_modules\zjwgi\site\html\zjwgi
+rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi        %ZJWGIPath%\site\html\zjwgi
 mkdir %SITE%\scripts > nul 2>&1
-rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi    ..\..\%SITE%\git_modules\zjwgi\site\scripts\zjwgi
+rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi  %ZJWGIPath%\site\scripts\zjwgi
 
 mkdir %SITE%\images > nul 2>&1
-rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\images\zjwgi
+rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi    %ZJWGIPath%\site\images\zjwgi
 
 mkdir %SITE%\videos > nul 2>&1
-rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\videos\zjwgi
+rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi    %ZJWGIPath%\site\videos\zjwgi
 copy %SITE%\git_modules\zjwgi\site\index.html %SITE%           
 
 popd
