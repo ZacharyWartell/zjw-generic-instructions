@@ -71,17 +71,17 @@ pushd %RootPath%
 
 set SITE=%DirPrefix%site
 
-if /i "%ZJWGIPath%"=="" set "ZJWGIPath=..\..\%SITE%\git_modules\zjwgi"
+if /i "%ZJWGIPath%"=="" set "ZJWGIPath=..\%SITE%\git_modules\zjwgi"
 
 cd
 
-rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi                %ZJWGIPath%\scripts\
+rmdir scripts\zjwgi 2>null & mklink /D scripts\zjwgi                %ZJWGIPath%\scripts
 mkdir %SITE%\css > nul 2>&1
-rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi          %ZJWGIPath%\site\css\zjwgi
+rmdir %SITE%\css\zjwgi 2>null & mklink /D %SITE%\css\zjwgi          ..\%ZJWGIPath%\site\css\zjwgi
 mkdir %SITE%\html > nul 2>&1
-rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi        %ZJWGIPath%\site\html\zjwgi
+rmdir %SITE%\html\zjwgi 2>null & mklink /D %SITE%\html\zjwgi        ..\%ZJWGIPath%\site\html\zjwgi
 mkdir %SITE%\scripts > nul 2>&1
-rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi  %ZJWGIPath%\site\scripts\zjwgi
+rmdir %SITE%\scripts\zjwgi 2>null & mklink /D %SITE%\scripts\zjwgi  ..\%ZJWGIPath%\site\scripts\zjwgi
 
 mkdir %SITE%\images > nul 2>&1
 rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi    %ZJWGIPath%\site\images\zjwgi
