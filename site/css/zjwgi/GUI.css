@@ -1,0 +1,185 @@
+body
+{        
+    overflow: hidden; 
+    height: 100%;
+}
+
+div.window-container
+{    
+    height: 100%;
+    /*
+    width: fit-content;
+    */
+}
+
+
+div.toolbar
+{
+    border: solid black 2px;    
+    margin-top: 0px;    
+    padding-top: 0px;
+    padding-bottom: 0px;        
+}
+
+div.main-container
+{        
+    display: flex;
+    flex-direction: row;
+    
+
+    
+    /*
+    display: inline;
+    
+    */
+    /*
+    grid-template-columns: min-max(0,fit-content) 10fr;
+    grid-template-rows: max-content;    
+    */
+    
+    /*
+    grid-template-columns: min-content fit-content;
+    */
+}
+
+div.DocButton 
+{
+    position: relative;
+    
+}
+
+div.DocButton span
+{
+    display: none;    
+    position: absolute;    
+    top: 1.25em;
+    background: lightblue;
+    border-width: 5px;
+    border-color: black;    
+    width: max-content;
+    height: auto;
+
+}
+
+div.DocButton:hover span
+{
+    display: block;    
+}
+
+
+div#side-nav-bar
+{
+    border-color:black;    
+    border-width: 1px;
+    border-style: solid;
+    
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 10px;
+    margin-left: 0px;
+
+    color: black;    
+    font-weight: bold;
+        
+    height : 98vh; 
+    flex-basis : initial ;           
+    overflow-x: scroll;
+    overflow-y: scroll;
+    
+    /*
+    width: fit-content;         
+    min-width: fit-content;
+    width: fit-content; 
+    max-width: fit-content;
+    height: 100%;        
+    */
+    max-width: max-content;
+    width: 100%;
+    resize: horizontal;    
+}
+
+div#side-nav-bar > div
+{       
+    width: max-content;
+    overflow-x: hidden;
+}
+
+
+ul.side-nav-bar
+{    
+    padding-left: 5px;    
+    list-style-type : none;            
+}
+
+div.side-read-bar
+{
+    color: red;    
+    font-weight: bold;
+    
+    overflow: hidden;      
+    height: 100%;
+}
+
+div.main-content
+{        
+    height: 90vh;    
+    flex: auto;
+    min-width: 0%;    
+    
+    /*
+    flex-basis: 0;
+     resize: horizontal; 
+     height : 95vh;             
+     */        
+}
+
+div.main-content > article
+{
+    border-left-width: 1px;
+    border-left-style: solid;
+    padding-left: 10px;
+
+    overflow-y: scroll;    
+    overflow-x: auto;           
+    height: 95vh;       
+}
+/*
+ *   Toolbar and Menu classes
+ */
+
+
+
+div#Toolbar > div
+{
+    border: solid black 1px;
+}
+
+div.Menu
+{
+    background-color : lightgrey;
+    display: flex;
+    flex-direction: row;
+}
+
+div.Menu > div.DocButton, div.Menu div
+{
+    display: inherit;
+    flex-direction: row;
+}
+
+ul.SubMenu
+{
+    list-style-type: none;
+    background-color : lightgrey;
+    position : absolute;
+    top: 15px;    
+    padding: 0px;
+}
+
+ul.SubMenu > li
+{
+    border : black 1px solid;
+    padding : 0px;
+    align-items: center;
+}
+

@@ -1,0 +1,868 @@
+/**
+ * \author Zachary Wartell
+ * \copyright Copyright 2015. Zachary Wartell.
+ * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+ - http://creativecommons.org/licenses/by-nc-sa/4.0/
+ */
+
+ /* SHIT */
+body {
+    counter-reset: h1-Section h1-Appendix;
+}
+
+h1.Section {
+    counter-reset: h2-Section;
+    font-size: larger;
+}
+
+h2.Section {
+    counter-reset: h3-Section;
+    font-size: medium;
+}
+
+h3.Section {
+    counter-reset: h4-Section;
+}
+
+h4.Section {
+    counter-reset: h5-Section;
+}
+
+h5.Section {
+    counter-reset: h6-Section;
+}
+
+h1.Section:before {
+    counter-increment: h1-Section;
+    content: counter(h1-Section) ". "
+}
+
+h2.Section:before {
+    counter-increment: h2-Section;
+    content: counter(h1-Section) "." counter(h2-Section) ". "
+}
+
+h3.Section:before {
+    counter-increment: h3-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h3-Section) ". "
+}
+
+h4.Section:before {
+    counter-increment: h4-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h4-Section) "." counter(h4-Section) ". "
+}
+
+h5.Section:before {
+    counter-increment: h5-Section;
+    content: counter(h1-Section) "." counter(h2-Section) "." counter(h4-Section) "." counter(h4-Section) "." counter(h5-Section) ". "
+}
+
+h1.nocount:before, h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before {
+    content: "";
+    counter-increment: none
+}
+
+/* 
+Heading Numbering (Resource [R2])
+*/
+h1.Appendix {
+    counter-reset: h2-Appendix;
+    font-size: x-large;
+}
+
+h2.Appendix {
+    counter-reset: h3-Appendix;
+    font-size: larger;
+}
+
+h3.Appendix {
+    counter-reset: h4-Appendix 
+}
+
+h4.Appendix {
+    counter-reset: h5-Appendix 
+}
+
+h5.Appendix {
+    counter-reset: h6-Appendix 
+}
+
+h1.Appendix:before {
+    counter-increment: h1-Appendix;
+    content: "Appendix " counter(h1-Appendix, upper-roman) ". ";
+}
+
+h2.Appendix:before {
+    counter-increment: h2-Appendix;
+    content: counter( h1-Appendix , upper-roman ) "-" counter(h2-Appendix) ". ";
+}
+
+h3.Appendix:before {
+    counter-increment: h3-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) ". ";
+}
+
+h4.Appendix:before {
+    counter-increment: h4-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) "." counter(h4-Appendix) ". ";
+}
+
+h5.Appendix:before {
+    counter-increment: h5-Appendix;
+    content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) "." counter(h4-Appendix) "." counter(h5-Appendix) ". ";
+}
+/* END SHIT */
+
+/*   Shell Code Output  */
+.File_Name {
+    font-family: "Courier", monospace;
+}
+
+/*   Code Examples (put in 1x1 table)
+table.Hide_Code_Example:target
+{
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background-color: black;
+}
+*/
+
+p {
+    font-size: medium;
+}
+
+/*
+ *  Menu bar
+ */
+table.Menu
+{
+    background-color: lightgray;
+    border: solid 2px;
+    border-color : grey;
+}
+
+
+table.RubricAwardedPoints
+{
+    border: solid 1px black;
+    border-collapse: collapse;
+}
+
+table.RubricAwardedPoints > thead > tr > th
+{
+    border: solid 2px black;
+    text-align: center;
+}
+table.RubricAwardedPoints > tbody > tr > td
+{
+    border: solid 1px black;
+    text-align: center;
+}
+
+/*
+ *   SectionRubric
+ *   Table optionally at head of a <section> with basic rubric info for the exercises in that section (a menu is [wip])
+ */
+table.SectionRubric
+{
+    border: solid 1px black;
+    border-collapse: collapse;
+}
+
+table.SectionRubric > tbody > tr > th
+{
+    border: solid 2px black;
+}
+table.SectionRubric > tbody > tr > td
+{
+    border: solid 1px black;
+}
+table.SectionRubric > tbody > tr:first-child > td
+{
+    color: gray;
+    width: auto;
+}
+
+table.SectionRubric > tbody > tr:nth-child(2) > td
+{
+    width: auto;
+}
+
+/*
+ * Rubric Table
+ *
+ * The single Table in document with assignment Rubric
+ */
+table.Rubric {
+    border: solid 2px black;
+    border-collapse: collapse;
+    width: fit-content;
+}
+
+table.Rubric > thead > tr > th
+{
+    border: solid 2px black;
+    text-align: center;
+    font-weight: bold;
+}
+
+table.Rubric tr
+{ 
+    max-height: fit-content;
+}
+
+div#Div_Rubric 
+{    
+    display : flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items:center;
+}
+
+div#Div_Rubric > div
+{            
+    width: fit-content;
+}
+div#Div_Rubric > div div
+{
+    border: 1px solid black;
+}
+
+/*
+table.Rubric > tbody > tr:nth-child(1)
+{
+    align-content: center;
+    align-self:  center;
+    align-items: center;
+    background-color: turquoise;
+}
+*/
+
+table.Rubric td
+{
+    border: solid 1px;
+    max-height: fit-content;
+}
+
+table.Rubric tr td:nth-child(3)
+{
+    /* align-content: center; */
+    text-align: center;
+}
+
+table.Rubric > tbody > tr > td:nth-child(7)
+{
+    /*
+     align-content: center; 
+     background-color: #F1EA35;
+     */
+    width : 100px;    
+}
+
+table.Rubric > tbody > tr > td > textarea
+{
+    resize: both;            
+}
+
+table.Rubric td.Empty
+{
+    border: 0px;
+}
+
+/**
+REFERENCE:
+    - https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
+*/
+table.Rubric > tbody > tr > td  input[type="checkbox"]::before
+{
+    position: relative;
+    display: block;
+    width: 13px;
+    height: 13px;
+
+    top: -2px;
+    
+    border: 4px solid black;
+    content: "";
+    background: #FFF;
+}
+
+table.Rubric > tbody > tr > td  input.Grey[type="checkbox"]::before
+{
+    border: 4px dotted black;    
+}
+
+table.Rubric > tbody > tr > td  input[type="checkbox"]::after
+{
+    position: relative;
+    display: block;
+    left: 6px;
+    top: -17px;
+    width: 8px;
+    height: 7px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #B3B3B3 #dcddde #dcddde #B3B3B3;
+    content: "";
+    background-image: linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+table.Rubric > tbody > tr > td  input[type="checkbox"]:checked::after
+{        
+    content: "\2713";
+    font-weight: bolder;
+    color: black;
+    top: -1.5em;    
+    
+    /*
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAQAAABuW59YAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAB2SURBVHjaAGkAlv8A3QDyAP0A/QD+Dam3W+kCAAD8APYAAgTVZaZCGwwA5wr0AvcA+Dh+7UX/x24AqK3Wg/8nt6w4/5q71wAAVP9g/7rTXf9n/+9N+AAAtpJa/zf/S//DhP8H/wAA4gzWj2P4lsf0JP0A/wADAHB0Ngka6UmKAAAAAElFTkSuQmCC'), linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
+    content: "*";
+    
+    */
+}
+
+table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::before
+{
+    border: 4px solid #808080;
+}
+table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::after
+{
+    opacity: 0.5;
+}
+
+
+
+
+/*
+ *  Code Example
+ */
+/*   Code Examples are put in small 1x1 table */
+table.Code_Example {
+    width: 100%;
+    background-color: black;
+    border: black 1px solid;
+}
+
+/*  Code Example Expand style when displaying at full height, instead of with scroll bar
+*/
+table.Expanded_Code_Example > tbody > tr > td > div {
+    width: 100%;
+    height: 100% !important;
+    /* overflow-y: scroll; */
+}
+
+/*  Code Example Table Cell that contains expand button
+*/
+table.Code_Example > tbody > tr > td:first-child {
+    vertical-align: text-top;
+    text-align: left;
+    width: 25px;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+/* Code Example Expand style when displaying code in compact, scrollable mode.
+*/
+table.Code_Example > tbody > tr > td > div {
+    width: 100%;
+    overflow-y: scroll;        
+}
+
+/*
+* Screen Capture Figures
+  Displays figures that are Screen_Capture's and which are zoomable when clicked.
+  (Resourse [R1])
+*/
+figure.Screen_Capture {
+    width: 500px;
+    background: white;
+    border: 10px solid white;
+    -webkit-box-shadow: 0 3px 10px #ccc;
+    -moz-box-shadow: 0 3px 10px #ccc;
+    -o-box-shadow: 0 3px 10px #ccc;
+    box-shadow: 0 3px 10px #ccc;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    position: relative;
+}
+
+figure.Screen_Capture:before
+{
+    content:  "Click to Enlarge";
+    text-decoration-color: black;
+    font-size : small;
+    border: grey solid 3px;
+    background-color: lightgray;
+}
+
+figure.Screen_Capture img {
+    width: 100%;
+}
+
+figure.Screen_Capture:hover {
+    box-shadow: 0 3px 10px #F1EA35;    
+}
+
+figure.Screen_Capture figcaption
+{
+    text-align: center;
+}
+figure.Screen_Capture:focus {
+    outline: none;
+    transform: scale(3.0);    
+    box-shadow: 0 3px 10px #666;
+    z-index: 9999;
+}
+
+/*
+ *   Misc.
+ */
+
+span.DataField:before
+{
+    content: "[ComputedField]";
+    font-style: italic;
+}
+
+div.Time_Todo {
+    color: grey;
+}
+
+/* ZJW: in progress idea , add auto-counting, add auto collection of todo items */
+div.Doc_Todo {
+    color: grey;
+}
+
+span.Updated_Text {
+    color: red;
+    background-color: yellow;
+}
+
+span.File_Name {
+    font-family: Courier, monospace;
+}
+
+span.Function_Name {
+    font-family: Courier, monospace;
+}
+
+/*
+ *   Shell Coding Instructions
+ */
+
+/*   Shell Code Input */
+code.Shell_Code_Input {
+    font-family: "Courier", monospace;
+    color: white;
+}
+
+code.Shell_Code_Input-v2 {
+    font-family: "Courier", monospace;
+    color: white;
+}
+
+code.Shell_Code_Input-v2::before
+{
+    content:  "$ "
+}
+
+code.Shell_Code_Input-v2::after
+{
+    content:  "\A"; white-space: pre-line
+}
+
+
+/*   Shell Code Output  */
+code.Shell_Code_Output {
+    font-family: "Courier", monospace;
+    color: lightgreen;
+}
+
+/*   Shell Code Output  */
+code.Shell_Code_Prompt {
+    font-family: "Courier", monospace;
+    color: cyan;
+}
+
+code.Shell_Code_Prompt-v2 {
+    font-family: "Courier", monospace;
+    color: cyan;
+}
+code.Shell_Code_Prompt-v2::after
+{
+    content:  "\A"; white-space: pre-line
+}
+
+
+/*   Shell Code Output  */
+code.Shell_Code_PWD {
+    font-family: "Courier", monospace;
+    color: rgb(255, 0, 255);
+}
+
+/*  User Input Required
+*/
+.User_Input {
+    background-color: grey;
+    font-style: italic;
+    color: black;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+/*
+* Comments in Shell Code
+*/
+span.Shell_Code_Comment , div.Shell_Code_Comment{
+    font-family: Courier, monospace;    
+    color: pink;
+    background-color: grey;
+    font-style: italic;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+
+/*
+* span.Git_Commit_Message
+*/
+span.Git_Commit_Message::before
+{
+    content: "$  ";
+    background-color: white;    
+    color: black;
+}
+span.Git_Commit_Message {
+    width: 100%;
+    background-color: black;
+    border: black 1px solid;
+    color: white;
+}
+
+div.CopiedToClipboardPopup
+{
+    display: inline;
+    position : relative;
+}
+span.CopiedToClipboardPopup
+{
+    display : none;
+    position : absolute;
+    top : 15px;    
+    right : -20px;    
+    background-color: grey;    
+    color: white;
+    width: fit-content;
+    z-index: 1000;
+}
+
+/**
+*   ?
+*/
+span.Instruction_Title
+{
+    text-decoration: underline;
+}
+
+/*
+*  Hierarchical List of Instructions
+*/
+ol.Instruction {
+    font-size: medium;
+    counter-reset: instructionLevel1;
+    list-style-type: decimal;
+}
+
+ol.Instruction > li {
+    counter-increment: instructionLevel1;
+}
+
+ol.Instruction > li::marker {
+    font-size: medium;
+    content: counter(instructionLevel1, decimal) " ";
+}
+
+ol.Instruction > li > ol {
+    font-size: medium;
+    list-style-type: lower-alpha;
+
+    counter-reset: instructionLevel2;
+}
+
+ol.Instruction > li > ol > li {
+    counter-increment: instructionLevel2;
+}
+
+ol.Instruction > li > ol > li::marker {
+    font-size: medium;
+
+    content: counter(instructionLevel2, lower-alpha) " ";
+}
+
+ol.Instruction > li > ol > li > ol {
+    font-size: medium;
+    list-style-type: lower-roman;
+
+    counter-reset: instructionLevel3;
+}
+
+ol.Instruction > li > ol > li > ol > li {
+    counter-increment: instructionLevel3;
+}
+
+ol.Instruction > li > ol > li > ol > li::marker {
+    font-size: medium;
+
+    content: counter(instructionLevel3, lower-roman) " ";
+}
+
+/* experimental */
+ol.Instruction li.Git_Commit
+{
+    margin-top: 1em;
+}
+
+span.Instruction_Tool
+{
+    color :black;
+}
+
+/*
+ * Misc.
+ */
+div.Errata
+{
+    border-style: solid;
+    border-color: grey;
+    border-width: 2px;
+}
+span.Git_Commit
+{
+    font-weight: bolder;
+}
+span.Exercise_Title
+{
+    text-decoration: underline;
+}
+
+
+
+/*
+ * Grade_Points, etc.
+ */
+span.Grade_Points {
+    font-weight: bold;
+}
+
+span.Grade_Points:after {
+    content: "[" attr(data-points) " pts ]";
+}
+
+span.Extra_Credit_Points {
+    font-weight: bold;
+}
+
+span.Extra_Credit_Points:after {
+    content: "[Extra Credit:" attr(data-points) " pts ]";
+}
+
+
+
+a.Term
+{
+    text-decoration: darkgray dash;
+}
+
+/*
+ * Hint
+ */
+
+div.Hint:before
+{
+    content: "Hint: ";
+    font-weight: bold;
+}
+div.Hint
+{
+    border: solid 1px grey;
+    margin-left: 1em;
+}
+
+
+/*
+ * VideoInstructions
+ */
+div.VideoInstructions > div:nth-of-type(1)
+{
+    border : solid 1px;
+    padding: 5px;    
+    align-content: center;
+    resize: vertical;
+    overflow: hidden;
+    display: flex;
+}
+div.VideoInstructions > div:nth-of-type(1) > video
+{
+    flex: auto;
+}
+div.VideoInstructions > div:nth-of-type(2)
+{
+    overflow-y: scroll;
+    border: solid 1px;
+    height: 500px;
+    resize: vertical;
+}
+
+/*
+ *  https://ieeeauthorcenter.ieee.org/wp-content/uploads/IEEE-Reference-Guide.pdf
+ */
+ol.References > li.reference-www > span:nth-child(1)
+{
+    font-style: italic;
+}
+
+/*
+ * Staff_Notes
+ */
+div.Staff_Notes
+{
+    border : dashed 1px;
+}
+
+div.Staff_Notes:before
+{
+    content:  "Staff Notes:";
+    font-weight: bolder;
+}
+
+h1.Title, h2.Title, h3.Title {
+    text-align: center
+}
+
+/* copied from MDN pages to match their h2 section headers. */
+span.MDN_h2
+{
+    font-family: x-locale-heading-primary,zillaslab,Palatino,"Palatino Linotype",x-locale-heading-secondary,serif;
+    font-weight : bold;
+}
+
+
+
+
+/*
+ * \brief div.Data is not displayed.  It contains an HTML structure that stores some type of data processed by the documents associated JavaScript code.
+ */
+div.Data
+{
+    display : none;
+}
+
+/*
+ * \brief div.Comment as nascent comment on the document
+ */
+div.Comment:before
+{
+    content: "Comment: ";
+    font-weight: bold;
+}
+
+div.Comment
+{
+    background-color: #ddffdd;
+}
+
+figcaption:before
+{
+    content: "Figure :";
+    font-weight: bold;
+}
+
+/*
+     Reference:
+         - https://developer.mozilla.org/en-US/docs/Web/CSS/:hover
+         - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del
+     */
+del:hover + span.Updated_Text_Popup_Note:before {
+    content: "\2196";
+    font-weight: bold;
+}
+
+del {
+    text-decoration: line-through;
+    color: red;
+    background-color: white;
+    position: relative;
+}
+
+/*
+del:hover:before {
+    content: "DELETE [" attr(datetime) "]: ";
+    background-color: lightblue;
+    text-decoration: none !important;
+}
+*/
+del:hover span.Updated_Text_Popup_Note {
+    display: inline-block;
+}
+
+ins:hover + span.Updated_Text_Popup_Note:before {
+    content: "\2196";
+    font-weight: bold;
+}
+
+/* disabled in updated version
+ins:hover:after {
+    content: "INSERT [" attr(datetime) "]: ";
+    background-color: lightblue;
+    position: relative;
+    top: -1em;
+}
+*/
+
+ins {
+    background-color: greenyellow;
+    text-decoration-line: underline;    
+    position: relative;
+}
+
+/*
+on average inline-block seems to produce a better positioned Updated_Text_Popup_Note than block
+*/
+ins:hover  span.Updated_Text_Popup_Note {
+    display: inline-block;
+    
+}
+
+
+span.Updated_Text_Popup_Note {
+    position: absolute;    
+    top: 1em;
+    /* top: -2em; */
+    /* left: 250em; */
+    display: none;
+    width: fit-content;
+    background-color: rgb(88, 197, 209);
+    color: black;
+    border: black solid 1px;
+    padding: 5px;
+    z-index: 100;
+}
+
+a.WindowOpenLeft
+{
+    color: -webkit-link;
+    text-decoration: underline;
+}
+a.WindowOpenLeft:hover
+{
+    cursor:pointer;
+}

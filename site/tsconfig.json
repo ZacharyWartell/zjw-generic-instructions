@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    /* "module": "commonjs", */
+    "target": "es2019",
+    "sourceMap": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*.js"] // This mapping is relative to "baseUrl"
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "files": [    
+    "scripts/zjwgi/ClassAssignmentWartell.ts",
+    "scripts/zjwgi/GradingScript.ts",
+    "scripts/zjwgi/Rubric.ts"
+  ],
+}
