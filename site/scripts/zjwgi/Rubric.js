@@ -450,7 +450,11 @@ export class Instructions {
                 if (tmp !== Category.NON_RUBRIC)
                     rubricItems++;
             }
-            const equalFraction1 = 1.0 / rubricItems * 100;
+            let equalFraction1;
+            if (parent !== null && parent.category === Category.OPTION_SET)
+                equalFraction1 = 100;
+            else
+                equalFraction1 = 1.0 / rubricItems * 100;
             lic = 1;
             /*
             **  Collection level 1 <li> Instructions
