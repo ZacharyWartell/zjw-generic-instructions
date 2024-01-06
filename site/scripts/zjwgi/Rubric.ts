@@ -48,14 +48,14 @@
  `;
  
 /*
- * @brief Category is a kind of Instruction.  There is a 1-to-1 mapping between enum Category values and CSS classes with names matching the regex "Instruction.*"
+ * @brief Category is a kind of Instruction.  There is a 1-to-1 mapping between enum Category values and CSS classes with names matching the regex "Instruction_.*"
  * @see AUTO_DOC["Instruction Category"] 
  */
 enum Category {
     AUTO = "AUTO",
     /* Instruction instance is associated with a a HTML <section> */
     SECTION = "SECTION",
-    /* Instruction instance is associated with a  HTML <li> that has a child instructional <ol> tree */
+    /* Instruction instance is associated with a  HTML <li> that has a nested, child <ol> that contains sub-instructions  */
     COMPOSITE = "COMPOSITE",
     /* Instruction instance is associated with a question HTML <li> */
     QUESTION = "QUESTION",
@@ -63,8 +63,23 @@ enum Category {
     READ = "READ",
     /* Instruction instance is associated with a todo HTML <li> */
     TODO = "TODO",
-    /* Instruction instance is associated with a reminder HTML <li>. A Reminder Instructino has point fraction = 0 */
+    /* Instruction instance is associated with a reminder HTML <li>. A Reminder Instruction has point fraction = 0 */
     REMINDER = "REMINDER",
+    /* Instruction instance is associated with a  HTML <li> that has a nested, child <ol> that contains sub-instructions.
+       Unlike Category.COMPOSITE, the child <ol>'s sub elements (<li>) represent mutually exclusive options.
+       The student only performs one of the options.  
+       
+       Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with Category.OPTION_SET 
+       and will not generate table rows for the child <ol>'s element (<li>'s).
+
+       Category.OPTION_SET is useful when different instructions are needed for different operating systems, or to accommodate other
+       differing aspects of the student's computing environment.
+
+       It is assumed that each option requires an equal amount of student effort and is therefore worth the same number points.
+       The points are calculated for the Category.OPTION_SET Instruction, since the nested, child <ol> is not represented by rows
+       in the Rubric table.
+     */
+    OPTION_SET = "OPTION_SET",
     /* [considered for deprecation] Instruction instance is associated with a question HTML <li> */
     GENERAL = "GENERAL",
     OVERVIEW = "OVERVIEW",
@@ -74,7 +89,7 @@ enum Category {
 
 /** 
  * @param element 
- * @param returnNull - this is a vestigate of earlier code, eventually this parameter should be removed and all code refactored
+ * @param returnNull - this is a vestige of earlier code, eventually this parameter should be removed and all code refactored
  * @returns 
  */
 function getCategoryFromClass(element : HTMLElement, returnNull : boolean)
@@ -97,6 +112,8 @@ function getCategoryFromClass(element : HTMLElement, returnNull : boolean)
         return Category.SECTION;
     if (element.className.includes("Instruction_Composite"))
         return Category.COMPOSITE;
+    if (element.className.includes("Instruction_Option_Set"))
+        return Category.OPTION_SET;    
     if (element.className.includes("Instruction_Git_Commit"))
         return Category.GIT_COMMIT;        
 
@@ -109,11 +126,12 @@ function getCategoryFromClass(element : HTMLElement, returnNull : boolean)
 
 
 /**
- * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
+ * \brief Some tutorial assignments have different options for students with different levels of past experiences
+ * OptionSet contains the multiple Section's each of which is one of the available options.
  */
 export class OptionSet 
-{
-    name: string;
+{ 
+    name: string;  // name is the string name of this OptionSet listed in HTML data attribute.   Along with OptionSet.optionSetByName, .name allows identification of which DOM <section>'s belong to a single OptionSet
     options: Array<Section>;    
     constructor(n : string)   
     {
@@ -232,8 +250,8 @@ enum PointCalculation
     }    
 
 /**
- * \brief Instruction is a instruction (or task) in assignment.  Instructions can be hierarchical composites of other sub Instructions and of different
- * enum Category. 
+ * \brief Instruction is a instruction (or task) in an assignment.  Instructions can be of various types, determined by enum Category.
+ * Some Instruction can be a hierarchical composites of other sub Instructions.
  * \author Zachary Wartell
  */    
 export class Instruction {
@@ -269,10 +287,13 @@ export class Instruction {
         this.subSteps = new Array<Instruction>();
         if (this.parent !== null)
         {
-            parent.pointCalculation = PointCalculation.COMPOSITE;
-            parent.category = Category.COMPOSITE;
-            console.assert(this.parent !== undefined);
-            console.assert(this.parent.subSteps !== undefined);
+            if (parent.category !== Category.OPTION_SET)
+            {// override any category that was set in the HTML file with Category.COMPOSITE
+                parent.pointCalculation = PointCalculation.COMPOSITE;
+                parent.category = Category.COMPOSITE;
+                console.assert(this.parent !== undefined);
+                console.assert(this.parent.subSteps !== undefined);    
+            }
             this.parent.subSteps.push(this);
         }
     }
@@ -476,7 +497,7 @@ export class Instructions
     }
 
     /**
-     *   Update the awared points column in the Rubric <table> as well as any Grey check boxes
+     *   Update the awarded points column in the Rubric <table> as well as any Grey check boxes
      */
     gui_update_awarded()
     {
@@ -589,7 +610,7 @@ export class Instructions
                 this.instructions.push(new Instruction(sectionLabel, itemString(...itemLevels),
                     li.innerText.trimStart().slice(0, 10) + " ...", cat, 'pointFraction' in li.dataset ? parseFloat(li.dataset.pointFraction) : equalFraction1, parent));
 
-                const parentLI = this.instructions[instructions.instructions.length - 1];
+                const parentLI = this.instructions[instructions.instructions.length - 1];  // parentLI is the just pushed new Instruction (previously line)
                 if (parentLI.category == Category.AUTO)
                     parentLI.category = Category.TODO;
 
@@ -597,8 +618,11 @@ export class Instructions
                 
                 const liOList  = li.querySelectorAll(":scope > ol, :scope > ul");
                 if (liOList !== null && liOList.length)
-                    parentLI.category = Category.COMPOSITE;
-                    this.collectInstructions_recursive(section,sectionElement,sectionLabel,parentLI,itemLevels,liOList);
+                {
+                    if (parentLI.category !== Category.OPTION_SET)
+                        parentLI.category = Category.COMPOSITE;                    
+                }
+                this.collectInstructions_recursive(section,sectionElement,sectionLabel,parentLI,itemLevels,liOList);    
 
                 itemLevels.pop();
                 lic++;
@@ -741,11 +765,20 @@ export class Instructions
         const REGEX = /Symbol\(([^)]*)\)/; // for removing Symbol sub-string
         let ri = 0;
         for (let instruction of this.instructions) {
+            let parentOptionSet : boolean;
+            /**
+             * if instruction is child of an Category.OPTION_SET, handle <tr> differently
+             */
+            if (instruction.parent !== null && instruction.parent.category === Category.OPTION_SET)                
+                parentOptionSet = true;
+            else
+                parentOptionSet = false;
+
             /**
              *  In the innerText of the Instruction <li> HTML::Element's, insert display of points allocated to this Instruction in the 
              */
             const iElement : HTMLElement = document.getElementById(instruction.id);
-            if (iElement !== null)
+            if (!parentOptionSet && iElement !== null)
             {
                 const ptDiv = <HTMLDivElement> document.createElement("span");
                 ptDiv.classList.add("Points");
@@ -799,7 +832,7 @@ export class Instructions
             if (instruction.parent !== null)                
                 levelPrefix += "|---";
 
-            // add level info to <td> HTML elment -- might be useful in future                
+            // add level info to <td> HTML element -- might be useful in future                
             row.setAttribute("data-level", level.toString());
             
             // pad pointFraction string representation to length of 4 using spaces
@@ -816,7 +849,7 @@ export class Instructions
 
             // disable checkbox for instructions worth 0 points.                
             let disabled = "";
-            if (instruction.points === 0.0)
+            if (parentOptionSet || instruction.points === 0.0)
                 disabled = "disabled";
 
             // created row's HTML code                 
@@ -829,19 +862,19 @@ export class Instructions
                 row.innerHTML =
                 `   <td>${instruction.section}</td>`;
             }
-                row.innerHTML +=                 
-                 `<td>${instruction.number}</td>
-				 <td>${Category[instruction.category].toLowerCase()}</td>
-				 <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
-                 <td style='width:fit-content;'><span>${levelPrefix}</span>${pf}&percnt;</td>
-                 <td>
-                    <span>${levelPrefix}</span>${ps}
-                     <span hidden class="Instructor_Mode" style="padding: 4px; border: solid 1px black">
-                        <span><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></span>
-                        <span style="margin-left:10px"> 0.00 
-                    </span>                        
+            row.innerHTML +=                 
+                `<td>${instruction.number}</td>
+                <td>${Category[instruction.category].toLowerCase()}</td>
+                <td><a href="#${instruction.id}" onclick="BreadCrumb.onclick(this);">${instruction.short}</a></td>                 
+                <td style='width:fit-content;'><span>${levelPrefix}</span>${pf}&percnt;</td>
+                <td>
+                <span>${levelPrefix}</span>${ps}
+                    <span hidden class="Instructor_Mode" style="padding: 4px; border: solid 1px black">
+                    <span><input type="checkbox" id="#CB_${instruction.id}" name="scales" ${disabled}></span>
+                    <span style="margin-left:10px"> 0.00 
+                </span>                        
                 </td>                                                                        
-                 <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+                <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
 
             //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
             //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
