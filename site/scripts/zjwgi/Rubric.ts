@@ -593,7 +593,11 @@ export class Instructions
                     rubricItems++;
             }                
 
-            const equalFraction1: number = 1.0 / rubricItems * 100;
+            let equalFraction1: number;
+            if (parent !== null && parent.category = Category.OPTION_SET)
+                equalFraction1 = 100;
+            else
+                equalFraction1 = 1.0 / rubricItems * 100;
             lic = 1;
             /*
             **  Collection level 1 <li> Instructions
