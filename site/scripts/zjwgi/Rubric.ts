@@ -594,7 +594,7 @@ export class Instructions
             }                
 
             let equalFraction1: number;
-            if (parent !== null && parent.category = Category.OPTION_SET)
+            if (parent !== null && parent.category === Category.OPTION_SET)
                 equalFraction1 = 100;
             else
                 equalFraction1 = 1.0 / rubricItems * 100;
