@@ -100,13 +100,14 @@ function getCategoryFromClass(element, returnNull) {
 /**
  * \brief [status: thought stage] some tutorials assignments have different options for students with different levels of past experiences
  */
-export class OptionSet {
+class OptionSet {
     constructor(n) {
         this.name = n;
         this.options = new Array;
     }
 }
 OptionSet.optionSetByName = new Map();
+export { OptionSet };
 /**
  * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */

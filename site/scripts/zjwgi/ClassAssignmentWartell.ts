@@ -294,9 +294,51 @@ export function QandAModeHover(e : MouseEvent) : void
     }
  }
 
+
+ /**
+  * @brief Enable scrollIntoView behavior for browser forward/back buttons
+  */
+ function scrollIntoViewNavigation()
+ {
+    if (true)
+        window.addEventListener("popstate", (event) => {
+            //alert(
+            //  `location: ${document.location}, state: ${JSON.stringify(event.state)}`,
+            //);
+            const s = document.location.toString().split('#');
+            if (s.length == 2)
+            {
+              console.log(s[1]);
+              const id = document.getElementById(s[1]);
+              console.log("id:",id);
+              if (id !== null)
+                id.scrollIntoView();
+              else
+              {
+                const mc = document.querySelector("article");
+                console.log("mc 1:"+mc);
+                mc.scrollIntoView();
+              }
+            } else
+            {
+                const mc : HTMLElement = document.querySelector("article");
+                console.log("mc 2:"+mc+mc.classList);
+                //mc.scrollIntoView({ behavior: "instant", block: "start" });
+                const scrollToOptions = { behavior: "instant", block: "start" };
+                mc.scrollIntoView( scrollToOptions as unknown as ScrollToOptions );
+            }
+               
+            console.log(
+              `location: ${document.location}, state: ${JSON.stringify(event.state)}`
+            );
+          });
+ }
+
 export function main(totalPoints : number)
 {
     apiCheck();
+
+    scrollIntoViewNavigation();
     
     /**
      **   Setup Toolbar

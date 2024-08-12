@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* "module": "commonjs", */
+    "strictNullChecks": false,
     "target": "es2019",
     "sourceMap": true,
 
