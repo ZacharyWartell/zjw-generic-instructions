@@ -79,6 +79,6 @@ rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi     ..\..\%SITE
 
 mkdir %SITE%\videos > nul 2>&1
 rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi     ..\..\%SITE%\git_modules\zjwgi\site\videos\zjwgi
-copy %SITE%\git_modules\zjwgi\site\index.html %SITE%           
+copy /-Y %SITE%\git_modules\zjwgi\site\index.html %SITE%           
 
 popd
