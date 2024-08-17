@@ -63,6 +63,7 @@ else
     cp -r -u -L "$site_full_path/scripts" www-site-mirror
     cp -r -u -L "$site_full_path/images"  www-site-mirror
     cp -r -u -L "$site_full_path/videos"  www-site-mirror
+    cp -r -u -L "$site_full_path/data"  www-site-mirror
 fi    
 popd
 
