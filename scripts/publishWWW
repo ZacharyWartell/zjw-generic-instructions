@@ -18,6 +18,7 @@ site_path=$2
 
 site_full_path=$( echo $(cd $(dirname $site_path); pwd)/$(basename $site_path); )
 echo site_full_path: $site_full_path
+echo html_file: "$site_full_path/$htmlfile"
 
 # replace the string $REVISION$ with the git log's date of last revision in the file index.html
 
@@ -62,6 +63,7 @@ else
     cp -r -u -L "$site_full_path/scripts" www-site-mirror
     cp -r -u -L "$site_full_path/images"  www-site-mirror
     cp -r -u -L "$site_full_path/videos"  www-site-mirror
+    cp -r -u -L "$site_full_path/data"  www-site-mirror
 fi    
 popd
 

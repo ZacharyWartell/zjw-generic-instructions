@@ -70,15 +70,14 @@ enum Category {
        The student only performs one of the options.  
        
        Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with Category.OPTION_SET 
-       and will not generate grading checkboxes for the child <ol>'s element (<li>'s).
+       and will not generate table rows for the child <ol>'s element (<li>'s).
 
        Category.OPTION_SET is useful when different instructions are needed for different operating systems, or to accommodate other
        differing aspects of the student's computing environment.
 
        It is assumed that each option requires an equal amount of student effort and is therefore worth the same number points.
-       The points are calculated for the Category.OPTION_SET Instruction, because the nested child <li> checkboxes are disabled.
-
-       \todo allow nested child <li> checkbox to be check but enforce constraints that only 1 of the group can be selected        
+       The points are calculated for the Category.OPTION_SET Instruction, since the nested, child <ol> is not represented by rows
+       in the Rubric table.
      */
     OPTION_SET = "OPTION_SET",
     /* [considered for deprecation] Instruction instance is associated with a question HTML <li> */

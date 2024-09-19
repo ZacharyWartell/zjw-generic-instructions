@@ -6,9 +6,16 @@
  *   Toggle a Code_Example table between scrolled presentation and expanded presentation
  *   @param {String} - ID HTML Element ID of table
  */
+//var count=0;
 function Code_Example_Toggle(ID)
 {
-    document.getElementById(ID).classList.toggle('Code_Example_Expand');
+    //count++;
+    //console.log("******************",count);
+    //console.log(document.getElementById(ID),document.getElementById(ID).classList);
+    //document.getElementById(ID).classList.toggle("Code_Example_Expand");    
+    document.getElementById(ID).classList.toggle("Expanded_Code_Example");    
+    //document.getElementById(ID).classList.toggle('Code_Example');    
+    //console.log(document.getElementById(ID),document.getElementById(ID).classList);
 }
 
 /* 

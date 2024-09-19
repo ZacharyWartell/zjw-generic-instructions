@@ -31,7 +31,7 @@ export class AssignmentName {
             this.numberLongDir = jsonObject.AssignmentName.numberLongDir;
             this.name = jsonObject.AssignmentName.name;
         }
-        this.git = this.courseNumber + "-" + this.numberLongDir;
+        this.git = this.numberLongDir;
     }
     insertText(doc) {
         let elements = doc.querySelectorAll('span[data-course-number]');
@@ -49,6 +49,10 @@ export class AssignmentName {
         elements = doc.querySelectorAll('span[data-project-name-dir]');
         for (let e of elements) {
             e.innerText = this.name;
+        }
+        elements = doc.querySelectorAll('span[data-project-number-name-dir]');
+        for (let e of elements) {
+            e.innerText = this.number + "-" + this.name;
         }
         elements = doc.querySelectorAll('span[data-project-git]');
         for (let e of elements) {
@@ -249,8 +253,41 @@ export function QandAModeHover(e) {
         QandAModeTarget = p;
     }
 }
+/**
+ * @brief Enable scrollIntoView behavior for browser forward/back buttons
+ */
+function scrollIntoViewNavigation() {
+    if (true)
+        window.addEventListener("popstate", (event) => {
+            //alert(
+            //  `location: ${document.location}, state: ${JSON.stringify(event.state)}`,
+            //);
+            const s = document.location.toString().split('#');
+            if (s.length == 2) {
+                console.log(s[1]);
+                const id = document.getElementById(s[1]);
+                console.log("id:", id);
+                if (id !== null)
+                    id.scrollIntoView();
+                else {
+                    const mc = document.querySelector("article");
+                    console.log("mc 1:" + mc);
+                    mc.scrollIntoView();
+                }
+            }
+            else {
+                const mc = document.querySelector("article");
+                console.log("mc 2:" + mc + mc.classList);
+                //mc.scrollIntoView({ behavior: "instant", block: "start" });
+                const scrollToOptions = { behavior: "instant", block: "start" };
+                mc.scrollIntoView(scrollToOptions);
+            }
+            console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
+        });
+}
 export function main(totalPoints) {
     apiCheck();
+    scrollIntoViewNavigation();
     /**
      **   Setup Toolbar
      **/
