@@ -428,6 +428,20 @@ export function main(totalPoints : number)
                 (handle)=>
                 {
                     console.log("Save " + handle);
+
+                    /* hack: subfix - check boxes are being check even on 0.00 values in export
+                    */
+                    /* does fix problem
+                    const fixList = document.getElementById("Div_Rubric")?.querySelectorAll('span');
+                    let fixArray=[];
+                    fixList.forEach((a,b,o)=>{fixArray.push(a);});
+                    fixArray.filter((e) => e.innerText=="0.00").forEach((a,b,c)=> {
+                        if (a.previousElementSibling && a.previousElementSibling.previousElementSibling && a.previousElementSibling.previousElementSibling.firstChild) {
+                            a?.previousElementSibling?.previousElementSibling?.firstElementChild?.removeAttribute("checked");
+                        }
+                    })
+                    */
+                    
                     return writeFile(handle,
                         `<!DOCTYPE html>
                         <html>
@@ -442,10 +456,23 @@ export function main(totalPoints : number)
                                 border: solid 1px;                                
                                 }
                             </style>
-                            <script>                            
+                            <script>
+                                function main()
+                                {
+                                    const fixList = document.getElementById("Div_Rubric")?.querySelectorAll('span');
+                                    let fixArray=[];
+                                    fixList.forEach((a,b,o)=>{fixArray.push(a);});
+                                    fixArray.filter((e) => e.innerText=="0.00").forEach(
+                                        (a,b,c)=> {
+                                            //if (a.previousElementSibling && a.previousElementSibling.previousElementSibling && a.previousElementSibling.previousElementSibling.firstChild)                                     
+                                            a?.previousElementSibling?.firstElementChild?.removeAttribute("checked");                                    
+                                        });
+                                }
+                                window.main = main;                                
                             </script>
                         </head>
-                        <body>
+                        <body onload="main();">                        
+                        
                         ${document.getElementById("Div_Rubric").outerHTML}
                         </body>
                         </html>

@@ -237,7 +237,7 @@ export class Instruction {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        let percentages = "[";
+        let percentages = " [";
         for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
             percentages += (instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100).toFixed(1) + "%, ";
         }
