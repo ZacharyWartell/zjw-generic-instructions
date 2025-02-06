@@ -118,14 +118,13 @@ function getCategoryFromClass(element, returnNull) {
  * \brief Some tutorial assignments have different options for students with different levels of past experiences
  * OptionSet contains the multiple Section's each of which is one of the available options.
  */
-class OptionSet {
+export class OptionSet {
     constructor(n) {
         this.name = n;
         this.options = new Array;
     }
 }
 OptionSet.optionSetByName = new Map();
-export { OptionSet };
 /**
  * @brief A Section corresponds to a <section> in the HTML document and contains Instruction objects (which correspond to HTMLElements with class="Instruction_*") and child Section's (which correspond to the child <section>'s)
  */
@@ -230,7 +229,7 @@ export class Instruction {
                 this[p] = jsonObject[p];
     }
     /**
-     * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
+     * \brief update to this Instruction.awarded points based on GUI checkbox change and handle upward and downward
      *  propagation of checkbox changes based on Instruction hierarchy
      * @param input
      */
@@ -238,7 +237,16 @@ export class Instruction {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2);
+        let percentages = "[";
+        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
+            percentages += (instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100).toFixed(1) + "%, ";
+        }
+        percentages += "]";
+        /*
+        for (let os of instructions.optionSets)
+        
+        */
+        document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2) + percentages;
         /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
            set to the DOM checkbox's run-time state
          */

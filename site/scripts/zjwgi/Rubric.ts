@@ -306,7 +306,7 @@ export class Instruction {
 
    
     /**
-     * \brief update to this Instruction.awarded points based on GUI checkboxchange and handle upward and downward
+     * \brief update to this Instruction.awarded points based on GUI checkbox change and handle upward and downward
      *  propagation of checkbox changes based on Instruction hierarchy
      * @param input 
      */    
@@ -316,7 +316,22 @@ export class Instruction {
         
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2);
+        let percentages : string = " [";
+
+        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling)
+        {            
+            percentages += (instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100).toFixed(1) + "%, ";            
+        }
+        percentages += "]";
+        
+        /*
+        for (let os of instructions.optionSets)
+        
+        */
+
+        (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2) + percentages;
+
+         
 
         /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
            set to the DOM checkbox's run-time state
