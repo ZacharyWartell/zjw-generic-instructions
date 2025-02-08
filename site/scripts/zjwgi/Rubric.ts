@@ -316,20 +316,26 @@ export class Instruction {
         
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        let percentages : string = " [";
+
 
         for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling)
         {            
-            percentages += (instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100).toFixed(1) + "%, ";            
+            //let percentage : string;
+            const percentage = instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100;
+            if ( percentage <= 101)
+                (<HTMLTableCellElement>tr.children[2]).innerText = percentage.toFixed(1) + "%";                        
+            else
+            (<HTMLTableCellElement>tr.children[2]).innerText = "-";
         }
-        percentages += "]";
+        //percentages += "]";
         
         /*
         for (let os of instructions.optionSets)
         
         */
 
-        (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2) + percentages;
+        //(<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2) + percentages;
+        (<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2); 
 
          
 

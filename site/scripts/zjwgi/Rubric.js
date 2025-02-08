@@ -237,16 +237,21 @@ export class Instruction {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        let percentages = " [";
         for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
-            percentages += (instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100).toFixed(1) + "%, ";
+            //let percentage : string;
+            const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
+            if (percentage <= 101)
+                tr.children[2].innerText = percentage.toFixed(1) + "%";
+            else
+                tr.children[2].innerText = "-";
         }
-        percentages += "]";
+        //percentages += "]";
         /*
         for (let os of instructions.optionSets)
         
         */
-        document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2) + percentages;
+        //(<HTMLSpanElement>document.getElementById("AwardedPoints")).innerText = instructions.awardedPoints.toFixed(2) + percentages;
+        document.getElementById("AwardedPoints").innerText = instructions.awardedPoints.toFixed(2);
         /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
            set to the DOM checkbox's run-time state
          */
