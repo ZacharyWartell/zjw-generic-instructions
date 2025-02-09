@@ -244,6 +244,7 @@ export class Instruction {
                 tr.children[2].innerText = percentage.toFixed(1) + "%";
             else
                 tr.children[2].innerText = "-";
+            tr.children[2].setAttribute("contenteditable", "true");
         }
         //percentages += "]";
         /*

@@ -325,7 +325,9 @@ export class Instruction {
             if ( percentage <= 101)
                 (<HTMLTableCellElement>tr.children[2]).innerText = percentage.toFixed(1) + "%";                        
             else
-            (<HTMLTableCellElement>tr.children[2]).innerText = "-";
+                (<HTMLTableCellElement>tr.children[2]).innerText = "-";
+            
+            (<HTMLTableCellElement>tr.children[2]).setAttribute("contenteditable","true");
         }
         //percentages += "]";
         
