@@ -38,7 +38,7 @@ done
 pushd $RootPath
 
 site="site"
-if [[ "$DirPrefix" == "null"]]; do
+if [[ "$DirPrefix" == "null" ]]; do
     SITE="."
 else
     SITE="$DirPrefix$site"
