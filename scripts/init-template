@@ -57,17 +57,19 @@ cp_ln () {
         cp -r $2 $1
     else
         ln -s $1 $2
+        exit # too many changes need to make ln work again right now
     fi
 
 }
 
-rmdir scripts/zjwgi 2>null ;        cp_ln scripts/zjwgi        "$ZJWGIPath/scripts"
+#rmdir scripts/zjwgi 2>null ;        cp_ln scripts/zjwgi        "$ZJWGIPath/scripts"
 mkdir $SITE/css > nul 2>&1
 rmdir $SITE/css/zjwgi 2>null ;      cp_ln  $SITE/css/zjwgi      "$ZJWGIPath/site/css/zjwgi"
 mkdir $SITE/html > nul 2>&1
 rmdir $SITE/html/zjwgi 2>null ;     cp_ln  $SITE/html/zjwgi     "$ZJWGIPath/site/html/zjwgi"
 mkdir $SITE/scripts > nul 2>&1
-rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
+#rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
+rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts  "$ZJWGIPath/site/scripts/zjwgi"
 
 mkdir $SITE/images > nul 2>&1
 rmdir $SITE/images/zjwgi 2>null ;   cp_ln  $SITE/images/zjwgi   "$ZJWGIPath/site/images/zjwgi"
