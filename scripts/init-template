@@ -53,7 +53,7 @@ ZJWGIPath="$SITE/git_modules/zjwgi"
 pwd
 
 cp_ln () {
-    if [[ $CP_LN == 'cp']]; then
+    if [[ $CP_LN == 'cp' ]]; then
         cp -r $2 $1
     else
         ln -s $1 $2
