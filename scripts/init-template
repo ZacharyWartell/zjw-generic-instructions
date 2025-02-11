@@ -6,15 +6,18 @@
 #     one common option is:
 #         www-
 
+# references
+# - https://man7.org/linux/man-pages/man1/getopts.1p.html
+
 echo This script should be run from the directory containing it, i.e. zjw-generic-instructions-template/site/git_modules/zjwgi/scripts/zjwgi
 
 USAGE_P="USAGE:
    %s [flags]     
  
-   /?, --help               shows this help
-   --dir-prefix value       optional prefix to name of directory name containing the files published to the public website. The prefix is prepended to standard name directory name: 'site'.
-   --root-path value        optional relative path too root directory of the project folder [Default:  ../../../..]
-   --zjwgi-path value       optional relative path too root directory of the zjwgi folder [Default:  ../../$SITE/git_modules/zjwgi]
+    -h                      shows this help
+    -p value                (--dir-prefix) optional prefix to name of directory name containing the files published to the public website. The prefix is prepended to standard name directory name: 'site'.
+    -r value                (--root-path) optional relative path too root directory of the project folder [Default:  ../../../..]
+    -z value                (--zjwgi-path) optional relative path too root directory of the zjwgi folder [Default:  ../../$SITE/git_modules/zjwgi]
 "
       
 :init
@@ -56,6 +59,27 @@ USAGE_P="USAGE:
 
     shift
     goto :parse
+
+DirPrefix=
+RootPath="../../../.."
+ZJWGIPath=
+
+while getopts p:r:z: name; do
+    case $name in    
+    p)  DirPrefix="$OPTARG"
+        ;;    
+    r)  RootPath="$OPTARG"
+        ;;    
+    z)  ZJWGIPath="$OPTARG"
+        ;;    
+    h)
+        printf "$USAGE_P" `basename "$0"`
+        printf "$USAGE_D" `basename "$0"`
+        exit 2
+        ;;
+    esac
+done
+
 
 :validate
 
