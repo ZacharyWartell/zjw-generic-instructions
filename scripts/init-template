@@ -17,7 +17,7 @@ USAGE_P="
      
 DirPrefix=
 RootPath="../../../.."
-CP_LN="ln -s"
+CP_LN="ln"
 
 while getopts p:r:z:c: name; do
     case $name in    
@@ -52,20 +52,28 @@ ZJWGIPath="$SITE/git_modules/zjwgi"
 
 pwd
 
+cp_ln () {
+    if [[ $CP_LN == 'cp']]; then
+        cp -r $1 $2
+    else
+        ln -s $2 $1 
+    fi
 
-rmdir scripts/zjwgi 2>null ;        $CP_LN scripts/zjwgi        "$ZJWGIPath/scripts"
+}
+
+rmdir scripts/zjwgi 2>null ;        cp_ln scripts/zjwgi        "$ZJWGIPath/scripts"
 mkdir $SITE/css > nul 2>&1
-rmdir $SITE/css/zjwgi 2>null ;      $CP_LN $SITE/css/zjwgi      "$ZJWGIPath/site/css/zjwgi"
+rmdir $SITE/css/zjwgi 2>null ;      cp_ln  $SITE/css/zjwgi      "$ZJWGIPath/site/css/zjwgi"
 mkdir $SITE/html > nul 2>&1
-rmdir $SITE/html/zjwgi 2>null ;     $CP_LN $SITE/html/zjwgi     "$ZJWGIPath/site/html/zjwgi"
+rmdir $SITE/html/zjwgi 2>null ;     cp_ln  $SITE/html/zjwgi     "$ZJWGIPath/site/html/zjwgi"
 mkdir $SITE/scripts > nul 2>&1
-rmdir $SITE/scripts/zjwgi 2>null ;  $CP_LN $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
+rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
 
 mkdir $SITE/images > nul 2>&1
-rmdir $SITE/images/zjwgi 2>null ;   $CP_LN $SITE/images/zjwgi   "$ZJWGIPath/site/images/zjwgi"
+rmdir $SITE/images/zjwgi 2>null ;   cp_ln  $SITE/images/zjwgi   "$ZJWGIPath/site/images/zjwgi"
 
 mkdir $SITE/videos > nul 2>&1
-rmdir $SITE/videos/zjwgi 2>null ;   $CP_LN $SITE/videos/zjwgi   "$ZJWGIPath/site/videos/zjwgi"
+rmdir $SITE/videos/zjwgi 2>null ;   cp_ln  $SITE/videos/zjwgi   "$ZJWGIPath/site/videos/zjwgi"
 # \todo ??? copy /-Y $SITE/git_modules/zjwgi/site/index.html $SITE           
 
 popd
