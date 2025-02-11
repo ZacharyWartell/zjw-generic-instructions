@@ -19,7 +19,7 @@ DirPrefix=
 RootPath="../../../.."
 CP_LN="ln -s"
 
-while getopts p:r:z: name; do
+while getopts p:r:z:c: name; do
     case $name in    
     c)  CP_LN="$OPTARG"
         ;;    
