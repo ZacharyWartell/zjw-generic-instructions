@@ -38,7 +38,12 @@ done
 pushd $RootPath
 
 site="site"
-SITE="$DirPrefix$site"
+if [[ "$DirPrefix" == "null"]]; do
+    SITE="."
+else
+    SITE="$DirPrefix$site"
+done 
+
 ZJWGIPath="$SITE/git_modules/zjwgi"
 
 #if /i "$ZJWGIPath"=="" set "ZJWGIPath=../$SITE/git_modules/zjwgi"
