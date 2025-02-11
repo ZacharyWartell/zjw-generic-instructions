@@ -42,7 +42,7 @@ if [[ "$DirPrefix" == "null"]]; do
     SITE="."
 else
     SITE="$DirPrefix$site"
-done 
+fi
 
 ZJWGIPath="$SITE/git_modules/zjwgi"
 
