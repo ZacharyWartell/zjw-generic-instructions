@@ -17,7 +17,7 @@ USAGE_P="
      
 DirPrefix=
 RootPath="../../../.."
-ZJWGIPath=
+
 
 while getopts p:r:z: name; do
     case $name in    
@@ -37,7 +37,9 @@ done
 
 pushd $RootPath
 
-SITE={$DirPrefix}site
+site="site"
+SITE="$DirPrefix$site"
+ZJWGIPath="$SITE/git_modules/zjwgi"
 
 #if /i "$ZJWGIPath"=="" set "ZJWGIPath=../$SITE/git_modules/zjwgi"
 
@@ -45,17 +47,17 @@ pwd
 
 rmdir scripts/zjwgi 2>null ;        ln -s scripts/zjwgi        "$ZJWGIPath/scripts"
 mkdir $SITE/css > nul 2>&1
-rmdir $SITE/css/zjwgi 2>null ;      ln -s $SITE/css/zjwgi      "../$ZJWGIPath/site/css/zjwgi"
+rmdir $SITE/css/zjwgi 2>null ;      ln -s $SITE/css/zjwgi      "$ZJWGIPath/site/css/zjwgi"
 mkdir $SITE/html > nul 2>&1
-rmdir $SITE/html/zjwgi 2>null ;     ln -s $SITE/html/zjwgi     "../$ZJWGIPath/site/html/zjwgi"
+rmdir $SITE/html/zjwgi 2>null ;     ln -s $SITE/html/zjwgi     "$ZJWGIPath/site/html/zjwgi"
 mkdir $SITE/scripts > nul 2>&1
-rmdir $SITE/scripts/zjwgi 2>null ;  ln -s $SITE/scripts/zjwgi  "../$ZJWGIPath/site/scripts/zjwgi"
+rmdir $SITE/scripts/zjwgi 2>null ;  ln -s $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
 
 mkdir $SITE/images > nul 2>&1
-rmdir $SITE/images/zjwgi 2>null ;   ln -s $SITE/images/zjwgi   "../$ZJWGIPath/site/images/zjwgi"
+rmdir $SITE/images/zjwgi 2>null ;   ln -s $SITE/images/zjwgi   "$ZJWGIPath/site/images/zjwgi"
 
 mkdir $SITE/videos > nul 2>&1
-rmdir $SITE/videos/zjwgi 2>null ;   ln -s $SITE/videos/zjwgi   "../$ZJWGIPath/site/videos/zjwgi"
+rmdir $SITE/videos/zjwgi 2>null ;   ln -s $SITE/videos/zjwgi   "$ZJWGIPath/site/videos/zjwgi"
 # \todo ??? copy /-Y $SITE/git_modules/zjwgi/site/index.html $SITE           
 
 popd
