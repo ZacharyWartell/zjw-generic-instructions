@@ -1,6 +1,25 @@
+/**
+ * @author Zachary Wartell
+ * @copyright Copyright 2015. Zachary Wartell.
+ * @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+ - http://creativecommons.org/licenses/by-nc-sa/4.0/
+
+ \status [STATUS=not deployed] work-in-progress
+ */
+import * as ZxW_GUI from "ZxW_GUI";
+import * as ZxW_Toolbar from "ZxW_Toolbar";
+import * as ZxW_Annotation from "ZxW_Annotation";
 import "./third-party/jquery-3.5.1.min.js";
 import * as Rubric from "./Rubric.js";
 import { Instruction } from "./Rubric.js";
+class App extends ZxW_GUI.DefaultApplication {
+    constructor() {
+        super();
+    }
+    postUserDocumentLoadCallback() {
+    }
+}
+let app;
 /**
  ** @brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
  *
@@ -520,6 +539,13 @@ class Git_Commit_Message {
 }
 let assignmentName;
 export function onload(totalPoints) {
+    /**
+     ** init zxw-mvc
+     **/
+    ZxW_GUI.init();
+    app = new App();
+    const toolbar = new ZxW_Toolbar.Toolbar(null, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
+    ZxW_Annotation.main(toolbar);
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/

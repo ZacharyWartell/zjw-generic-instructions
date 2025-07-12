@@ -7,8 +7,7 @@
  \status [STATUS=not deployed] work-in-progress
  */
 import * as ZxW_GUI from "ZxW_GUI";
-import * as ZxW_TabContainer from "ZxW_TabContainer";
-import * as ZxW_Toolbar from "ZxW_Toolbar";
+import * as ZxW_Toolbar from "ZxW_Toolbar"; 
 import * as ZxW_Annotation from "ZxW_Annotation";
 
 import "./third-party/jquery-3.5.1.min.js";
@@ -17,6 +16,20 @@ import * as Rubric from "./Rubric.js";
 import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
 import {Instruction, Instructions} from "./Rubric.js";
 
+
+
+class App extends ZxW_GUI.DefaultApplication
+{
+    constructor()
+    {
+        super();
+    }
+    postUserDocumentLoadCallback(): void 
+    {
+    }
+}
+
+let app : App | null;
 
 /**
  ** @brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
@@ -641,6 +654,15 @@ let assignmentName : AssignmentName;
 export
 function onload(totalPoints : number)
 {
+    /**
+     ** init zxw-mvc
+     **/
+    ZxW_GUI.init();
+
+    app = new App();
+    const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
+    ZxW_Annotation.main(toolbar);
+
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/
