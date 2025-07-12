@@ -586,7 +586,6 @@ export class Instructions {
      * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
      */
     displayRubric() {
-        var _a;
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
          * various <input> HTML elements to certain <table> columns
@@ -797,7 +796,7 @@ export class Instructions {
             let si = 0;
             let sequenceFraction = 0;
             for (let se of s.sections) {
-                innerHTML += `${(_a = se.optionSet) === null || _a === void 0 ? void 0 : _a.name}` + (se.optionSet.options.length === 1 ? "" : `-${roman(se.optionIndex + 1, Roman.UPPER)}`) + ", ";
+                innerHTML += `${se.optionSet?.name}` + (se.optionSet.options.length === 1 ? "" : `-${roman(se.optionIndex + 1, Roman.UPPER)}`) + ", ";
                 sequenceFraction += se.cumulativeFraction;
                 si++;
             }

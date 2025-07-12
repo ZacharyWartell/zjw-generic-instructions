@@ -1,11 +1,3 @@
-/**
- * @author Zachary Wartell
- * @copyright Copyright 2015. Zachary Wartell.
- * @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
- - http://creativecommons.org/licenses/by-nc-sa/4.0/
-
- \status [STATUS=not deployed] work-in-progress
- */
 import "./third-party/jquery-3.5.1.min.js";
 import * as Rubric from "./Rubric.js";
 import { Instruction } from "./Rubric.js";
@@ -518,10 +510,9 @@ export function main(totalPoints) {
  */
 class Git_Commit_Message {
     static copyToClipboard(e) {
-        var _a;
         const b = e.currentTarget;
         //console.log(b.previousElementSibling?.innerText);
-        navigator.clipboard.writeText(((_a = b.parentElement) === null || _a === void 0 ? void 0 : _a.previousElementSibling).innerText);
+        navigator.clipboard.writeText((b.parentElement?.previousElementSibling).innerText);
         if (b.nextElementSibling !== null)
             b.nextElementSibling.style.display = 'block';
         setTimeout(() => { b.nextElementSibling.style.display = 'none'; }, 2000);

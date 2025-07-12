@@ -6,6 +6,11 @@
 
  \status [STATUS=not deployed] work-in-progress
  */
+import * as ZxW_GUI from "ZxW_GUI";
+import * as ZxW_TabContainer from "ZxW_TabContainer";
+import * as ZxW_Toolbar from "ZxW_Toolbar";
+import * as ZxW_Annotation from "ZxW_Annotation";
+
 import "./third-party/jquery-3.5.1.min.js";
 
 import * as Rubric from "./Rubric.js";
