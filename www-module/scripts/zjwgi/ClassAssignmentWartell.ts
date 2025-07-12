@@ -362,6 +362,16 @@ export function main(totalPoints : number)
     apiCheck();
 
     scrollIntoViewNavigation();
+
+    /**
+     ** init zxw-mvc
+     **/
+    ZxW_GUI.init();
+
+    app = new App();
+    const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
+    ZxW_Annotation.main(toolbar);
+
     
     /**
      **   Setup Toolbar
@@ -654,14 +664,6 @@ let assignmentName : AssignmentName;
 export
 function onload(totalPoints : number)
 {
-    /**
-     ** init zxw-mvc
-     **/
-    ZxW_GUI.init();
-
-    app = new App();
-    const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
-    ZxW_Annotation.main(toolbar);
 
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
