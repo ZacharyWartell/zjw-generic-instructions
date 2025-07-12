@@ -300,6 +300,24 @@ export function main(totalPoints) {
     apiCheck();
     scrollIntoViewNavigation();
     /**
+     ** init zxw-mvc
+     **/
+    ZxW_GUI.init();
+    app = new App();
+    const toolbar = new ZxW_Toolbar.Toolbar(null, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
+    ZxW_Annotation.main(toolbar);
+    const tabPanel1 = document.createElement('div', { is: 'tab-panel' }); //new ZxW_GUI.TabPanel();
+    const tabIndex1 = document.createElement('button', { is: 'tab-index' }); //new ZxW_GUI.TabPanel();
+    //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
+    const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
+    const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
+    tis.insertBefore(tabIndex1, tis.firstElementChild);
+    tps.insertBefore(tabPanel1, tps.firstElementChild);
+    tabIndex1.innerText = "Project";
+    toolbar.tabContainer.createEventListeners();
+    let div = document.getElementById("Toolbar");
+    tabPanel1.appendChild(div);
+    /**
      **   Setup Toolbar
      **/
     /*
@@ -539,13 +557,6 @@ class Git_Commit_Message {
 }
 let assignmentName;
 export function onload(totalPoints) {
-    /**
-     ** init zxw-mvc
-     **/
-    ZxW_GUI.init();
-    app = new App();
-    const toolbar = new ZxW_Toolbar.Toolbar(null, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
-    ZxW_Annotation.main(toolbar);
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/

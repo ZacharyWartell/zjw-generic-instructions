@@ -7,6 +7,7 @@
  \status [STATUS=not deployed] work-in-progress
  */
 import * as ZxW_GUI from "ZxW_GUI";
+import * as ZxW_TabContainer from "ZxW_TabContainer"; 
 import * as ZxW_Toolbar from "ZxW_Toolbar"; 
 import * as ZxW_Annotation from "ZxW_Annotation";
 
@@ -371,6 +372,19 @@ export function main(totalPoints : number)
     app = new App();
     const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
     ZxW_Annotation.main(toolbar);
+
+    const tabPanel1 = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
+    const tabIndex1 = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
+    //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
+    const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
+    const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
+    tis!.insertBefore(tabIndex1,tis!.firstElementChild);
+    tps!.insertBefore(tabPanel1,tps!.firstElementChild);    
+    tabIndex1.innerText = "Project";    
+    toolbar.tabContainer.createEventListeners();
+
+    let div = <HTMLDivElement>document.getElementById("Toolbar");
+    tabPanel1.appendChild(div);    
 
     
     /**
