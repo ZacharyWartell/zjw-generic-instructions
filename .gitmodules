@@ -1,0 +1,9 @@
+[submodule "git-modules/zxw-mvc.git"]
+	path = git-modules/zxw-mvc.git
+	url = https://gitlab.com/zachary-wartell/zxw-mvc.git
+[submodule "git-modules/zjw-pwa-template.git"]
+	path = git-modules/zjw-pwa-template.git
+	url = https://gitlab.com/zachary-wartell-public/zjw-pwa-template.git
+[submodule "git-modules/zxw-git-modules.git"]
+	path = git-modules/zxw-git-modules.git
+	url = https://gitlab.com/zachary-wartell-public/zxw-git-modules.git
