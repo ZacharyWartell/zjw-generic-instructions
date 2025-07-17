@@ -636,7 +636,7 @@ export class Instructions {
                 }
                 else
                     //iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
-                    iElement.insertAdjacentHTML("afterbegin", "|<sup>" + ptDiv.innerHTML + "</sup>| &nbsp;");
+                    iElement.insertAdjacentHTML("afterbegin", "|<sup>" + ptDiv.innerHTML + "</sup>|");
             }
             /**
              *   In the Rubric table, insert rows corresponding to all Instructions
