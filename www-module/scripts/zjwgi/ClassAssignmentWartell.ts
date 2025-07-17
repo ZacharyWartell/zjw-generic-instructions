@@ -375,23 +375,23 @@ export function main(totalPoints : number)
     /** 
      *  insert zjwgi menu tab into zxw-mvc menu tab bar
      */
-    const tabPanel1 = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
-    const tabIndex1 = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
+    const tabPanel = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
+    const tabIndex = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
 
     (<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'        
-    tis!.insertBefore(tabIndex1,tis!.firstElementChild);
+    tis!.insertBefore(tabIndex,tis!.firstElementChild);
     (tps!.firstElementChild as ZxW_TabContainer.TabPanel).deactivateTabPanel();
-    tps!.insertBefore(tabPanel1,tps!.firstElementChild);
+    tps!.insertBefore(tabPanel,tps!.firstElementChild);
 
-    tabIndex1.innerText = "Project";
+    tabIndex.innerText = "Project";
 
     toolbar.tabContainer.createEventListeners();
 
     let div = <HTMLDivElement>document.getElementById("Toolbar");
-    tabPanel1.appendChild(div);
+    tabPanel.appendChild(div);
 
     
     /**

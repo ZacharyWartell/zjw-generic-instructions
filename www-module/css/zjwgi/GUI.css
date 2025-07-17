@@ -92,9 +92,9 @@ div#side-nav-bar
     width: fit-content; 
     max-width: fit-content;
     height: 100%;        
-    */
     max-width: max-content;
-    width: 100%;
+    */    
+    width: fit-content;
     resize: horizontal;    
 }
 

@@ -309,19 +309,19 @@ export function main(totalPoints) {
     /**
      *  insert zjwgi menu tab into zxw-mvc menu tab bar
      */
-    const tabPanel1 = document.createElement('div', { is: 'tab-panel' }); //new ZxW_GUI.TabPanel();
-    const tabIndex1 = document.createElement('button', { is: 'tab-index' }); //new ZxW_GUI.TabPanel();
+    const tabPanel = document.createElement('div', { is: 'tab-panel' }); //new ZxW_GUI.TabPanel();
+    const tabIndex = document.createElement('button', { is: 'tab-index' }); //new ZxW_GUI.TabPanel();
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
     tis.firstElementChild.innerText = "Edit"; // rename from 'File' to 'Edit'        
-    tis.insertBefore(tabIndex1, tis.firstElementChild);
+    tis.insertBefore(tabIndex, tis.firstElementChild);
     tps.firstElementChild.deactivateTabPanel();
-    tps.insertBefore(tabPanel1, tps.firstElementChild);
-    tabIndex1.innerText = "Project";
+    tps.insertBefore(tabPanel, tps.firstElementChild);
+    tabIndex.innerText = "Project";
     toolbar.tabContainer.createEventListeners();
     let div = document.getElementById("Toolbar");
-    tabPanel1.appendChild(div);
+    tabPanel.appendChild(div);
     /**
      **   Setup Toolbar
      **/
