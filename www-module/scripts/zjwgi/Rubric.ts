@@ -827,7 +827,7 @@ export class Instructions
                 }
                 else
                     //iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
-                    iElement.insertAdjacentHTML("afterbegin","|<sup data-zxw-mvc='dynamic-content-self'>"+ptDiv.innerHTML + "</sup>|");
+                    iElement.insertAdjacentHTML("afterbegin","<span data-zxw-mvc='dynamic-content-self'>|<sup>"+ptDiv.innerHTML + "</sup>|</span>");
             }
             
             /**
