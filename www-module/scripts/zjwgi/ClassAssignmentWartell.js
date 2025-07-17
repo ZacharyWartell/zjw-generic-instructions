@@ -7,7 +7,6 @@
  \status [STATUS=not deployed] work-in-progress
  */
 import * as ZxW_GUI from "ZxW_GUI";
-import * as ZxW_TabContainer from "ZxW_TabContainer";
 import * as ZxW_Toolbar from "ZxW_Toolbar";
 import * as ZxW_Annotation from "ZxW_Annotation";
 import "./third-party/jquery-3.5.1.min.js";
@@ -315,11 +314,9 @@ export function main(totalPoints) {
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
-    tis.firstElementChild.innerText = "Edit"; // rename from 'File' to 'Edit'
-    if (!(tis.firstElementChild instanceof ZxW_TabContainer.TabPanel))
-        throw Error("(tis!.firstElementChild instanceof ZxW_TabContainer.TabPanel)");
-    tis.firstElementChild.deactivateTabPanel();
+    tis.firstElementChild.innerText = "Edit"; // rename from 'File' to 'Edit'        
     tis.insertBefore(tabIndex1, tis.firstElementChild);
+    tps.firstElementChild.deactivateTabPanel();
     tps.insertBefore(tabPanel1, tps.firstElementChild);
     tabIndex1.innerText = "Project";
     toolbar.tabContainer.createEventListeners();
