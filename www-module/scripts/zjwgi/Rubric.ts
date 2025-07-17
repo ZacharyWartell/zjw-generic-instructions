@@ -809,6 +809,7 @@ export class Instructions
             {
                 const ptDiv = <HTMLDivElement> document.createElement("span");
                 ptDiv.classList.add("Points");
+                ptDiv.setAttribute('data-zxw-mvc',"dynamic-content-self");
                 let points : string = instruction.points.toFixed(1);
                 if (points.split('.')[1]==='0') 
                     points = points.split('.')[0];
@@ -826,7 +827,7 @@ export class Instructions
                 }
                 else
                     //iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
-                    iElement.insertAdjacentHTML("afterbegin","|<sup data-zxw-mvc='dynamic-content-self'>"+ptDiv.innerHTML + "</sup>| &nbsp;");
+                    iElement.insertAdjacentHTML("afterbegin","|<sup>"+ptDiv.innerHTML + "</sup>| &nbsp;");
             }
             
             /**
