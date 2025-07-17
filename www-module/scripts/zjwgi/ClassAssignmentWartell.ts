@@ -382,6 +382,8 @@ export function main(totalPoints : number)
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
 
     (<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'
+    if (! (tis!.firstElementChild instanceof ZxW_TabContainer.TabPanel))
+        throw Error("(tis!.firstElementChild instanceof ZxW_TabContainer.TabPanel)");
     (<ZxW_TabContainer.TabPanel><HTMLDivElement>tis!.firstElementChild).deactivateTabPanel();
     tis!.insertBefore(tabIndex1,tis!.firstElementChild);
     tps!.insertBefore(tabPanel1,tps!.firstElementChild);
