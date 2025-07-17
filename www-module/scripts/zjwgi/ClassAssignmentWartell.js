@@ -306,11 +306,16 @@ export function main(totalPoints) {
     app = new App();
     const toolbar = new ZxW_Toolbar.Toolbar(null, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
     ZxW_Annotation.main(toolbar);
+    /**
+     *  insert zjwgi menu tab into zxw-mvc menu tab bar
+     */
     const tabPanel1 = document.createElement('div', { is: 'tab-panel' }); //new ZxW_GUI.TabPanel();
     const tabIndex1 = document.createElement('button', { is: 'tab-index' }); //new ZxW_GUI.TabPanel();
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
+    tis.firstElementChild.innerText = "Edit"; // rename from 'File' to 'Edit'
+    tis.firstElementChild.deactivateTabPanel();
     tis.insertBefore(tabIndex1, tis.firstElementChild);
     tps.insertBefore(tabPanel1, tps.firstElementChild);
     tabIndex1.innerText = "Project";

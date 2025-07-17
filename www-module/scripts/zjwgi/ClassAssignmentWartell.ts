@@ -368,23 +368,29 @@ export function main(totalPoints : number)
      ** init zxw-mvc
      **/
     ZxW_GUI.init();
-
     app = new App();
     const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
     ZxW_Annotation.main(toolbar);
 
+    /** 
+     *  insert zjwgi menu tab into zxw-mvc menu tab bar
+     */
     const tabPanel1 = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
     const tabIndex1 = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
+
+    (<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'
+    (<ZxW_TabContainer.TabPanel>tis!.firstElementChild).deactivateTabPanel();
     tis!.insertBefore(tabIndex1,tis!.firstElementChild);
-    tps!.insertBefore(tabPanel1,tps!.firstElementChild);    
-    tabIndex1.innerText = "Project";    
+    tps!.insertBefore(tabPanel1,tps!.firstElementChild);
+    tabIndex1.innerText = "Project";
+
     toolbar.tabContainer.createEventListeners();
 
     let div = <HTMLDivElement>document.getElementById("Toolbar");
-    tabPanel1.appendChild(div);    
+    tabPanel1.appendChild(div);
 
     
     /**
