@@ -417,7 +417,10 @@ figure.Screen_Capture figcaption
 }
 figure.Screen_Capture:focus {
     outline: none;
+    transform: scale(2.5) translate(+30%,0%);
+    /*
     transform: scale(3.0);    
+    */
     box-shadow: 0 3px 10px #666;
     z-index: 9999;
 }

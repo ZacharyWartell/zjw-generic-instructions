@@ -375,23 +375,23 @@ export function main(totalPoints : number)
     /** 
      *  insert zjwgi menu tab into zxw-mvc menu tab bar
      */
-    const tabPanel = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
-    const tabIndex = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
+    const tabPanel1 = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
+    const tabIndex1 = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
     //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
 
     (<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'        
-    tis!.insertBefore(tabIndex,tis!.firstElementChild);
+    tis!.insertBefore(tabIndex1,tis!.firstElementChild);
     (tps!.firstElementChild as ZxW_TabContainer.TabPanel).deactivateTabPanel();
-    tps!.insertBefore(tabPanel,tps!.firstElementChild);
+    tps!.insertBefore(tabPanel1,tps!.firstElementChild);
 
-    tabIndex.innerText = "Project";
+    tabIndex1.innerText = "Project";
 
     toolbar.tabContainer.createEventListeners();
 
     let div = <HTMLDivElement>document.getElementById("Toolbar");
-    tabPanel.appendChild(div);
+    tabPanel1.appendChild(div);
 
     
     /**
@@ -786,6 +786,40 @@ function onload(totalPoints : number)
         b.after(msg);                        
     }
 
+    /**
+     * @brief Add focus and focusout event listeners to all <figure class="Screen_Capture"> elements 
+     * which zooms the figure from it's original present size to full width of the parent element
+     * 
+     * ZJW: I investigated using CSS alone to do this, but I could not find a way to do it.
+     */
+    const focus = 
+        (ev: FocusEvent)=>
+            {
+                const target = <HTMLElement>ev.target;
+                if (target.tagName === "FIGURE")
+                {
+                    const tx = parseInt(target.parentElement.style.width)/2 - parseInt(target.style.left);
+                    const sx = parseInt(target.parentElement.style.width)/parseInt(target.style.width);
+                    target.style.transform = `scale(${sx}) translate(${tx}px,0%)`;
+                }
+            };
+    const focusout = 
+        (ev: FocusEvent)=>
+            {                   
+                const target = <HTMLElement>ev.target;
+                if (target.tagName === "FIGURE")
+                {
+                    target.style.transform = "";
+                }
+            };
+            
+    elements = document.querySelectorAll('figure.Screen_Capture');
+    for (let e of elements)
+        {
+            (<HTMLElement>e).addEventListener('focus',focus);
+            (<HTMLElement>e).addEventListener('focusout',focusout)
+        }
+    
 
     /**
      *  Initialize <table id="RubricTable">
