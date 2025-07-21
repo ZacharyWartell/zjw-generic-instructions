@@ -665,11 +665,24 @@ export function main(totalPoints : number)
     xhr.responseType = "document";
     xhr.send();    
      */
+    onload(totalPoints);  
+    return
+    /**
+     * trick below weren't good enough, because an <object> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
+     */
     // this is needed since the .html includes some <object> elements that need to be loaded before the document is ready
-    document.addEventListener("readystatechange", (event) => {
-        if (event.target instanceof HTMLDocument && event.target.readyState === "complete")
-            onload(totalPoints);  
-        });    
+    while (document.readyState === "interactive" || document.readyState === "loading")
+    {
+        console.log("waiting for document to be ready");
+        // wait for the document to be ready
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
+    }
+    
+    // document.addEventListener("readystatechange", (event) => {
+    //     const  target : HTMLDocument | null = <HTMLDocument>event.target;
+    //     if (target != null && target.readyState === "interactive")
+    //         onload(totalPoints);  
+    //     });    
 }
 
 /**
