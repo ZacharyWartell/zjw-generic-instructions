@@ -547,7 +547,11 @@ export function main(totalPoints) {
     xhr.responseType = "document";
     xhr.send();
      */
-    onload(totalPoints);
+    // this is needed since the .html includes some <object> elements that need to be loaded before the document is ready
+    document.addEventListener("readystatechange", (event) => {
+        if (event.target instanceof HTMLDocument && event.target.readyState === "complete")
+            onload(totalPoints);
+    });
 }
 /**
  * @brief Git_Commit_Message collection of method used for span.Git_Commit_Message elements
