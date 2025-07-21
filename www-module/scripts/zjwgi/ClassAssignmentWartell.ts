@@ -665,7 +665,11 @@ export function main(totalPoints : number)
     xhr.responseType = "document";
     xhr.send();    
      */
-    onload(totalPoints);
+    // this is needed since the .html includes some <object> elements that need to be loaded before the document is ready
+    document.addEventListener("readystatechange", (event) => {
+        if (event.target instanceof HTMLDocument && event.target.readyState === "complete")
+            onload(totalPoints);  
+        });    
 }
 
 /**
