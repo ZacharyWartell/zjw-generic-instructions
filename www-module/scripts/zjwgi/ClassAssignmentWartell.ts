@@ -803,10 +803,12 @@ function onload(totalPoints : number)
                     const parentWidth = window.getComputedStyle(<Element>target.parentElement).width;
                     const targetStyle = window.getComputedStyle(<Element>target);
                     const targetWidth = targetStyle.width;
-                    const targetLeft = targetStyle.left;
-                    const tx = parseInt(parentWidth)/2 - parseInt(targetLeft);
-                    const sx = parseInt(parentWidth)/parseInt(targetWidth);
-                    target.style.transform = `scale(${sx}) translate(${tx}px,0%)`;
+                    const targetLeft = targetStyle.left;                    
+                    const sx = parseFloat(parentWidth)/parseFloat(targetWidth);
+                    const tx = (parseFloat(targetWidth)/2 - parseFloat(targetLeft))/sx;
+                    target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
+                    //target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
+                    //target.style.transform = `scale(${sx})`;
                 }
             };
     const focusout = 
