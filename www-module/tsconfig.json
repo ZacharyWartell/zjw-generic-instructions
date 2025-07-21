@@ -10,6 +10,7 @@
         "ZxW_GUI": ["./modules/zxw-mvc/ZxW_GUI"],
         "ZxW_TabContainer": ["./modules/zxw-mvc/ZxW_TabContainer"],
         "ZxW_Annotation": ["./modules/zxw-mvc/ZxW_Annotation"],
+        "ZxW_TextEditor": ["./modules/zxw-mvc/ZxW_TextEditor"],
         "ZxW_Toolbar": ["./modules/zxw-mvc/ZxW_Toolbar"]
       }
   },

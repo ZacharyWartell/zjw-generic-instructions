@@ -10,6 +10,7 @@ import * as ZxW_GUI from "ZxW_GUI";
 import * as ZxW_TabContainer from "ZxW_TabContainer"; 
 import * as ZxW_Toolbar from "ZxW_Toolbar"; 
 import * as ZxW_Annotation from "ZxW_Annotation";
+import * as ZxW_TextEditor from "ZxW_TextEditor";
 
 import "./third-party/jquery-3.5.1.min.js";
 
@@ -371,6 +372,7 @@ export function main(totalPoints : number)
     app = new App();
     const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
     ZxW_Annotation.main(toolbar);
+    ZxW_TextEditor.main(toolbar);
 
     /** 
      *  insert zjwgi menu tab into zxw-mvc menu tab bar
@@ -381,7 +383,7 @@ export function main(totalPoints : number)
     const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
     const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
 
-    (<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'        
+    //(<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'        
     tis!.insertBefore(tabIndex1,tis!.firstElementChild);
     (tps!.firstElementChild as ZxW_TabContainer.TabPanel).deactivateTabPanel();
     tps!.insertBefore(tabPanel1,tps!.firstElementChild);
