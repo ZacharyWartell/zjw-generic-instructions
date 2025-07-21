@@ -655,8 +655,12 @@ export function onload(totalPoints) {
     const focus = (ev) => {
         const target = ev.target;
         if (target.tagName === "FIGURE") {
-            const tx = parseInt(target.parentElement.style.width) / 2 - parseInt(target.style.left);
-            const sx = parseInt(target.parentElement.style.width) / parseInt(target.style.width);
+            const parentWidth = window.getComputedStyle(target.parentElement).width;
+            const targetStyle = window.getComputedStyle(target);
+            const targetWidth = targetStyle.width;
+            const targetLeft = targetStyle.left;
+            const tx = parseInt(parentWidth) / 2 - parseInt(targetLeft);
+            const sx = parseInt(parentWidth) / parseInt(targetWidth);
             target.style.transform = `scale(${sx}) translate(${tx}px,0%)`;
         }
     };
