@@ -452,6 +452,9 @@ export function main(totalPoints : number)
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
 
+    /** 
+     *   Implement callback for "Export" button that exports Rubric as HTML file
+     */
     button = document.getElementById("Export");
     button.addEventListener('click',
         (e:MouseEvent)=>
@@ -536,11 +539,16 @@ export function main(totalPoints : number)
             (<HTMLElement>e.target).parentElement.parentElement.hidden = true;
         });
     
-    /*
-    *  Menu#File Download button
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
-    */
+
+
+    /** 
+     * Implement callback for "ExportAll" button that exports Rubric as HTML file
+     * 
+     * \todo I have forgotten what "ExportAll" was supposed to do
+     * 
+     * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
+     * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
+     */    
     button = document.getElementById("exportAll");
     button.addEventListener("click",
         ( e: InputEvent )=>
@@ -567,6 +575,10 @@ export function main(totalPoints : number)
         });
 
 
+    /**
+     *  Implement callback for "back" button that uses the BreadCrumbs history for fined grained navigation than
+     *  the standard browser back button.
+     */
     button = document.getElementById("back");
     if (button !== null)
         button.addEventListener('click',
@@ -583,6 +595,10 @@ export function main(totalPoints : number)
                 });
 
 
+    /**
+     *  Implement callback for "loadFile" button that loads an external Rubric file into the current Rubric <table>
+     *  for further editing of that rubric file.   (assumption is that the file is associated with a particular student, etc.)
+     */
     const inputFile : HTMLInputElement = <HTMLInputElement> document.getElementById("loadFile");
     inputFile.addEventListener('change',
         ( e: InputEvent)=>
@@ -665,10 +681,25 @@ export function main(totalPoints : number)
     xhr.responseType = "document";
     xhr.send();    
      */
+
+
+    /**
+     * 
+     */
+    while (document.readyState === "interactive" || document.readyState === "loading")
+    {
+        console.log("waiting for document to be ready");
+        // wait for the document to be ready
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
+    }
+
+    /**
+     *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
+     */
     onload(totalPoints);  
     return
     /**
-     * trick below weren't good enough, because an <object> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
+     * trick below weren't good enough, because neither  <object> nor <embed> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
      */
     // this is needed since the .html includes some <object> elements that need to be loaded before the document is ready
     while (document.readyState === "interactive" || document.readyState === "loading")
