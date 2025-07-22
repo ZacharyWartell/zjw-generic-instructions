@@ -550,6 +550,8 @@ export async function main(totalPoints : number)
      * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
      */    
     button = document.getElementById("exportAll");
+    if (button === null)
+        throw "button with id 'exportAll' not found";   
     button.addEventListener("click",
         ( e: InputEvent )=>
         {

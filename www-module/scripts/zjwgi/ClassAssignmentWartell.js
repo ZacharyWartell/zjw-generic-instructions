@@ -297,7 +297,7 @@ function scrollIntoViewNavigation() {
             console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         });
 }
-export function main(totalPoints) {
+export async function main(totalPoints) {
     apiCheck();
     scrollIntoViewNavigation();
     /**
@@ -450,6 +450,8 @@ export function main(totalPoints) {
      * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
      */
     button = document.getElementById("exportAll");
+    if (button === null)
+        throw "button with id 'exportAll' not found";
     button.addEventListener("click", (e) => {
         try {
             let htmlOut = "";
@@ -569,9 +571,10 @@ export function main(totalPoints) {
         // wait for the document to be ready
         // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
     }
-    while (app.zxwMvcFetchElementCount !== app.zxwMvcFetchElementLoadCount)
+    while (app.zxwMvcFetchElementCount !== app.zxwMvcFetchElementLoadCount) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
         console.log("waiting for document to be ready");
-    ;
+    }
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
