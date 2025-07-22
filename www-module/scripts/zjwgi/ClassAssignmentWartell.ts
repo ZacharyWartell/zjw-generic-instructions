@@ -359,7 +359,7 @@ export function QandAModeHover(e : MouseEvent) : void
           });
  }
 
-export function main(totalPoints : number)
+export async function main(totalPoints : number)
 {
     apiCheck();
 
@@ -692,6 +692,12 @@ export function main(totalPoints : number)
         // wait for the document to be ready
         // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
     }
+    while (app.zxwMvcFetchElementCount !== app.zxwMvcFetchElementLoadCount)
+    {        
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log("waiting for document to be ready");
+    }
+        
 
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
@@ -837,10 +843,10 @@ function onload(totalPoints : number)
     }
 
     /**
-     * @brief Add focus and focusout event listeners to all <figure class="Screen_Capture"> elements 
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements 
      * which zooms the figure from it's original present size to full width of the parent element
      * 
-     * ZJW: I investigated using CSS alone to do this, but I could not find a way to do it.
+     * ZJW: I investigated using CSS alone to do this, but I did not find a way to do it.
      */
     const focus = 
         (ev: FocusEvent)=>

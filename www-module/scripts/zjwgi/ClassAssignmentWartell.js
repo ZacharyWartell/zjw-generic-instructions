@@ -569,6 +569,9 @@ export function main(totalPoints) {
         // wait for the document to be ready
         // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
     }
+    while (app.zxwMvcFetchElementCount !== app.zxwMvcFetchElementLoadCount)
+        console.log("waiting for document to be ready");
+    ;
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
@@ -687,10 +690,10 @@ export function onload(totalPoints) {
         b.after(msg);
     }
     /**
-     * @brief Add focus and focusout event listeners to all <figure class="Screen_Capture"> elements
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements
      * which zooms the figure from it's original present size to full width of the parent element
      *
-     * ZJW: I investigated using CSS alone to do this, but I could not find a way to do it.
+     * ZJW: I investigated using CSS alone to do this, but I did not find a way to do it.
      */
     const focus = (ev) => {
         const target = ev.target;
