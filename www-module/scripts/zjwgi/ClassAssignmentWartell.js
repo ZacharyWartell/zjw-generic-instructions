@@ -10,8 +10,9 @@ import * as ZxW_GUI from "ZxW_GUI";
 import * as ZxW_Toolbar from "ZxW_Toolbar";
 import * as ZxW_Annotation from "ZxW_Annotation";
 import * as ZxW_TextEditor from "ZxW_TextEditor";
-import "./third-party/jquery-3.5.1.min.js";
+//import "./third-party/jquery-3.5.1.min.js";
 import * as Rubric from "./Rubric.js";
+//import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
 import { Instruction } from "./Rubric.js";
 class App extends ZxW_GUI.DefaultApplication {
     constructor() {
@@ -571,10 +572,13 @@ export async function main(totalPoints) {
         // wait for the document to be ready
         // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
     }
-    while (app.zxwMvcFetchElementCount !== app.zxwMvcFetchElementLoadCount) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log("waiting for document to be ready");
-    }
+    // let c : bigint = Atomics.load(app.zxwMvcFetchElementLoadCount,0)
+    // while (c == BigInt(-1) || c > 0)
+    //     c = Atomics.load(app.zxwMvcFetchElementLoadCount,0)
+    // {        
+    //     await new Promise(resolve => setTimeout(resolve, 1000));
+    //     console.log("waiting for document to be ready");
+    // }
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
