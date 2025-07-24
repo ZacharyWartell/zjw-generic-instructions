@@ -709,10 +709,13 @@ export function onload(totalPoints) {
             const targetStyle = window.getComputedStyle(target);
             const targetWidth = targetStyle.width;
             const targetLeft = targetStyle.left;
+            const targetBLW = targetStyle.borderLeftWidth;
+            const targetML = targetStyle.marginLeft;
+            const targetPL = targetStyle.paddingLeft;
             const sx = parseFloat(parentWidth) / parseFloat(targetWidth);
-            const tx = (parseFloat(targetWidth) / 2 - parseFloat(targetLeft)) / sx;
-            target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
-            //target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
+            const tx = (parseFloat(parentWidth) / 2) - (parseFloat(targetLeft) + parseFloat(targetBLW) + parseFloat(targetPL) + parseFloat(targetML) + parseFloat(targetWidth) / 2);
+            //target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
+            target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
             //target.style.transform = `scale(${sx})`;
         }
     };
