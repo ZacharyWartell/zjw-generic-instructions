@@ -1,6 +1,69 @@
 #!/bin/bash
 #
-# SOURCE: https://www.digitalocean.com/community/tutorials/how-to-find-broken-links-on-your-website-using-wget-on-debian-7
+# @author Zachary Wartell (see references)
+# @brief See usage()
 #
-wget --spider -r -nd -nv -H -l 1 -w 2 -o run1.log "$1"
-grep -B1 "broken link!" run1.log
+# Referenes:
+#  - [R1] https://www.digitalocean.com/community/tutorials/how-to-find-broken-links-on-your-website-using-wget-on-debian-7
+#
+
+VERSION="1.0.10"
+
+##
+## boilerplate {
+##
+function require()
+{
+    for cmd in "$@"; do
+        which $cmd &> /dev/null
+        if [[ $? -ne 0 ]]; then
+            echo "Error: $cmd is not installed. Please install it and try again."
+            exit 1
+        fi
+    done    
+}
+##
+## boilerplate }
+##
+
+require wget grep
+
+function usage(){
+
+read -r -d '' USAGE << EOF
+
+Usage: $(basename "$0") <URL>
+Version: $VERSION
+
+Purpose: This script checks for broken links on a given URL using wget.
+EOF
+
+    echo "$USAGE"
+    exit 1
+}
+
+function parseArgs()
+{
+    while [ True ]; do
+        #if [[ "$@" -eq 0 || "$0" = "--help" || "$0" = "-h" ]]; then      
+        if [[ "$@" -eq 0 ]]; then      
+            usage
+            exit
+        #elif [ "$1" = "--config" -o "$1" = "-c" ]; then
+        #    CONFIG=$2
+        #    shift 2
+        else
+            break
+        fi
+    done
+}
+
+function main()
+{
+    # see [R1] for details
+    wget --spider -r -nd -nv -H -l 1 -w 2 -o run1.log "$1"
+    grep -B1 "broken link!" run1.log
+}
+
+parseArgs "$@"
+main "$@"
