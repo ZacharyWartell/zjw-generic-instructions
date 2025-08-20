@@ -19,8 +19,8 @@
     "tests/lib/*.ts"
   ],
   "include": [    
-    "scripts/zjwgi/ClassAssignmentWartell.ts",
-    "scripts/zjwgi/GradingScript.ts",
-    "scripts/zjwgi/Rubric.ts"
+    "scripts/ClassAssignmentWartell.ts",
+    "scripts/GradingScript.ts",
+    "scripts/Rubric.ts"
   ]
 }
