@@ -433,6 +433,17 @@ export async function main(totalPoints : number)
                     (<HTMLElement>l).removeAttribute('disabled');
         });         
 
+
+    /**
+     * add eventListeners for Instructor_Mode <button> that enables/disables Instructor_Mode features
+     */
+    let tib :  HTMLButtonElement | null = (<HTMLButtonElement>document.getElementById("ZxW_Editor_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+    tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+
     document.getElementById("Instructor_Mode").addEventListener('change', 
         (e : InputEvent) => 
           {
@@ -440,7 +451,14 @@ export async function main(totalPoints : number)
           Visibility_Toggle('Instructor_Mode', target.checked); 
           Visibility_Toggle('Staff_Only', target.checked); 
           (<HTMLButtonElement>document.getElementById("fileMenu")).disabled = !target.checked;
+          let tib :  HTMLButtonElement | null = (<HTMLButtonElement>document.getElementById("ZxW_Editor_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Editor_TabIndex_Button in Instructor Mode
+          tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode          
           });         
+
     /*
      *  add eventListners the close SubMenu on mouseleave 
      */
