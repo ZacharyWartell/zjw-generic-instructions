@@ -318,7 +318,7 @@ export class Instruction {
         instructions.gui_update_awarded();
 
 
-        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling)
+        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling)
         {            
             //let percentage : string;
             const percentage = instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100;
@@ -956,7 +956,7 @@ export class Instructions
          *  In the Rubric Awarded Points Table, add the generated Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
-        const rapTable = <HTMLTableElement>document.getElementById("RubricAwardedPoints");
+        const rapTable = <HTMLTableElement>document.getElementById("RubricAwardedPointsTable");
         const sequences0 : Array<Sequence> = new Array<Sequence>(),
               sequences1 : Array<Sequence> = new Array<Sequence>();
         const sequences = [sequences0,sequences1];

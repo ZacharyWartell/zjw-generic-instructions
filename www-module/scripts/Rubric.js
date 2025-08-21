@@ -237,7 +237,7 @@ export class Instruction {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
+        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
             //let percentage : string;
             const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
             if (percentage <= 101)
@@ -749,7 +749,7 @@ export class Instructions {
          *  In the Rubric Awarded Points Table, add the generated Sequences
          *  [wip] 9/15/2023
          ************************************************************************************/
-        const rapTable = document.getElementById("RubricAwardedPoints");
+        const rapTable = document.getElementById("RubricAwardedPointsTable");
         const sequences0 = new Array(), sequences1 = new Array();
         const sequences = [sequences0, sequences1];
         let last = 0, next = 1;
