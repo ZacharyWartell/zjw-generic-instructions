@@ -19,14 +19,9 @@
       import * as CAW from "./scripts/zjwgi/ClassAssignmentWartell.js";
       window.BreadCrumb = Rubric.BreadCrumb;
       CAW.main(150);
-      
-      window.Visibility_Toggle = CAW.Visibility_Toggle; 
+            
       console.log("window.rubricMain");
-
-      document.getElementById("Instructor_Mode").addEventListener('change', (e) => {
-        Visibility_Toggle('Instructor_Mode', e.target.checked); Visibility_Toggle('Staff_Only', e.target.checked); document.getElementById("fileMenu").disabled
-          = !e.target.checked;
-      }); 
+      
       function onload_Body() { console.log("function onload_Body()");}
       window.onload_Body = onload_Body;
       

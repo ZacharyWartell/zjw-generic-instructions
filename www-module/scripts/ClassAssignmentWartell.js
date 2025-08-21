@@ -363,6 +363,9 @@ export async function main(totalPoints) {
     tib = document.getElementById("ZxW_Annotation_TabIndex_Button");
     if (tib !== null)
         tib.disabled = true;
+    tib = document.getElementById("ZxW_File_TabIndex_Button");
+    if (tib !== null)
+        tib.disabled = true;
     document.getElementById("Instructor_Mode").addEventListener('change', (e) => {
         const target = e.target;
         Visibility_Toggle('Instructor_Mode', target.checked);
@@ -374,6 +377,9 @@ export async function main(totalPoints) {
         tib = document.getElementById("ZxW_Annotation_TabIndex_Button");
         if (tib !== null)
             tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode          
+        tib = document.getElementById("ZxW_File_TabIndex_Button");
+        if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode                  
     });
     /*
      *  add eventListners the close SubMenu on mouseleave

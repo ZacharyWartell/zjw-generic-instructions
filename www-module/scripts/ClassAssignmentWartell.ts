@@ -443,6 +443,10 @@ export async function main(totalPoints : number)
     tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
     if (tib !== null)
         tib.disabled = true;
+    tib = (<HTMLButtonElement>document.getElementById("ZxW_File_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+
 
     document.getElementById("Instructor_Mode").addEventListener('change', 
         (e : InputEvent) => 
@@ -457,6 +461,9 @@ export async function main(totalPoints : number)
           tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
           if (tib !== null)
             tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode          
+          tib = (<HTMLButtonElement>document.getElementById("ZxW_File_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode                  
           });         
 
     /*
