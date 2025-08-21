@@ -2,6 +2,27 @@
 <html>
     <head>
         <link href="../css/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
+        <script type="importmap">
+              {
+                "imports": {
+                  "ZxW_MVC": "../modules/zxw-mvc/ZxW_MVC.js",
+                  "ZxW_GUI": "../modules/zxw-mvc/ZxW_GUI.js",
+                  "ZxW_TabContainer": "../modules/zxw-mvc/ZxW_TabContainer.js",
+                  "ZxW_Annotation": "../modules/zxw-mvc/ZxW_Annotation.js",
+                  "ZxW_Toolbar": "../modules/zxw-mvc/ZxW_Toolbar.js",
+                  "ZxW_TextEditor": "../modules/zxw-mvc/ZxW_TextEditor.js"
+                }
+              }
+        </script>         
+      <script type="module" lang="javascript">      
+          import * as CAW from "../scripts/ClassAssignmentWartell.js";
+          export function onload_ZxW_GUI () 
+          {
+              CAW.ScreenCapture.init(document);               
+          };
+          document.body.onload = onload_ZxW_GUI;
+      </script>
+  
     </head>
     <body>
         <ul>
