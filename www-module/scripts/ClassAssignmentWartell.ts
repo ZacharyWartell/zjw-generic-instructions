@@ -433,6 +433,14 @@ export async function main(totalPoints : number)
                     (<HTMLElement>l).removeAttribute('disabled');
         });         
 
+    document.getElementById("Instructor_Mode").addEventListener('change', 
+        (e : InputEvent) => 
+          {
+          const target = <HTMLInputElement>e.target;
+          Visibility_Toggle('Instructor_Mode', target.checked); 
+          Visibility_Toggle('Staff_Only', target.checked); 
+          (<HTMLButtonElement>document.getElementById("fileMenu")).disabled = !target.checked;
+          });         
     /*
      *  add eventListners the close SubMenu on mouseleave 
      */

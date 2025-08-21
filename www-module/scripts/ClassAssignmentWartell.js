@@ -354,6 +354,12 @@ export async function main(totalPoints) {
             else
                 l.removeAttribute('disabled');
     });
+    document.getElementById("Instructor_Mode").addEventListener('change', (e) => {
+        const target = e.target;
+        Visibility_Toggle('Instructor_Mode', target.checked);
+        Visibility_Toggle('Staff_Only', target.checked);
+        document.getElementById("fileMenu").disabled = !target.checked;
+    });
     /*
      *  add eventListners the close SubMenu on mouseleave
      */
