@@ -145,20 +145,21 @@ function apiCheck() {
     */
 }
 /**
- * @status   [experimental , deployed only in 'Beta' mode]
+ * @status [experimental][deployed only in 'Beta' mode]
  *
  * @brief See USAGE
  *
  * Notes:   From what I have read it is not possible to use the ?body= query parameter to pass html code that will be displayed as rendered HTML
- * Other more complex mechanisms would be needed to get the users selection from the HTML document to be auto-inserted at HTML into an email.
- * Doing perfectly would not be really possible because you would have to pull the CSS stylesheets as well.
+ * in the body of an  email.
+ * Other more complex mechanisms would be needed to get the user's selection from the HTML document to be auto-inserted at HTML into an email.
+ * Doing this perfectly would not be quite complicated because you would have to pull the CSS stylesheets as well.
  */
 const USAGE = `
     Left-clicking on part of the assignment document opens a new browser tab composing a email via the UNCC account active in that browser.
     The email is addressed to computer-graphics-wartell-group@uncc.edu.  The body is pre-filled with a WWW hyperlink to the inner most Instruction item
-    on whihc you clicked and a brief bit of the surrounding text in the document where you clicked:
+    on which you clicked and a brief bit of the surrounding text in the document where you clicked:
 
-    Add your question about selected part of the assignment to the email's text and send.
+    Inside auto-generated email, add your question about selected part of the assignment to the email's text and send it to the group.
 `;
 export function QandAModeClick(e) {
     if (e.button === 0) {
@@ -631,6 +632,54 @@ export async function main(totalPoints) {
     //     });    
 }
 /**
+ * \todo [priority=low][refactor] refactor into custom HTML element alla https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+ */
+export class ScreenCapture {
+    /**
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements
+     * which zooms the figure from it's original present size to full width of the parent element
+    */
+    static init(document) {
+        const figures = document.querySelectorAll("figure.Screen_Capture");
+        for (let f of figures) {
+            f.addEventListener('focus', ScreenCapture.focus);
+            f.addEventListener('focusout', ScreenCapture.focusout);
+        }
+    }
+    /**
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements
+     * which zooms the figure from it's original present size to full width of the parent element
+     *
+     * ZJW: I tinkered using CSS alone to do this, but I did not find a way to do it.  Faster for me to implement this standard
+     * algorithm in an imperative programming language (i.e. JavaScript) than to implement it in CSS (the new-fangled declarative language of the day).
+     */
+    static focus(ev) {
+        const target = ev.target;
+        if (target.tagName === "FIGURE") {
+            const parentWidth = window.getComputedStyle(target.parentElement).width;
+            const targetStyle = window.getComputedStyle(target);
+            const targetWidth = targetStyle.width;
+            const targetLeft = targetStyle.left;
+            const targetBLW = targetStyle.borderLeftWidth;
+            const targetML = targetStyle.marginLeft;
+            const targetPL = targetStyle.paddingLeft;
+            const sx = parseFloat(parentWidth) / parseFloat(targetWidth);
+            const tx = (parseFloat(parentWidth) / 2) - (parseFloat(targetLeft) + parseFloat(targetBLW) + parseFloat(targetPL) + parseFloat(targetML) + parseFloat(targetWidth) / 2);
+            //target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
+            target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
+            //target.style.transform = `scale(${sx})`;
+        }
+    }
+    ;
+    static focusout(ev) {
+        const target = ev.target;
+        if (target.tagName === "FIGURE") {
+            target.style.transform = "";
+        }
+    }
+    ;
+}
+/**
  * @brief Git_Commit_Message collection of method used for span.Git_Commit_Message elements
  */
 class Git_Commit_Message {
@@ -727,40 +776,7 @@ export function onload(totalPoints) {
         msg.innerText = "Copied to Clipboard";
         b.after(msg);
     }
-    /**
-     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements
-     * which zooms the figure from it's original present size to full width of the parent element
-     *
-     * ZJW: I investigated using CSS alone to do this, but I did not find a way to do it.
-     */
-    const focus = (ev) => {
-        const target = ev.target;
-        if (target.tagName === "FIGURE") {
-            const parentWidth = window.getComputedStyle(target.parentElement).width;
-            const targetStyle = window.getComputedStyle(target);
-            const targetWidth = targetStyle.width;
-            const targetLeft = targetStyle.left;
-            const targetBLW = targetStyle.borderLeftWidth;
-            const targetML = targetStyle.marginLeft;
-            const targetPL = targetStyle.paddingLeft;
-            const sx = parseFloat(parentWidth) / parseFloat(targetWidth);
-            const tx = (parseFloat(parentWidth) / 2) - (parseFloat(targetLeft) + parseFloat(targetBLW) + parseFloat(targetPL) + parseFloat(targetML) + parseFloat(targetWidth) / 2);
-            //target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
-            target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
-            //target.style.transform = `scale(${sx})`;
-        }
-    };
-    const focusout = (ev) => {
-        const target = ev.target;
-        if (target.tagName === "FIGURE") {
-            target.style.transform = "";
-        }
-    };
-    elements = document.querySelectorAll('figure.Screen_Capture');
-    for (let e of elements) {
-        e.addEventListener('focus', focus);
-        e.addEventListener('focusout', focusout);
-    }
+    ScreenCapture.init(document);
     /**
      *  Initialize <table id="RubricTable">
      */
