@@ -209,11 +209,12 @@ table.Rubric > thead > tr > th
     font-weight: bold;
 }
 
-table.Rubric tr
+table.Rubric > thead > tr, table.Rubric > tbody > tr
 { 
     max-height: fit-content;
 }
 
+/* */
 div#Div_Rubric 
 {    
     display : flex;
@@ -221,12 +222,13 @@ div#Div_Rubric
     width: fit-content;
     align-items:center;
 }
+ 
 
 div#Div_Rubric > div
 {            
     width: fit-content;
 }
-div#Div_Rubric > div div
+div#Div_Rubric > div > div
 {
     border: 1px solid black;
 }
