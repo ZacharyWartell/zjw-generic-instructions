@@ -246,7 +246,9 @@ table.Rubric > tbody > tr:nth-child(1)
 table.Rubric td
 {
     border: solid 1px;
+    /*
     max-height: fit-content;
+    */
 }
 
 table.Rubric tr td:nth-child(3)
@@ -278,7 +280,13 @@ table.Rubric td.Empty
 REFERENCE:
     - https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
 */
+/**
+9/19/2025: origin rule was below.   I changed the rule to be more specific because 
+Chrome (circa 9/19/2025) was terribly slow (on the order of 10+ seconds) to repaint a page with a rubric
+wt ~100 rows.  Unfortunately, this change did not fix the problem
 table.Rubric > tbody > tr > td  input[type="checkbox"]::before
+*/
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]::before
 {
     position: relative;
     display: block;
@@ -292,12 +300,12 @@ table.Rubric > tbody > tr > td  input[type="checkbox"]::before
     background: #FFF;
 }
 
-table.Rubric > tbody > tr > td  input.Grey[type="checkbox"]::before
+table.Rubric > tbody > tr > td > span > span >  input.Grey[type="checkbox"]::before
 {
     border: 4px dotted black;    
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]::after
 {
     position: relative;
     display: block;
@@ -314,7 +322,7 @@ table.Rubric > tbody > tr > td  input[type="checkbox"]::after
     background-position: center;
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]:checked::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]:checked::after
 {        
     content: "\2713";  
     position: relative;
@@ -340,11 +348,11 @@ table.Rubric > tbody > tr > td  input[type="checkbox"]:checked::after
     */
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::before
+table.Rubric > tbody > tr > td > span > span >  input[type="checkbox"]:disabled::before
 {
     border: 4px solid #808080;
 }
-table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]:disabled::after
 {
     opacity: 0.5;
 }

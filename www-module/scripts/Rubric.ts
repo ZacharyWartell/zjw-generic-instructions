@@ -765,10 +765,12 @@ export class Instructions
     //console.log("instructions.length:"+instructions.length);
 
     /**
-     * @brief genreate the <tr> elemements in the Rubric <table> of the active HTML document
+     * @brief generate the <tr> elements in the Rubric <table> of the active HTML document
      */
     displayRubric() 
     {
+        console.log("*************************************************");
+        console.log("displayRubric() ");
         /*
          * construct <tbody> for <table> (#RubricTable) using instructions array and add
          * various <input> HTML elements to certain <table> columns
@@ -902,7 +904,9 @@ export class Instructions
                     <span style="margin-left:10px"> 0.00 
                 </span>                        
                 </td>                                                                        
-                <td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+                <td class="Instructor_Mode" hidden> <textarea rows='1'></textarea></td>`;
+                //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;  
+                // the form seems unnecessary given that this page is an 'static webpage'
 
             //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
             //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
