@@ -243,6 +243,14 @@ table.Rubric > tbody > tr:nth-child(1)
 }
 */
 
+table.Rubric
+{
+    table-layout: auto;
+    /* enable only for debugging/testing rendering reflow performance problems ...
+    table-layout: fixed;
+    width: 100%;
+    */
+}
 
 table.Rubric > tbody > tr > td
 {
