@@ -243,7 +243,8 @@ table.Rubric > tbody > tr:nth-child(1)
 }
 */
 
-table.Rubric td
+
+table.Rubric > tbody > tr > td
 {
     border: solid 1px;
     /*
@@ -251,7 +252,7 @@ table.Rubric td
     */
 }
 
-table.Rubric tr td:nth-child(3)
+table.Rubric > tbody > tr > td:nth-child(3)
 {
     /* align-content: center; */
     text-align: center;
@@ -266,12 +267,15 @@ table.Rubric > tbody > tr > td:nth-child(7)
     width : 100px;    
 }
 
+
 table.Rubric > tbody > tr > td > textarea
 {
     resize: both;            
 }
 
-table.Rubric td.Empty
+
+/* div.Rubric > div > textarea, */
+table.Rubric > tbody > tr > td.Empty
 {
     border: 0px;
 }
