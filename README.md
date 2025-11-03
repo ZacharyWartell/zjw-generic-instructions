@@ -1,6 +1,8 @@
 ## ZJW Generic Instructions
-### Author: Prof. Zachary Wartell, UNC Charlotte <br> https://webpages.charlotte.edu/zwartell/
+#### Author: Prof. Zachary Wartell, UNC Charlotte <br> https://webpages.charlotte.edu/zwartell/
 
-HTML5 (HTML, CSS, Typescript) library module used by Dr. Wartell's courses' assignment instructions.
+ZJW Generic Instructions (zjwgi) is a library in HTML5 (HTML, CSS, Typescript) used for developing course tutorial and project
+instructions.
 
-Links to some example assignment instructions can be found at https://webpages.charlotte.edu/zwartell/.
+
+Example assignments that use zjwgi can be found at https://webpages.charlotte.edu/zwartell/.
