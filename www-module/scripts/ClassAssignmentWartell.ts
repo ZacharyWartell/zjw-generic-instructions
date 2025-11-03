@@ -6,12 +6,32 @@
 
  \status [STATUS=not deployed] work-in-progress
  */
-import "./third-party/jquery-3.5.1.min.js";
+import * as ZxW_GUI from "ZxW_GUI";
+import * as ZxW_TabContainer from "ZxW_TabContainer"; 
+import * as ZxW_Toolbar from "ZxW_Toolbar"; 
+import * as ZxW_Annotation from "ZxW_Annotation";
+import * as ZxW_TextEditor from "ZxW_TextEditor";
+
+//import "./third-party/jquery-3.5.1.min.js";
 
 import * as Rubric from "./Rubric.js";
-import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
+//import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
 import {Instruction, Instructions} from "./Rubric.js";
 
+
+
+class App extends ZxW_GUI.DefaultApplication
+{
+    constructor()
+    {
+        super();
+    }
+    postUserDocumentLoadCallback(): void 
+    {
+    }
+}
+
+let app : App | null;
 
 /**
  ** @brief AssignmentName contains various components used to describe the name/tile of the instruction's assignment.
@@ -47,7 +67,7 @@ class AssignmentName
             this.name           = jsonObject.AssignmentName.name;
             
         }
-        this.git = this.courseNumber + "-" + this.numberLongDir;    
+        this.git = this.numberLongDir;    
     }
 
     insertText( doc : HTMLDocument) : void
@@ -71,6 +91,11 @@ class AssignmentName
         for (let e of elements) {
             (<HTMLElement>e).innerText = this.name;
         }
+
+        elements = doc.querySelectorAll('span[data-project-number-name-dir]');
+        for (let e of elements) {
+            (<HTMLElement>e).innerText = this.number + "-" + this.name;
+        }        
 
         elements = doc.querySelectorAll('span[data-project-git]');
         for (let e of elements) {
@@ -149,27 +174,33 @@ async function writeFile(fileHandle, contents) {
 function apiCheck()
 {
     // https://web.dev/file-system-access/
+
+    // ZJW: 8/20/2025: I'm silencing this warning for now, since it's only relevant to the zxw-doc editors and not the students reading the
+    //   the instruction zxw-doc.html page
+    /*
     if ((<any>window).showSaveFilePicker === undefined)
         //throw "Browser does not support window.showSaveFilePicker";
         alert("Browser does not support window.showSaveFilePicker");
+    */
 }
 
 /**
- * @status   [experimental , deployed only in 'Beta' mode]
+ * @status [experimental][deployed only in 'Beta' mode]
  *  
  * @brief See USAGE
  * 
  * Notes:   From what I have read it is not possible to use the ?body= query parameter to pass html code that will be displayed as rendered HTML
- * Other more complex mechanisms would be needed to get the users selection from the HTML document to be auto-inserted at HTML into an email.
- * Doing perfectly would not be really possible because you would have to pull the CSS stylesheets as well.
+ * in the body of an  email.
+ * Other more complex mechanisms would be needed to get the user's selection from the HTML document to be auto-inserted at HTML into an email.
+ * Doing this perfectly would not be quite complicated because you would have to pull the CSS stylesheets as well.
  */
 const USAGE : string =
 `
     Left-clicking on part of the assignment document opens a new browser tab composing a email via the UNCC account active in that browser.
     The email is addressed to computer-graphics-wartell-group@uncc.edu.  The body is pre-filled with a WWW hyperlink to the inner most Instruction item
-    on whihc you clicked and a brief bit of the surrounding text in the document where you clicked:
+    on which you clicked and a brief bit of the surrounding text in the document where you clicked:
 
-    Add your question about selected part of the assignment to the email's text and send.
+    Inside auto-generated email, add your question about selected part of the assignment to the email's text and send it to the group.
 `
 export function QandAModeClick(e : MouseEvent) : void
 {
@@ -294,9 +325,82 @@ export function QandAModeHover(e : MouseEvent) : void
     }
  }
 
-export function main(totalPoints : number)
+
+ /**
+  * @brief Enable scrollIntoView behavior for browser forward/back buttons
+  */
+ function scrollIntoViewNavigation()
+ {
+    if (true)
+        window.addEventListener("popstate", (event) => {
+            //alert(
+            //  `location: ${document.location}, state: ${JSON.stringify(event.state)}`,
+            //);
+            const s = document.location.toString().split('#');
+            if (s.length == 2)
+            {
+              console.log(s[1]);
+              const id = document.getElementById(s[1]);
+              console.log("id:",id);
+              if (id !== null)
+                id.scrollIntoView();
+              else
+              {
+                const mc = document.querySelector("article");
+                console.log("mc 1:"+mc);
+                mc.scrollIntoView();
+              }
+            } else
+            {
+                const mc : HTMLElement = document.querySelector("article");
+                console.log("mc 2:"+mc+mc.classList);
+                //mc.scrollIntoView({ behavior: "instant", block: "start" });
+                const scrollToOptions = { behavior: "instant", block: "start" };
+                mc.scrollIntoView( scrollToOptions as unknown as ScrollToOptions );
+            }
+               
+            console.log(
+              `location: ${document.location}, state: ${JSON.stringify(event.state)}`
+            );
+          });
+ }
+
+export async function main(totalPoints : number)
 {
     apiCheck();
+
+    scrollIntoViewNavigation();
+
+    /**
+     ** init zxw-mvc
+     **/
+    ZxW_GUI.init();
+    app = new App();
+    const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
+    ZxW_Annotation.main(toolbar);
+    ZxW_TextEditor.main(toolbar);
+
+    /** 
+     *  insert zjwgi menu tab into zxw-mvc menu tab bar
+     */
+    const tabPanel1 = <ZxW_TabContainer.TabPanel> document.createElement('div',{is:'tab-panel'});//new ZxW_GUI.TabPanel();
+    const tabIndex1 = <ZxW_TabContainer.TabIndex> document.createElement('button',{is:'tab-index'});//new ZxW_GUI.TabPanel();
+    //const tabIndex = <ZxW_TabContainer.TabIndex>tb.tabContainer.appendChild(tabPanel1);
+    const tps = toolbar.tabContainer.querySelector(':scope div.TabPanels');
+    const tis = toolbar.tabContainer.querySelector(':scope div.TabIndexes');
+
+    //(<HTMLElement>tis!.firstElementChild).innerText="Edit"; // rename from 'File' to 'Edit'        
+    tis!.insertBefore(tabIndex1,tis!.firstElementChild);
+    (tps!.firstElementChild as ZxW_TabContainer.TabPanel).deactivateTabPanel();
+    tps!.insertBefore(tabPanel1,tps!.firstElementChild);
+
+    tabIndex1.innerText = "Project";
+
+    toolbar.tabContainer.createEventListeners();
+
+    let div = <HTMLDivElement>document.getElementById("Toolbar");
+    tabPanel1.appendChild(div);
+
     
     /**
      **   Setup Toolbar
@@ -330,6 +434,39 @@ export function main(totalPoints : number)
                     (<HTMLElement>l).removeAttribute('disabled');
         });         
 
+
+    /**
+     * add eventListeners for Instructor_Mode <button> that enables/disables Instructor_Mode features
+     */
+    let tib :  HTMLButtonElement | null = (<HTMLButtonElement>document.getElementById("ZxW_Editor_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+    tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+    tib = (<HTMLButtonElement>document.getElementById("ZxW_File_TabIndex_Button"));
+    if (tib !== null)
+        tib.disabled = true;
+
+
+    document.getElementById("Instructor_Mode").addEventListener('change', 
+        (e : InputEvent) => 
+          {
+          const target = <HTMLInputElement>e.target;
+          Visibility_Toggle('Instructor_Mode', target.checked); 
+          Visibility_Toggle('Staff_Only', target.checked); 
+          (<HTMLButtonElement>document.getElementById("fileMenu")).disabled = !target.checked;
+          let tib :  HTMLButtonElement | null = (<HTMLButtonElement>document.getElementById("ZxW_Editor_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Editor_TabIndex_Button in Instructor Mode
+          tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode          
+          tib = (<HTMLButtonElement>document.getElementById("ZxW_File_TabIndex_Button"));
+          if (tib !== null)
+            tib.disabled = !target.checked; // enable/disable ZxW_Annotation_TabIndex_Button in Instructor Mode                  
+          });         
+
     /*
      *  add eventListners the close SubMenu on mouseleave 
      */
@@ -354,6 +491,9 @@ export function main(totalPoints : number)
     - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
     */
 
+    /** 
+     *   Implement callback for "Export" button that exports Rubric as HTML file
+     */
     button = document.getElementById("Export");
     button.addEventListener('click',
         (e:MouseEvent)=>
@@ -381,6 +521,20 @@ export function main(totalPoints : number)
                 (handle)=>
                 {
                     console.log("Save " + handle);
+
+                    /* hack: subfix - check boxes are being check even on 0.00 values in export
+                    */
+                    /* does fix problem
+                    const fixList = document.getElementById("Div_Rubric")?.querySelectorAll('span');
+                    let fixArray=[];
+                    fixList.forEach((a,b,o)=>{fixArray.push(a);});
+                    fixArray.filter((e) => e.innerText=="0.00").forEach((a,b,c)=> {
+                        if (a.previousElementSibling && a.previousElementSibling.previousElementSibling && a.previousElementSibling.previousElementSibling.firstChild) {
+                            a?.previousElementSibling?.previousElementSibling?.firstElementChild?.removeAttribute("checked");
+                        }
+                    })
+                    */
+                    
                     return writeFile(handle,
                         `<!DOCTYPE html>
                         <html>
@@ -395,10 +549,23 @@ export function main(totalPoints : number)
                                 border: solid 1px;                                
                                 }
                             </style>
-                            <script>                            
+                            <script>
+                                function main()
+                                {
+                                    const fixList = document.getElementById("Div_Rubric")?.querySelectorAll('span');
+                                    let fixArray=[];
+                                    fixList.forEach((a,b,o)=>{fixArray.push(a);});
+                                    fixArray.filter((e) => e.innerText=="0.00").forEach(
+                                        (a,b,c)=> {
+                                            //if (a.previousElementSibling && a.previousElementSibling.previousElementSibling && a.previousElementSibling.previousElementSibling.firstChild)                                     
+                                            a?.previousElementSibling?.firstElementChild?.removeAttribute("checked");                                    
+                                        });
+                                }
+                                window.main = main;                                
                             </script>
                         </head>
-                        <body>
+                        <body onload="main();">                        
+                        
                         ${document.getElementById("Div_Rubric").outerHTML}
                         </body>
                         </html>
@@ -411,12 +578,19 @@ export function main(totalPoints : number)
             (<HTMLElement>e.target).parentElement.parentElement.hidden = true;
         });
     
-    /*
-    *  Menu#File Download button
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
-    */
+
+
+    /** 
+     * Implement callback for "ExportAll" button that exports Rubric as HTML file
+     * 
+     * \todo I have forgotten what "ExportAll" was supposed to do
+     * 
+     * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Working_with_files
+     * - https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/downloads/download
+     */    
     button = document.getElementById("exportAll");
+    if (button === null)
+        throw "button with id 'exportAll' not found";   
     button.addEventListener("click",
         ( e: InputEvent )=>
         {
@@ -442,6 +616,10 @@ export function main(totalPoints : number)
         });
 
 
+    /**
+     *  Implement callback for "back" button that uses the BreadCrumbs history for fined grained navigation than
+     *  the standard browser back button.
+     */
     button = document.getElementById("back");
     if (button !== null)
         button.addEventListener('click',
@@ -458,6 +636,10 @@ export function main(totalPoints : number)
                 });
 
 
+    /**
+     *  Implement callback for "loadFile" button that loads an external Rubric file into the current Rubric <table>
+     *  for further editing of that rubric file.   (assumption is that the file is associated with a particular student, etc.)
+     */
     const inputFile : HTMLInputElement = <HTMLInputElement> document.getElementById("loadFile");
     inputFile.addEventListener('change',
         ( e: InputEvent)=>
@@ -540,7 +722,102 @@ export function main(totalPoints : number)
     xhr.responseType = "document";
     xhr.send();    
      */
-    onload(totalPoints);
+
+
+    /**
+     * 
+     */
+    while (document.readyState === "interactive" || document.readyState === "loading")
+    {
+        console.log("waiting for document to be ready");
+        // wait for the document to be ready
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
+    }
+    // let c : bigint = Atomics.load(app.zxwMvcFetchElementLoadCount,0)
+    // while (c == BigInt(-1) || c > 0)
+    //     c = Atomics.load(app.zxwMvcFetchElementLoadCount,0)
+    // {        
+    //     await new Promise(resolve => setTimeout(resolve, 1000));
+    //     console.log("waiting for document to be ready");
+    // }
+        
+
+    /**
+     *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
+     */
+    onload(totalPoints);  
+    return
+    /**
+     * trick below weren't good enough, because neither  <object> nor <embed> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
+     */
+    // this is needed since the .html includes some <object> elements that need to be loaded before the document is ready
+    while (document.readyState === "interactive" || document.readyState === "loading")
+    {
+        console.log("waiting for document to be ready");
+        // wait for the document to be ready
+        // https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
+    }
+    
+    // document.addEventListener("readystatechange", (event) => {
+    //     const  target : HTMLDocument | null = <HTMLDocument>event.target;
+    //     if (target != null && target.readyState === "interactive")
+    //         onload(totalPoints);  
+    //     });    
+}
+
+/**
+ * \todo [priority=low][refactor] refactor into custom HTML element alla https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+ */
+export class ScreenCapture
+{
+
+    /**
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements 
+     * which zooms the figure from it's original present size to full width of the parent element
+    */
+    static init(document : HTMLDocument)
+    {
+        const figures = document.querySelectorAll("figure.Screen_Capture");
+        for (let f of figures)
+        {
+            f.addEventListener('focus',ScreenCapture.focus);
+            f.addEventListener('focusout',ScreenCapture.focusout);
+        }
+    }
+    /**
+     * @brief For all <figure class="Screen_Capture">, add focus and focusout event listeners to all <figure> elements 
+     * which zooms the figure from it's original present size to full width of the parent element
+     * 
+     * ZJW: I tinkered using CSS alone to do this, but I did not find a way to do it.  Faster for me to implement this standard
+     * algorithm in an imperative programming language (i.e. JavaScript) than to implement it in CSS (the new-fangled declarative language of the day).
+     */
+    static focus (ev: FocusEvent)
+        {
+            const target = <HTMLElement>ev.target;
+            if (target.tagName === "FIGURE")
+            {
+                const parentWidth = window.getComputedStyle(<Element>target.parentElement).width;
+                const targetStyle = window.getComputedStyle(<Element>target);
+                const targetWidth = targetStyle.width;
+                const targetLeft = targetStyle.left;                    
+                const targetBLW = targetStyle.borderLeftWidth;                    
+                const targetML = targetStyle.marginLeft;                    
+                const targetPL = targetStyle.paddingLeft;                    
+                const sx = parseFloat(parentWidth)/parseFloat(targetWidth);
+                const tx = (parseFloat(parentWidth)/2) - (parseFloat(targetLeft)+parseFloat(targetBLW)+parseFloat(targetPL)+parseFloat(targetML) + parseFloat(targetWidth)/2);
+                //target.style.transform = `scale(${sx}) translate(${tx}px,0)`;
+                target.style.transform = `translate(${tx}px,0px) scale(${sx})`;
+                //target.style.transform = `scale(${sx})`;
+            }
+        };
+    static focusout (ev: FocusEvent)
+        {                   
+            const target = <HTMLElement>ev.target;
+            if (target.tagName === "FIGURE")
+            {
+                target.style.transform = "";
+            }
+        };
 }
 
 /**
@@ -562,6 +839,7 @@ let assignmentName : AssignmentName;
 export
 function onload(totalPoints : number)
 {
+
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/
@@ -643,25 +921,29 @@ function onload(totalPoints : number)
     {
         const div = document.createElement('div');
         const b = document.createElement('button');
-        const img = document.createElement('img');        
+        const img = document.createElement('img');
         const msg = document.createElement('span');
 
         e.after(div);
-        div.setAttribute('class','CopiedToClipboardPopup');        
+        div.setAttribute('class','CopiedToClipboardPopup');
         
         div.appendChild(b);
         b.style.padding = '0';
         b.appendChild(img);
-        b.addEventListener('click',Git_Commit_Message.copyToClipboard);                
+        b.addEventListener('click',Git_Commit_Message.copyToClipboard);
         // https://www.iconfinder.com/icons/7124212/copy_clipboard_icon
+        img.setAttribute('width',"20px");
+        img.setAttribute('height',"20px");
         img.setAttribute('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAkJJREFUOE+t1E9IFHEUB/Dv+42klXXRLgYGHSJog46dag/9YWcLSv1tF2+lzhoI0S0EN6KITnZxd1g7SVD+zARzZqtDrQTeLSuCoEOREGHBUtbu/F78QmV3239Rc3nMmzefeb/fvBnCfz6olmef6dtDgQgBwgoo+LgNKwtKqaDWPVXBSI9zEeAbRCSKgOxWfD6mlPpZDS0BT3b37w2EcEDogMYpJl4CcF2w0AAfZUIfA/NE/FYwzT5Qqfvl8AZ4QvZ3aqbnINq+XsSk77TySq9ZZrQnLpl4shgg8Lk55d4qza2d2TFnCIybxNw9N+VOR+RAhkDHyzr4ykEh1MLN31et4DURv/KUe6gamABjhMH7fOW+lPLC5m+0OqQRHCAIi8EfiHTSu5t+Y4CoHHhh4pxyQw2B9abpn8BwONG0ZcfyFYCznnIz5mER6WRN9FXq8F91aLCW9uXbghBj4KqvUsMGCMvBVhOfqrFcw2AxRqBnLApnKd9UKAaEledZNf4OAJv8xtjYMafkpawtK07AWL39ZGDQV6lkXdDuOr+LrWCegE5ALzKT/wdO4geCfNqfHn9fF/w9Hl3x3driJwB2WoCs9HU0vIfrhQZl4kcgTHhTqcsmb8fi10z0JpOXKoM9zggIifXBrrdvtnSWGKx95e6vCEZj8V5mniBGGqDHtUBN3A5glMCep9zTFUEp5aYc2h4SEK7X3dr1T1rTkcy95GJF0CSllFaO2g4KTR01OwRyzYXmhZmZ0S/ldTX/2A12WlL2C0ahKCSti4+MAAAAAElFTkSuQmCC');
-        
-        msg.setAttribute('class','CopiedToClipboardPopup');        
-        msg.setAttribute('role','alert');        
+        msg.setAttribute('class','CopiedToClipboardPopup');
+        msg.setAttribute('role','alert');
         msg.innerText = "Copied to Clipboard";
-        b.after(msg);                        
+        b.after(msg);
     }
 
+
+            
+    ScreenCapture.init(document);
 
     /**
      *  Initialize <table id="RubricTable">

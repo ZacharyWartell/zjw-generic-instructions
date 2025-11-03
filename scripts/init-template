@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# STATUS: work in progress , port of init-template.bat
+
+# references
+# - https://man7.org/linux/man-pages/man1/getopts.1p.html
+
+echo This script should be run from the directory containing it, i.e. zjw-generic-instructions-template/site/git_modules/zjwgi/scripts/zjwgi
+
+USAGE_D="%s [-h] [-p path-prefix] [-r relative-path] [-z relative-path]"
+USAGE_P="   
+    -h                      shows this help
+    -p value                (--dir-prefix) optional prefix to name of directory name containing the files published to the public website. The prefix is prepended to standard name directory name: 'site'.
+    -r value                (--root-path) optional relative path too root directory of the project folder [Default:  ../../../..]
+    -z value                (--zjwgi-path) optional relative path too root directory of the zjwgi folder [Default:  ../../$SITE/git_modules/zjwgi]
+"
+     
+DirPrefix=
+RootPath="../../../.."
+CP_LN="ln"
+
+while getopts p:r:z:c: name; do
+    case $name in    
+    c)  CP_LN="$OPTARG"
+        ;;    
+    p)  DirPrefix="$OPTARG"
+        ;;    
+    r)  RootPath="$OPTARG"
+        ;;    
+    z)  ZJWGIPath="$OPTARG"
+        ;;    
+    h)
+        printf "$USAGE_P" `basename "$0"`
+        printf "$USAGE_D" `basename "$0"`
+        exit 2
+        ;;
+    esac
+done
+
+pushd $RootPath
+
+site="site"
+if [[ "$DirPrefix" == "null" ]]; then
+    SITE="."
+else
+    SITE="$DirPrefix$site"
+fi
+
+ZJWGIPath="$SITE/git_modules/zjwgi"
+
+#if /i "$ZJWGIPath"=="" set "ZJWGIPath=../$SITE/git_modules/zjwgi"
+
+pwd
+
+cp_ln () {
+    if [[ $CP_LN == 'cp' ]]; then
+        cp -r $2 $1
+    else
+        ln -s $1 $2
+        exit # too many changes need to make ln work again right now
+    fi
+
+}
+
+#rmdir scripts/zjwgi 2>null ;        cp_ln scripts/zjwgi        "$ZJWGIPath/scripts"
+mkdir $SITE/css > nul 2>&1
+rmdir $SITE/css/zjwgi 2>null ;      cp_ln  $SITE/css/zjwgi      "$ZJWGIPath/site/css/zjwgi"
+mkdir $SITE/html > nul 2>&1
+rmdir $SITE/html/zjwgi 2>null ;     cp_ln  $SITE/html/zjwgi     "$ZJWGIPath/site/html/zjwgi"
+mkdir $SITE/scripts > nul 2>&1
+#rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts/zjwgi  "$ZJWGIPath/site/scripts/zjwgi"
+rmdir $SITE/scripts/zjwgi 2>null ;  cp_ln  $SITE/scripts  "$ZJWGIPath/site/scripts/zjwgi"
+
+mkdir $SITE/images > nul 2>&1
+rmdir $SITE/images/zjwgi 2>null ;   cp_ln  $SITE/images/zjwgi   "$ZJWGIPath/site/images/zjwgi"
+
+mkdir $SITE/videos > nul 2>&1
+rmdir $SITE/videos/zjwgi 2>null ;   cp_ln  $SITE/videos/zjwgi   "$ZJWGIPath/site/videos/zjwgi"
+# \todo ??? copy /-Y $SITE/git_modules/zjwgi/site/index.html $SITE           
+
+popd

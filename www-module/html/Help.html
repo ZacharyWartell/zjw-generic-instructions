@@ -9,19 +9,28 @@
     <!--
     <script src="../libs/jquery-3.1.0.js"></script>    <script src="../libs/toc.min.js"></script>      -->
     <!-- <script  src="libs/w3.css"></script> -->
-    <script>
-      /* \author Zachary Wartell
-       *   
-       */
-
-      function onload_Body()
-      {                    
-      }
+    <script type="importmap">
+          {
+            "imports": {
+              "ZxW_MVC": "../modules/zxw-mvc/ZxW_MVC.js",
+              "ZxW_GUI": "../modules/zxw-mvc/ZxW_GUI.js",
+              "ZxW_TabContainer": "../modules/zxw-mvc/ZxW_TabContainer.js",
+              "ZxW_Annotation": "../modules/zxw-mvc/ZxW_Annotation.js",
+              "ZxW_Toolbar": "../modules/zxw-mvc/ZxW_Toolbar.js",
+              "ZxW_TextEditor": "../modules/zxw-mvc/ZxW_TextEditor.js"
+            }
+          }
+    </script>      
+    <script type="module" lang="javascript">      
+        import * as CAW from "../scripts/ClassAssignmentWartell.js";
+        export function onload_ZxW_GUI () 
+        {
+            CAW.ScreenCapture.init(document);
+        };
+        document.body.onload = onload_ZxW_GUI;
     </script>
-    <!--
-    <link href="../toc.css" rel="stylesheet" type="text/css">    -->
-    <link href="../../css/zjwgi/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
-    <script></script>
+  
+    <link href="../css/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">    
     <style media="print" type="text/css">        
             /*
             If printing, don't use scroll bars, just expand code examples to full height.
@@ -33,7 +42,7 @@
                                                         overflow-y: hidden;}    
     </style>
   </head>
-  <body onload="onload_Body();">
+  <body>
     <!-- w3.css stuff I experimented with
     <div  style="top: 112px;"  class="w3-sidenav w3-collapse w3-slim"  id="sidenav">      <div  style="padding-top: 112px;"  id="leftmenuinner">        <div  class="w3-light-grey"  id="leftmenuinnerinner"> <a  href="javascript:void(0)"  onclick="close_menu()"  class="w3-closebtn w3-hide-large w3-large"             style="padding:3px 12px;">×</a> </div>      </div>    </div>    <div  class="w3-main w3-light-grey"  id="belowtopnav"  style="margin-left: 220px; padding-top: 0px;">      <div  class="w3-row w3-white">        <div  class="w3-col l10 m12"  id="main">          -->
     <!-- IF_TOC -->

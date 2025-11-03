@@ -145,18 +145,18 @@ table.Menu
 }
 
 
-table.RubricAwardedPoints
+table.RubricAwardedPointsTable
 {
     border: solid 1px black;
     border-collapse: collapse;
 }
 
-table.RubricAwardedPoints > thead > tr > th
+table.RubricAwardedPointsTable > thead > tr > th
 {
     border: solid 2px black;
     text-align: center;
 }
-table.RubricAwardedPoints > tbody > tr > td
+table.RubricAwardedPointsTable > tbody > tr > td
 {
     border: solid 1px black;
     text-align: center;
@@ -209,11 +209,12 @@ table.Rubric > thead > tr > th
     font-weight: bold;
 }
 
-table.Rubric tr
+table.Rubric > thead > tr, table.Rubric > tbody > tr
 { 
     max-height: fit-content;
 }
 
+/* */
 div#Div_Rubric 
 {    
     display : flex;
@@ -221,12 +222,13 @@ div#Div_Rubric
     width: fit-content;
     align-items:center;
 }
+ 
 
 div#Div_Rubric > div
 {            
     width: fit-content;
 }
-div#Div_Rubric > div div
+div#Div_Rubric > div > div
 {
     border: 1px solid black;
 }
@@ -241,13 +243,24 @@ table.Rubric > tbody > tr:nth-child(1)
 }
 */
 
-table.Rubric td
+table.Rubric
 {
-    border: solid 1px;
-    max-height: fit-content;
+    table-layout: auto;
+    /* enable only for debugging/testing rendering reflow performance problems ...
+    table-layout: fixed;
+    width: 100%;
+    */
 }
 
-table.Rubric tr td:nth-child(3)
+table.Rubric > tbody > tr > td
+{
+    border: solid 1px;
+    /*
+    max-height: fit-content;
+    */
+}
+
+table.Rubric > tbody > tr > td:nth-child(3)
 {
     /* align-content: center; */
     text-align: center;
@@ -262,12 +275,15 @@ table.Rubric > tbody > tr > td:nth-child(7)
     width : 100px;    
 }
 
+
 table.Rubric > tbody > tr > td > textarea
 {
     resize: both;            
 }
 
-table.Rubric td.Empty
+
+/* div.Rubric > div > textarea, */
+table.Rubric > tbody > tr > td.Empty
 {
     border: 0px;
 }
@@ -276,7 +292,13 @@ table.Rubric td.Empty
 REFERENCE:
     - https://stackoverflow.com/questions/4148499/how-to-style-a-checkbox-using-css
 */
+/**
+9/19/2025: origin rule was below.   I changed the rule to be more specific because 
+Chrome (circa 9/19/2025) was terribly slow (on the order of 10+ seconds) to repaint a page with a rubric
+wt ~100 rows.  Unfortunately, this change did not fix the problem
 table.Rubric > tbody > tr > td  input[type="checkbox"]::before
+*/
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]::before
 {
     position: relative;
     display: block;
@@ -290,17 +312,17 @@ table.Rubric > tbody > tr > td  input[type="checkbox"]::before
     background: #FFF;
 }
 
-table.Rubric > tbody > tr > td  input.Grey[type="checkbox"]::before
+table.Rubric > tbody > tr > td > span > span >  input.Grey[type="checkbox"]::before
 {
     border: 4px dotted black;    
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]::after
 {
     position: relative;
     display: block;
     left: 6px;
-    top: -17px;
+    top: -17px;    
     width: 8px;
     height: 7px;
     border-width: 1px;
@@ -312,25 +334,37 @@ table.Rubric > tbody > tr > td  input[type="checkbox"]::after
     background-position: center;
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]:checked::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]:checked::after
 {        
-    content: "\2713";
-    font-weight: bolder;
-    color: black;
-    top: -1.5em;    
-    
+    content: "\2713";  
+    position: relative;
+    display: block;
+
+    left: 6px;
+    top: 5px;    
+    width: 8px;
+    height: 7px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #B3B3B3 #dcddde #dcddde #B3B3B3;    
+    background-image: linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: -25px;
     /*
+    
+    top: -1.5em;    
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAQAAABuW59YAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAB2SURBVHjaAGkAlv8A3QDyAP0A/QD+Dam3W+kCAAD8APYAAgTVZaZCGwwA5wr0AvcA+Dh+7UX/x24AqK3Wg/8nt6w4/5q71wAAVP9g/7rTXf9n/+9N+AAAtpJa/zf/S//DhP8H/wAA4gzWj2P4lsf0JP0A/wADAHB0Ngka6UmKAAAAAElFTkSuQmCC'), linear-gradient(135deg, #B1B6BE 0%, #FFF 100%);
     content: "*";
     
     */
 }
 
-table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::before
+table.Rubric > tbody > tr > td > span > span >  input[type="checkbox"]:disabled::before
 {
     border: 4px solid #808080;
 }
-table.Rubric > tbody > tr > td  input[type="checkbox"]:disabled::after
+table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]:disabled::after
 {
     opacity: 0.5;
 }
@@ -417,7 +451,11 @@ figure.Screen_Capture figcaption
 }
 figure.Screen_Capture:focus {
     outline: none;
+    
+    /*
+    transform: scale(2.5) translate(+30%,0%);
     transform: scale(3.0);    
+    */
     box-shadow: 0 3px 10px #666;
     z-index: 9999;
 }

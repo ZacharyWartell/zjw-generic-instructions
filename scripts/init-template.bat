@@ -17,7 +17,7 @@ echo This script should be run from the directory containing it, i.e. zjw-generi
     REM echo   %__BAT_NAME% [flags] "required argument" "optional argument" 
     echo.
     echo.  /?, --help               shows this help
-    echo.  --dir-prefix value       optional prefix to name of directory name containing the files published to the public website [Default: "", which is prepended to standard name directory name: 'site']
+    echo.  --dir-prefix value       optional prefix to name of directory name containing the files published to the public website. The prefix is prepended to standard name directory name: 'site'.
     echo.  --root-path value        optional relative path too root directory of the project folder [Default:  ..\..\..\..]
     echo.  --zjwgi-path value       optional relative path too root directory of the zjwgi folder [Default:  ..\..\%SITE%\git_modules\zjwgi]
     
@@ -88,6 +88,7 @@ rmdir %SITE%\images\zjwgi 2>null & mklink /D %SITE%\images\zjwgi    ..\%ZJWGIPat
 
 mkdir %SITE%\videos > nul 2>&1
 rmdir %SITE%\videos\zjwgi 2>null & mklink /D %SITE%\videos\zjwgi    ..\%ZJWGIPath%\site\videos\zjwgi
-copy %SITE%\git_modules\zjwgi\site\index.html %SITE%           
+copy /-Y %SITE%\git_modules\zjwgi\site\index.html %SITE%           
+
 
 popd
