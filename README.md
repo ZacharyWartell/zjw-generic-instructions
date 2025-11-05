@@ -4,5 +4,4 @@
 ZJW Generic Instructions (zjwgi) is a library in HTML5 (HTML, CSS, Typescript) used for developing course tutorial and project
 instructions.
 
-
-Example assignments that use zjwgi can be found at https://webpages.charlotte.edu/zwartell/.
+For more details, as well as example assignment that use zjwgi, see [ZJW Generic Instructions - User Guide](https://zwartell.gitlab.io/zjw-generic-instructions/).
