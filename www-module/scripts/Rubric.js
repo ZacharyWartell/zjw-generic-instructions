@@ -703,7 +703,8 @@ export class Instructions {
                 </span>                        
                 </td>                                                                        
                 <td class="Instructor_Mode" hidden> <textarea rows='1'></textarea></td>`;
-            //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;
+            //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>`;  
+            // the form seems unnecessary given that this page is an 'static webpage'
             //<td class="Instructor_Mode" hidden> <input type="text"> </td>`;
             //<td class="Instructor_Mode" hidden> <form><textarea rows='1'></textarea></form> </td>
             //<td><span style="color:white; border : ${level!=0?'solid':'none'} 1px black;">${levelPrefix}</span>${instruction.pointFraction.toFixed(0)}&percnt;</td>

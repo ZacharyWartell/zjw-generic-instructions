@@ -137,12 +137,15 @@ async function writeFile(fileHandle, contents) {
 function apiCheck() {
     // https://web.dev/file-system-access/
     // ZJW: 8/20/2025: I'm silencing this warning for now, since it's only relevant to the zxw-doc editors and not the students reading the
-    //   the instruction zxw-doc.html page
-    /*
-    if ((<any>window).showSaveFilePicker === undefined)
+    //   the instruction zxw-doc.html page    
+    if (window.showSaveFilePicker === undefined)
         //throw "Browser does not support window.showSaveFilePicker";
-        alert("Browser does not support window.showSaveFilePicker");
-    */
+        //alert("Browser does not support window.showSaveFilePicker");
+        console.error("Browser does not support window.showSaveFilePicker");
+    if (window.showOpenFilePicker === undefined)
+        //throw "Browser does not support window.showSaveFilePicker";
+        //alert("Browser does not support window.showOpenFilePicker");        
+        console.error("Browser does not support window.showOpenFilePicker");
 }
 /**
  * @status [experimental][deployed only in 'Beta' mode]
