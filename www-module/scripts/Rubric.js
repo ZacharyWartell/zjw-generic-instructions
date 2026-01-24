@@ -237,7 +237,25 @@ export class Instruction {
         this.gui_checkbox_recursive(input);
         instructions.recalc_points();
         instructions.gui_update_awarded();
-        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.nextElementSibling; tr !== null; tr = tr.nextElementSibling) {
+        /*
+        <table id="RubricAwardedPointsTable" class="RubricAwardedPointsTable">
+            <thead>
+                <tr>
+                    <th>Combination</th><!--       <th>Completed</th> -->
+                    <th>Max Points</th>
+                    <th>Awarded Points</th>
+                </tr>
+                <tr>
+                    <th><!--       </td><td>--></td>
+                    <th><span data-total-points="">150</span></th>
+                    <th><span id="AwardedPoints" data-zxw-mvc="dynamic-content"></span></th>
+                </tr>
+            </thead>
+            <tbody data-zxw-mvc="dynamic-content">
+            </tbody>
+        </table>
+        */
+        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.parentElement.nextElementSibling.children[0]; tr !== null; tr = tr.nextElementSibling) {
             //let percentage : string;
             const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
             if (percentage <= 101)
