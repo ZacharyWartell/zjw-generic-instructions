@@ -5,11 +5,11 @@ pages:
   script:
     - mkdir .public
     #- mkdir .public/dev_scripts
-    - cp -r Site\ Root/* .public
+    - cp docs/*.html .public/index.html
     #- mv ".public/d3-beginner-project.html" .public/index.html
     #- cp -r dev_scripts/* .public/dev_scripts
-    - git show --no-patch --no-notes --pretty='%cd' $CI_COMMIT_SHA > REVISION.txt
-    - . ./dev_scripts/revision.sed
+    #- git show --no-patch --no-notes --pretty='%cd' $CI_COMMIT_SHA > REVISION.txt
+    #- . ./dev_scripts/revision.sed
     - mv .public public
   artifacts:
     paths:
