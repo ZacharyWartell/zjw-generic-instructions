@@ -1,0 +1,4 @@
+# ignore local changes to symlinks, which maybe done to link to other copies of the submodules already on the file system
+zxw-mvc
+zxw-git-modules
+zjw-pwa-template
