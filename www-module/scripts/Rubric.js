@@ -18,7 +18,8 @@ function AUTO_DOC() {
  */
 AUTO_DOC["Instruction Category"] =
     `
-    <ol> These are the CSS class for ol, li or section HTML::Elements that map to Instruction object (of enum Category that is either individual or composite)
+    <ol> These are the CSS classes for ol, li or section HTML::Elements that map to a TypeScript Instruction object.  Instruction.category is-a enum Category 
+         whose enum values maps 1-to-1 to these CSS classes.
         <li> Instruction_Question - the li element asks a question the student must answer.   The method of submitting the must be descrbed within li element content.
         </li>
         <li> Instruction_Read - the li element listed required reading only.
@@ -47,6 +48,7 @@ AUTO_DOC["Instruction Category"] =
  */
 var Category;
 (function (Category) {
+    /* Instruction instance Category will be assign a non Category.AUTO value based on some implicit information */
     Category["AUTO"] = "AUTO";
     /* Instruction instance is associated with a a HTML <section> */
     Category["SECTION"] = "SECTION";
@@ -60,27 +62,89 @@ var Category;
     Category["TODO"] = "TODO";
     /* Instruction instance is associated with a reminder HTML <li>. A Reminder Instruction has point fraction = 0 */
     Category["REMINDER"] = "REMINDER";
-    /* Instruction instance is associated with a  HTML <li> that has a nested, child <ol> that contains sub-instructions.
-       Unlike Category.COMPOSITE, the child <ol>'s sub elements (<li>) represent mutually exclusive options.
-       The student only performs one of the options.
-       
-       Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with Category.OPTION_SET
-       and will not generate table rows for the child <ol>'s element (<li>'s).
+    /* <block https://172.21.224.73:8081/Rubric.html#EQUIPOINTS_OPTION_SET>
+        <div class="Comment" id="EQUIPOINTS_OPTION_SET">
+            <p>
+                Instruction instance is associated with a HTML that has a nested, child &lt;ol&gt; that contains
+                sub-instructions.&nbsp;</p>
+            <p>Unlike with <b>Category.COMPOSITE</b>, with <b>Category.EQUIPOINTS_OPTION_SET</b> the child &lt;ol&gt;'s
+                sub elements (&lt;li&gt;) represent _mutually exclusive_ options.
+                In other words, the student only performs one of the options.&nbsp;</p>
+            <p>For Category.EQUIPOINTS_OPTION_SET all options are worth an equal number of points.&nbsp;</p>
+            <p>&nbsp;Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with
+                Category.OPTION_SET
+                and will not generate table rows for the child
+                &lt;ol&gt;'s element (&lt;li&gt;'s).&nbsp;</p>
+            <p>&nbsp;&lt;del&gt;
+                The "OLD RULE" below is no longer adequate because I'm encountering use-cases that need the "NEW RULE"
+                in order for the use-cases to be supported.
+                ---------------------------
+                Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with
+                Category.OPTION_SET
+                and will not generate table rows for the child &lt;ol&gt;'s element (&lt;li&gt;'s).&nbsp;</p>
+            <p><br></p>
+            <p>Category.OPTION_SET is useful in two use-cases:&nbsp;</p>
+            <ol>
+                <li>&nbsp;When different instructions are needed for different operating systems, or to accommodate
+                    other differing aspects of the student's computing environment.
+                    In this situation, all options are worth the same amount points.&nbsp;</li>
+                <li>When different instructions are needed to accommodate students with different prior
+                    knowledge.
+                    One suboption may be a short, small point exercise where the student merely makes a statement
+                    regarding how they acquired prior knowledge,
+                    while the second suboption may be a length, large point, tutorial on.<br></li>
+            </ol>
 
-       Category.OPTION_SET is useful when different instructions are needed for different operating systems, or to accommodate other
-       differing aspects of the student's computing environment.
+
+            It is assumed that each option requires an equal amount of student effort and is therefore worth
+            the same number points.
+            The points are calculated for the Category.OPTION_SET Instruction, since the nested, child &lt;ol&gt;
+            is not represented by rows
+            in the Rubric table.<div><br></div>
+        </div>
+    </block>
+    */
+    Category["OPTION_SET"] = "OPTION_SET";
+    /* Instruction instance is associated with a  HTML <li> that has a nested, child <ol> that contains sub-instructions.
+       Unlike with Category.COMPOSITE, with Category.VARIPOINTS_OPTION_SET the child <ol>'s sub elements (<li>) represent _mutually exclusive_ options.
+       In other words, the student only performs one of the options.
+       For Category.VARIPOINTS_OPTION_SET the options are worth a different number of points.
+       
+        Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction with Category.OPTION_SET
+        and will not generate table rows for the child <ol>'s element (<li>'s).
+           
+       Category.VARIPOINTS_OPTION_SET is useful when different instructions are needed to accommodate students with different
+       prior knowledge.  One suboption may be a short, small point exercise where the student merely makes a statement regarding
+       how they acquired prior knowledge, while the second suboption may be a length, large point, tutorial on
 
        It is assumed that each option requires an equal amount of student effort and is therefore worth the same number points.
        The points are calculated for the Category.OPTION_SET Instruction, since the nested, child <ol> is not represented by rows
        in the Rubric table.
+       ---------------------------
      */
-    Category["OPTION_SET"] = "OPTION_SET";
+    Category["VARIPOINTS_OPTION_SET"] = "VARIPOINTS_OPTION_SET";
     /* [considered for deprecation] Instruction instance is associated with a question HTML <li> */
     Category["GENERAL"] = "GENERAL";
+    /* ??? undocumented ??? */
     Category["OVERVIEW"] = "OVERVIEW";
+    /* Instruction instance will not be added to the RubricTable */
     Category["NON_RUBRIC"] = "NON_RUBRIC";
+    /* Instruction instance is Git Commit operation */
     Category["GIT_COMMIT"] = "GIT_COMMIT";
 })(Category || (Category = {}));
+/*
+ * @brief OptionCategory categorizes an Instruction based on whether it is a descendent of an Instruction that is an OPTION_SET
+ * @see AUTO_DOC["Instruction OptionCategory"]
+ */
+var OptionCategory;
+(function (OptionCategory) {
+    /* Instruction is required, i.e. not a descendent of an OPTION_SET Instruction*/
+    OptionCategory["REQUIRED"] = "REQUIRED";
+    /* Instruction instance is child of OPTION_SET Instruction  */
+    OptionCategory["CHILD_OF_OPTIONSET"] = "CHILD_OF_OPTIONSET";
+    /* Instruction instance is of a child of OPTION_SET Instruction  */
+    OptionCategory["DESCENDENT_OF_OPTIONSET_CHILD"] = "DESCENDENT_OF_OPTIONSET_CHILD";
+})(OptionCategory || (OptionCategory = {}));
 /**
  * @param element
  * @param returnNull - this is a vestige of earlier code, eventually this parameter should be removed and all code refactored
@@ -213,8 +277,21 @@ export class Instruction {
         this.pointCalculation = PointCalculation.FULL_OR_ZERO;
         this.parent = parent;
         this.subSteps = new Array();
+        this.optionCategory = OptionCategory.REQUIRED;
         if (this.parent !== null) {
-            if (parent.category !== Category.OPTION_SET) { // override any category that was set in the HTML file with Category.COMPOSITE
+            if (this.parent.category === Category.OPTION_SET) {
+                this.optionCategory = OptionCategory.CHILD_OF_OPTIONSET;
+            }
+            else if (this.parent.optionCategory === OptionCategory.CHILD_OF_OPTIONSET || this.parent.optionCategory === OptionCategory.DESCENDENT_OF_OPTIONSET_CHILD) {
+                this.optionCategory = OptionCategory.DESCENDENT_OF_OPTIONSET_CHILD;
+                /*
+                if (this.category === Category.OPTION_SET)
+                    throw "Fatal Error: Nested OPTION_SET Instruction encountered.  Such Instructions are not allowed.";
+                */
+            }
+            else { /* Override any category that was set in the HTML file, assinging it Category.COMPOSITE
+                This situation indicates the HTML file setting was an error, b.c. any Instruction with children must be a Category.COMPOSITE (or Category.OPTION_SET).
+              */
                 parent.pointCalculation = PointCalculation.COMPOSITE;
                 parent.category = Category.COMPOSITE;
                 console.assert(this.parent !== undefined);
@@ -283,7 +360,7 @@ export class Instruction {
      */
     gui_checkbox_recursive(input, processChildren = true) {
         const oldAwarded = this.awarded;
-        if (input.checked) { // checkbox chedked, set awarded points, this.awarded, to this.points                
+        if (input.checked) { // checkbox checked, so assign awarded points (this.awarded) to this.points                
             const i = instructions.instructions.findIndex((element) => element == this);
             const td = document.querySelector("table.Rubric > tbody > tr[data-ri='" + i.toString() + "'] > td:nth-child(6) > span:nth-child(2) > span:nth-child(2)");
             this.awarded = this.points;
@@ -302,6 +379,34 @@ export class Instruction {
                 set to the DOM checkbox's run-time state
             */
             input.defaultChecked = input.checked;
+            /*
+                handle OPTIONSET situation by finding and clearing the checkboxes of all the other Instructions that are part of the OptionSet containing this Instruction
+            */
+            if (this.optionCategory === OptionCategory.CHILD_OF_OPTIONSET || this.optionCategory === OptionCategory.DESCENDENT_OF_OPTIONSET_CHILD) {
+                let p;
+                for (p = this.parent; p !== null && p.category !== Category.OPTION_SET; p = p.parent)
+                    ;
+                if (p === null)
+                    throw "p === null";
+                const i = instructions.instructions.findIndex((element) => element == p);
+                const tr = document.querySelector("table.Rubric > tbody > tr[data-ri='" + i.toString() + "'");
+                console.assert(tr !== null);
+                const cInput = tr.querySelector(":scope input[type='checkbox']");
+                console.assert(cInput !== null);
+                cInput.checked = true;
+                for (let c of p.subSteps) {
+                    if (c !== this) {
+                        const i = instructions.instructions.findIndex((element) => element == c);
+                        const tr = document.querySelector("table.Rubric > tbody > tr[data-ri='" + i.toString() + "'");
+                        console.assert(tr !== null);
+                        const cInput = tr.querySelector(":scope input[type='checkbox']");
+                        console.assert(cInput !== null);
+                        cInput.checked = false;
+                        c.gui_checkbox_recursive(cInput);
+                        cInput.classList.remove("Grey");
+                    }
+                }
+            }
         }
         else { // checkbox unchecked, reset Instruction.awarded points to 0 (and adjust Instruction.subStep hierarchy as needed)                
             const i = instructions.instructions.findIndex((element) => element == this);
@@ -697,7 +802,8 @@ export class Instructions {
                 ps = "&nbsp" + ps;
             // disable checkbox for instructions worth 0 points.                
             let disabled = "";
-            if (parentOptionSet || instruction.points === 0.0)
+            if (instruction.category == Category.OPTION_SET || instruction.points === 0.0)
+                //if (instruction.points === 0.0)
                 disabled = "disabled";
             // created row's HTML code                 
             if (instruction.section === prevSection)

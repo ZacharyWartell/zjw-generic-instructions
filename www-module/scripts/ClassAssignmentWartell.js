@@ -43,8 +43,10 @@ export class AssignmentName {
             this.number = jsonObject.AssignmentName.number;
             this.numberLongDir = jsonObject.AssignmentName.numberLongDir;
             this.name = jsonObject.AssignmentName.name;
+            this.gitServerOptionA = jsonObject.AssignmentName.gitServerOptionA;
+            this.gitServerOptionB = jsonObject.AssignmentName.gitServerOptionB;
+            this.gitServerOptionC = jsonObject.AssignmentName.gitServerOptionC;
         }
-        this.git = this.numberLongDir;
     }
     insertText(doc) {
         let elements = doc.querySelectorAll('span[data-course-number]');
@@ -70,6 +72,18 @@ export class AssignmentName {
         elements = doc.querySelectorAll('span[data-project-git]');
         for (let e of elements) {
             e.innerText = this.git;
+        }
+        elements = doc.querySelectorAll('span[data-git-server-option-a]');
+        for (let e of elements) {
+            e.innerText = this.gitServerOptionA;
+        }
+        elements = doc.querySelectorAll('span[data-git-server-option-b]');
+        for (let e of elements) {
+            e.innerText = this.gitServerOptionB;
+        }
+        elements = doc.querySelectorAll('span[data-git-server-option-c]');
+        for (let e of elements) {
+            e.innerText = this.gitServerOptionC;
         }
         /*
         *  remove DataField:before contents now that data text is inserted

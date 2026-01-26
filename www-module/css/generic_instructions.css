@@ -152,6 +152,25 @@ ol.Instruction > li > ol > li > ol
     list-style-type: lower-roman;
 }
 
+li.Instruction_Option_Set > ol > li
+{
+    border: 2px dashed grey;
+    border-radius: 20px;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+div.Option_Set_Name, div.GitServerOption
+{
+    display: inline-block;
+    background-color: azure;
+    border: 1px black solid;    
+    padding: 0.25em;
+    width: fit-content;    
+    margin: 0.25em;
+}
+
+
 span.Grade_Points
 {
     font-weight: bold;
