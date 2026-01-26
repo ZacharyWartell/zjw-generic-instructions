@@ -170,6 +170,11 @@ div.Option_Set_Name, div.GitServerOption
     margin: 0.25em;
 }
 
+div.Option_Set_Name > span:nth-of-type(1), div.GitServerOption > span:nth-of-type(1)
+{
+    font-weight: bold;
+}
+
 
 span.Grade_Points
 {

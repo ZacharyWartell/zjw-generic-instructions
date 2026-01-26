@@ -307,7 +307,7 @@ table.Rubric > tbody > tr > td > span > span > input[type="checkbox"]::before
 
     top: -2px;
     
-    border: 4px solid grey;
+    border: 4px solid black;
     content: "";
     background: #FFF;
 }

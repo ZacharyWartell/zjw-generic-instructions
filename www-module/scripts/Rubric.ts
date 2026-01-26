@@ -534,13 +534,13 @@ export class Instruction {
                 
                 input.classList.remove("Grey");
                 if(oldAwarded !== this.awarded)
-                {// box was checked and now unchecked, so reset all parent Instructions                    
+                {// box was checked and now unchecked, so reset all ancestor Instructions                    
                     for (let p = this.parent; p !== null; p = p.parent)
                     {                               
                         /* get GUI <tr> element contains Instruction at level above this Instruction */
                         const pi = instructions.instructions.findIndex((element) => element == p);
                         console.assert(pi !== -1);                 
-                        const parentCB : HTMLInputElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+pi.toString()+"'] input[type='checkbox']");
+                        const parentCB : HTMLInputElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+pi.toString()+"'] input[type='checkbox']"); // 'parentCheckBox'
                         console.assert(parentCB !== null);                                                                
                         parentCB.checked = false;                                
                         parentCB.classList.add("Grey");                            
