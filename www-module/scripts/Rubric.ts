@@ -451,8 +451,9 @@ export class Instruction {
 
          
 
-        /* this causes the Rubric .html that is saved to a fill, to have it's checkbox HTML Attribute 'default'
-           set to the DOM checkbox's run-time state
+        /* this causes exported Rubric that is saved to a .html file, to have it's checkbox HTML Attribute 'default'
+           set to the DOM checkbox's run-time state.  Hence, the exported rubric file has the checkboxes checked/unchecked as 
+           set in the current DOM.
          */
         input.defaultChecked = input.checked;
     }
@@ -465,6 +466,7 @@ export class Instruction {
     gui_checkbox_recursive(input : HTMLInputElement, processChildren  : Boolean = true)
     {
         const oldAwarded = this.awarded;
+        input.parentElement.parentElement.style.backgroundColor = "yellow";
         if (input.checked)
             {// checkbox checked, so assign awarded points (this.awarded) to this.points                
                 const i = instructions.instructions.findIndex((element) => element == this);
@@ -495,22 +497,17 @@ export class Instruction {
                 */
                 if(this.optionCategory === OptionCategory.CHILD_OF_OPTIONSET || this.optionCategory === OptionCategory.DESCENDENT_OF_OPTIONSET_CHILD)
                 {
-                    let p : Instruction;
+                    /* find deepest common ancestor that is a Category.OPTION_SET */
+                    let p : Instruction, pc : Instruction = this;
                     for (p = this.parent;
                          p !== null && p.category !== Category.OPTION_SET;
-                         p = p.parent);
+                         pc = p, p = p.parent);
                     if (p === null) throw "p === null";
 
-                    const i = instructions.instructions.findIndex((element) => element == p);
-                    const tr : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'");
-                    console.assert(tr !== null);
-                    const cInput : HTMLInputElement = tr.querySelector(":scope input[type='checkbox']");
-                    console.assert(cInput !== null);                        
-                    cInput.checked = true;                    
-
+                    /* uncheck other OptionSet's sibling */
                     for (let c of p.subSteps)
                     {
-                        if (c !== this)
+                        if (c !== pc)
                         {
                             const i = instructions.instructions.findIndex((element) => element == c);
                             const tr : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'");
@@ -522,6 +519,15 @@ export class Instruction {
                             cInput.classList.remove("Grey");                            
                         }
                     }
+
+                    /* check deepest common ancestor */
+                    const i = instructions.instructions.findIndex((element) => element == p);
+                    const tr : HTMLElement = document.querySelector("table.Rubric > tbody > tr[data-ri='"+i.toString()+"'");
+                    console.assert(tr !== null);
+                    const cInput : HTMLInputElement = tr.querySelector(":scope input[type='checkbox']");
+                    console.assert(cInput !== null);                        
+                    cInput.checked = true;                    
+                    //instructions.instructions[i].gui_checkbox_recursive(cInput,false);                        
                 }                
             }
         else
@@ -535,6 +541,7 @@ export class Instruction {
                 input.classList.remove("Grey");
                 if(oldAwarded !== this.awarded)
                 {// box was checked and now unchecked, so reset all ancestor Instructions                    
+
                     for (let p = this.parent; p !== null; p = p.parent)
                     {                               
                         /* get GUI <tr> element contains Instruction at level above this Instruction */
@@ -546,7 +553,7 @@ export class Instruction {
                         parentCB.classList.add("Grey");                            
                         p.gui_checkbox_recursive(parentCB,false);                  
                         parentCB.classList.add("Grey");                                      
-                    }            
+                    }  
                     /*
                     Goal:  uncheck child Instructions 
                     Bug:   right now this code causes all sorts of problems , disabled for now
@@ -565,7 +572,8 @@ export class Instruction {
                         }                                                     
                 }
                     
-            }                    
+            }    
+            input.parentElement.parentElement.style.backgroundColor = "white";
     }
 
     /**
@@ -712,6 +720,13 @@ export class Instructions
                 i.awarded += this.recalc_points_resursive(c);
             return i.awarded;
         }
+        else if (i.category === Category.OPTION_SET)
+        {
+            i.awarded = 0;
+            for (let c of i.subSteps)
+                i.awarded += this.recalc_points_resursive(c);
+            return i.awarded;
+        }
         else    
             return i.awarded;
     }
@@ -722,6 +737,7 @@ export class Instructions
     recalc_points()
     {
         this.awardedPoints = 0;
+        // call recalc_points_resursive on all root level Instruction's, i.e. those with no parent
         for (let i of this.instructions)
             if (i.parent === null)
             {
