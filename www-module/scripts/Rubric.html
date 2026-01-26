@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://172.21.224.73:8081/Rubric.html#EQUIPOINTS_OPTION_SET -->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+
+
+
+	<style>
+		#video {
+			border: 1px solid #999999;
+			width: 100%;
+			/* max-width: 860px; */
+		}
+
+		#log {
+			width: 25rem;
+			height: 15rem;
+			border: 1px solid black;
+			padding: 0.5rem;
+			overflow: scroll;
+		}
+
+		body {
+			background-color: rgb(36, 36, 36);
+			color: rgb(0, 116, 248);
+		}
+
+		div.Comment {
+			border: 1px black solid;
+			padding: 0.25em;
+			color: #468A55;
+			overflow-y: scroll;
+			resize: vertical;
+		}
+
+		div.TSEnumValue
+		{
+			border: 2px rgb(15, 238, 152) solid;
+			padding: 0.25em;			
+			width: fit-content;
+		}
+		div.TSEnumValue::before
+		{
+			content: 'enum';
+			color: rgb(86, 156, 214);
+		} 
+		div.TSEnumValue > span
+		{
+			color: rgb(78, 201, 176); 
+		}
+		div.TSEnumValue > span:nth-child(2)
+		{
+			color: rgb(79, 193, 255);
+		}
+		iframe {
+			color: darkgoldenrod;
+		}
+	</style>
+	<script>
+
+		async function loadCodeIntoIframe(url, iframeId) {
+			try {
+				// 1. Fetch the file manually
+				const response = await fetch(url);
+				const text = await response.text();
+
+				// 2. Target the iframe
+				const iframe = document.getElementById(iframeId);
+
+				// 3. Use srcdoc to force it to render as HTML/Text
+				// We wrap it in <pre> to preserve TypeScript formatting
+				iframe.srcdoc = `
+            <html>
+                <head>
+                    <style>body { font-family: monospace; white-space: pre; color:darkgoldenrod; }</style>
+                </head>
+                <body>${text.replace(/</g, "&lt;")}</body>
+            </html>
+        `;
+			} catch (err) {
+				console.error("Could not load the file:", err);
+			}
+		}
+
+		function onload() {
+			//loadCodeIntoIframe('Rubric.ts', 'my-iframe');
+		}		
+	</script>
+</head>
+
+<body contenteditable="true" onload="onload()">
+	<p>
+		<button id="start">Start Capture</button>&nbsp;
+		<button id="stop">Stop Capture</button>
+	</p>
+
+	<div hidden="true">
+		<strong>Log:</strong>
+		<br>
+		<pre id="log">
+			Track settings:
+			{
+			"aspectRatio": 3.5555555555555554,
+			"cursor": "always",
+			"deviceId": "window:1706936:0",
+			"displaySurface": "window",
+			"frameRate": 30,
+			"height": 1440,
+			"logicalSurface": true,
+			"resizeMode": "crop-and-scale",
+			"width": 5120
+			}
+			Track constraints:
+			{}
+		</pre>
+	</div>
+
+	<h1>Rubric.ts</h1>
+	<section>
+		<h2>Overview</h2>
+		Hello
+
+		<div><br></div>
+		<div><b>Comment</b></div>
+		<div><b><br></b></div>
+		<ol>
+			<li>x</li>
+			<li>y</li>
+			<li>z</li>
+			<li>a</li>
+			<li>adsf</li>
+			<li>asdf</li>
+			<li>asdf</li>
+			<li>asdf</li>
+		</ol>
+
+
+		<ol>
+			<li>x</li>
+			<li>y</li>
+			<li>z</li>
+			<li>a</li>
+			<li>frog</li>
+			<li>dog</li>
+			<li>log</li>
+			<li>smog</li>
+		</ol>
+
+	</section>
+	<section>
+		<h2>Comments</h2>		
+		<div class="Comment" id="EQUIPOINTS_OPTION_SET">
+			<div class="TSEnumValue">
+				<span>Category</span>
+				<span>EQUIPOINTS_OPTION_SET</span>
+			</div>
+			<p>
+				Instruction instance is associated with a HTML Element that has a nested child &lt;ol&gt; Element that
+				contains
+				sub-instructions.&nbsp;</p>
+			<p>Unlike with&nbsp;<span
+					style="color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre; background-color: rgb(31, 31, 31);">Category</span><b>.COMPOSITE</b>,
+				with&nbsp;<span
+					style="color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre; background-color: rgb(31, 31, 31);">Category</span><b>.EQUIPOINTS_OPTION_SET</b>
+				the child &lt;ol&gt;'s
+				sub elements (&lt;li&gt;) represent _mutually exclusive_ options.
+				In other words, the student only performs one of the options.&nbsp;</p>
+			<p>For&nbsp;<span
+					style="color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre; background-color: rgb(31, 31, 31);">Category</span>.EQUIPOINTS_OPTION_SET
+				all options are worth an equal number of points.&nbsp;</p>
+			<p>Therefore, the Rubric table generation will only generate a grading checkbox for the Instruction
+				with&nbsp;<span
+					style="color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre; background-color: rgb(31, 31, 31);">Category</span>.OPTION_SET
+				and will not generate table rows for the child
+				&lt;ol&gt;'s element (&lt;li&gt;'s).&nbsp;</p>
+			<p><br></p>
+			<p><span
+					style="background-color: rgb(31, 31, 31); color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre;">Category</span><b>.OPTION_SET</b>
+				is useful in two use-cases:&nbsp;</p>
+			<ol>
+				<li>When different instructions are needed for different operating systems, or to accommodate
+					other differing aspects of the student's computing environment.
+					In this situation, all options are worth the same amount points.&nbsp;</li>
+				<li>When different instructions are needed to accommodate students with different prior
+					knowledge.
+					One sub option may be a short, small point exercise where the student merely makes a statement
+					regarding how they acquired prior knowledge,
+					while the second sub option may be a length, large point, tutorial on.<br></li>
+			</ol>
+
+
+			It is assumed that each option requires an equal amount of student effort and is therefore worth
+			the same number points.
+			The points are calculated for the&nbsp;<span
+				style="color: rgb(78, 201, 176); font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; white-space: pre; background-color: rgb(31, 31, 31);">Category</span><b>.OPTION_SET</b>
+			Instruction, since the nested, child &lt;ol&gt;
+			is not represented by rows
+			in the Rubric table.<div><br></div>
+		</div>
+		<video id="video" autoplay=""></video>
+		<div hidden="true">
+			<!--
+			<iframe width="100%" src="./Rubric.ts"></iframe>
+			<object width="100%" type="text/plain" data="./Rubric.ts"></object>
+			-->
+			<iframe id="my-iframe" width="100%" src="./Rubric_files/saved_resource.html"></iframe>
+			<script>
+				loadCodeIntoIframe('Rubric.ts', 'my-iframe');
+			</script>
+
+		</div>
+	</section>
+
+	<script>
+		const videoElem = document.getElementById("video");
+		const logElem = document.getElementById("log");
+		const startElem = document.getElementById("start");
+		const stopElem = document.getElementById("stop");
+
+		// Options for getDisplayMedia()
+
+		const displayMediaOptions = {
+			video: {
+				displaySurface: "window",
+			},
+			audio: false,
+		};
+
+		// Set event listeners for the start and stop buttons
+		startElem.addEventListener("click", (evt) => {
+			startCapture();
+		});
+
+		stopElem.addEventListener("click", (evt) => {
+			stopCapture();
+		});
+		console.log = (msg) => (logElem.textContent = `${logElem.textContent}\n${msg}`);
+		console.error = (msg) =>
+			(logElem.textContent = `${logElem.textContent}\nError: ${msg}`);
+		async function startCapture() {
+			logElem.textContent = "";
+
+			try {
+				videoElem.srcObject =
+					await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+				dumpOptionsInfo();
+			} catch (err) {
+				console.error(err);
+			}
+		}
+		function stopCapture(evt) {
+			let tracks = videoElem.srcObject.getTracks();
+
+			tracks.forEach((track) => track.stop());
+			videoElem.srcObject = null;
+		}
+		function dumpOptionsInfo() {
+			const videoTrack = videoElem.srcObject.getVideoTracks()[0];
+
+			console.log("Track settings:");
+			console.log(JSON.stringify(videoTrack.getSettings(), null, 2));
+			console.log("Track constraints:");
+			console.log(JSON.stringify(videoTrack.getConstraints(), null, 2));
+		}
+
+	</script>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
+
+
+</body>
+
+</html>
