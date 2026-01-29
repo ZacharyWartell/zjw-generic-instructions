@@ -1,11 +1,11 @@
-
+/*
  * \author Zachary Wartell
  * \copyright Copyright 2015. Zachary Wartell.
  * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
  - http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
- /* SHIT */
+
 body {
     counter-reset: h1-Section h1-Appendix;
 }
