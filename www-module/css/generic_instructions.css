@@ -152,7 +152,14 @@ ol.Instruction > li > ol > li > ol
     list-style-type: lower-roman;
 }
 
-li.Instruction_Option_Set > ol > li
+ol.Instruction > li.Instruction_Option_Set > ol > li::marker,
+                 li.Instruction_Option_Set > ol > li::marker
+{    
+    content: counter(instructionLevel2, lower-alpha) " ";
+}
+
+ol.Instruction > li.Instruction_Option_Set > ol > li, 
+                 li.Instruction_Option_Set > ol > li
 {
     border: 2px dashed grey;
     border-radius: 20px;
