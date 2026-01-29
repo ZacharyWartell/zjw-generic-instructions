@@ -390,7 +390,7 @@ export function QandAModeHover(e : MouseEvent) : void
           });
  }
 
-export async function main(totalPoints : number)
+export async function main(totalPoints : number, editMenuDisable : boolean = true)
 {
     apiCheck();
 
@@ -465,13 +465,13 @@ export async function main(totalPoints : number)
      */
     let tib :  HTMLButtonElement | null = (<HTMLButtonElement>document.getElementById("ZxW_Editor_TabIndex_Button"));
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable ;
     tib = (<HTMLButtonElement>document.getElementById("ZxW_Annotation_TabIndex_Button"));
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable ;
     tib = (<HTMLButtonElement>document.getElementById("ZxW_File_TabIndex_Button"));
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable;
 
 
     document.getElementById("Instructor_Mode").addEventListener('change', 
@@ -935,7 +935,7 @@ function onload(totalPoints : number)
     for (let e of elements)
     {
         if ( e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
-            (<HTMLElement>e).innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + (<HTMLElement>e).innerText;
+            (<HTMLElement>e).innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  <span>" + (<HTMLElement>e).innerText;
     }
 
     /**

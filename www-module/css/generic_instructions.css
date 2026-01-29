@@ -108,6 +108,24 @@ span.Function_Name
     font-family: Courier, monospace;
 }            
 
+
+span.GUI_Selection
+{
+    font-family: Arial, monospace;
+}
+span.GUI_Selection > span
+{
+    border: 1px black solid;
+    padding: 0.20em;
+    border-radius: 10%;
+}
+/* 
+span.GUI_Selection > span:not(:last-child)::after
+{
+    content: "=>";    
+}
+*/
+
 /*   Comments in Shell Code
 */
 span.Shell_Code_Comment

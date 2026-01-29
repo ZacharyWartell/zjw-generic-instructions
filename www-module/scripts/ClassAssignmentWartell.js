@@ -320,7 +320,7 @@ function scrollIntoViewNavigation() {
             console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         });
 }
-export async function main(totalPoints) {
+export async function main(totalPoints, editMenuDisable = true) {
     apiCheck();
     scrollIntoViewNavigation();
     /**
@@ -377,13 +377,13 @@ export async function main(totalPoints) {
      */
     let tib = document.getElementById("ZxW_Editor_TabIndex_Button");
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable;
     tib = document.getElementById("ZxW_Annotation_TabIndex_Button");
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable;
     tib = document.getElementById("ZxW_File_TabIndex_Button");
     if (tib !== null)
-        tib.disabled = true;
+        tib.disabled = editMenuDisable;
     document.getElementById("Instructor_Mode").addEventListener('change', (e) => {
         const target = e.target;
         Visibility_Toggle('Instructor_Mode', target.checked);
@@ -769,7 +769,7 @@ export function onload(totalPoints) {
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements) {
         if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
-            e.innerHTML = "&nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  " + e.innerText;
+            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  <span>" + e.innerText;
     }
     /**
      *  insert "copy to clipboard" button after span.Git_Commit_Message elements.
