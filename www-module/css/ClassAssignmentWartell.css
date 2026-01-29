@@ -1,11 +1,11 @@
-/**
+/*
  * \author Zachary Wartell
  * \copyright Copyright 2015. Zachary Wartell.
  * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
  - http://creativecommons.org/licenses/by-nc-sa/4.0/
  */
 
- /* SHIT */
+
 body {
     counter-reset: h1-Section h1-Appendix;
 }
@@ -661,6 +661,28 @@ ol.Instruction > li > ol > li > ol > li::marker {
     font-size: medium;
 
     content: counter(instructionLevel3, lower-roman) " ";
+}
+
+
+ol.Instruction > li.Instruction_Option_Set > ol > li,
+                 li.Instruction_Option_Set > ol > li
+{    
+        counter-increment: instructionLevel2;
+}
+
+ol.Instruction > li.Instruction_Option_Set > ol > li::marker,
+                 li.Instruction_Option_Set > ol > li::marker
+{    
+    content: "(" counter(instructionLevel2, lower-greek) ")";
+}
+
+ol.Instruction > li.Instruction_Option_Set > ol > li, 
+                 li.Instruction_Option_Set > ol > li
+{
+    border: 2px dashed grey;
+    border-radius: 20px;
+    padding: 0.5em;
+    margin-top: 0.5em;
 }
 
 /* experimental */
