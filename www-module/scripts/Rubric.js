@@ -702,9 +702,9 @@ export class Instructions {
      * @brief extractSectionsAndRubricAll traverses the DOM and all nested <section> elements and all nested <ol.Instruction> <li> elements, constructing
      * a corresponding tree of Section objects and Instruction objects.
      **/
-    extractSectionsAndRubricAll(totalPoints) {
+    extractSectionsAndRubricAll(totalPoints, headingStartLevel = 1) {
         this.totalPoints = totalPoints;
-        this.extractSectionsAndRubric(null, document.body, 1);
+        this.extractSectionsAndRubric(null, document.body, headingStartLevel);
         /**
          *  compute points from fraction hierarchy
          */

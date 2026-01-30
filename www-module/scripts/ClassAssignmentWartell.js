@@ -320,7 +320,17 @@ function scrollIntoViewNavigation() {
             console.log(`location: ${document.location}, state: ${JSON.stringify(event.state)}`);
         });
 }
-export async function main(totalPoints, editMenuDisable = true) {
+/**
+ *
+ * @param totalPoints - total points that the described assignment is worth
+ * @param editMenuDisable  - whether to enable/disable editor menu
+ * @param headingStartLevel - what HTML heading level (h1, h2, etc.) to start at when collecting instructions to build the rubric.
+ *         Note, originally, I used <h1> for all <section> elements.   However, it is apparently, consider best HTML practice to only use h1 for the title of a page and
+ *         then start with h2 for all <sections>'s.  I am migrating to this standard (of using h2), but for backward compabitility with older projects, I leave the default at h1.
+ *         Newer projects should call main with a value of 2 and use h2 for top level section headings.
+ * @returns
+ */
+export async function main(totalPoints, editMenuDisable = true, headingStartLevel = 1) {
     apiCheck();
     scrollIntoViewNavigation();
     /**
@@ -631,7 +641,7 @@ export async function main(totalPoints, editMenuDisable = true) {
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
-    onload(totalPoints);
+    onload(totalPoints, headingStartLevel);
     return;
     /**
      * trick below weren't good enough, because neither  <object> nor <embed> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
@@ -710,7 +720,7 @@ class Git_Commit_Message {
     }
 }
 let assignmentName;
-export function onload(totalPoints) {
+export function onload(totalPoints, headingStartLevel = 1) {
     /**
      ** Initialize misc. content to reflect the current assignment's name, directory names, etc.
      **/
@@ -801,7 +811,7 @@ export function onload(totalPoints) {
      *  Initialize <table id="RubricTable">
      */
     //init_rubric();
-    Rubric.instructions.extractSectionsAndRubricAll(totalPoints);
+    Rubric.instructions.extractSectionsAndRubricAll(totalPoints, headingStartLevel);
     Rubric.Section.displayTableOfContents();
     //Rubric.main();
 }
