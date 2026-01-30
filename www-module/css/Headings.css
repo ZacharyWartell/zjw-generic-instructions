@@ -1,0 +1,113 @@
+/*
+ * \author Zachary Wartell
+ * \copyright Copyright 2015. Zachary Wartell.
+ * \license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+ - http://creativecommons.org/licenses/by-nc-sa/4.0/
+ */
+
+
+body {
+    counter-reset: h2-Section h2-Appendix;
+}
+
+h2.Section {
+    counter-reset: h3-Section;
+    font-size: larger;
+}
+
+h3.Section {
+    counter-reset: h4-Section;
+    font-size: medium;
+}
+
+h4.Section {
+    counter-reset: h5-Section;
+}
+
+h5.Section {
+    counter-reset: h6-Section;
+}
+
+h6.Section {
+    counter-reset: h6-Section;
+}
+
+h2.Section:before {
+    counter-increment: h2-Section;
+    content: counter(h2-Section) ". "
+}
+
+h3.Section:before {
+    counter-increment: h3-Section;
+    content: counter(h2-Section) "." counter(h3-Section) ". "
+}
+
+h4.Section:before {
+    counter-increment: h4-Section;
+    content: counter(h2-Section) "." counter(h3-Section) "." counter(h4-Section) ". "
+}
+
+h5.Section:before {
+    counter-increment: h5-Section;
+    content: counter(h2-Section) "." counter(h3-Section) "." counter(h5-Section) "." counter(h5-Section) ". "
+}
+
+h6.Section:before {
+    counter-increment: h6-Section;
+    content: counter(h2-Section) "." counter(h3-Section) "." counter(h5-Section) "." counter(h5-Section) "." counter(h6-Section) ". "
+}
+
+h2.nocount:before, h3.nocount:before, h4.nocount:before, h5.nocount:before, h6.nocount:before, h6.nocount:before {
+    content: "";
+    counter-increment: none
+}
+
+/* 
+Heading Numbering (Resource [R2])
+*/
+h2.Appendix {
+    counter-reset: h3-Appendix;
+    font-size: x-large;
+}
+
+h3.Appendix {
+    counter-reset: h4-Appendix;
+    font-size: larger;
+}
+
+h4.Appendix {
+    counter-reset: h5-Appendix 
+}
+
+h5.Appendix {
+    counter-reset: h6-Appendix 
+}
+
+h6.Appendix {
+    counter-reset: h6-Appendix 
+}
+
+h2.Appendix:before {
+    counter-increment: h2-Appendix;
+    content: "Appendix " counter(h2-Appendix, upper-roman) ". ";
+}
+
+h3.Appendix:before {
+    counter-increment: h3-Appendix;
+    content: counter( h2-Appendix , upper-roman ) "-" counter(h3-Appendix) ". ";
+}
+
+h4.Appendix:before {
+    counter-increment: h4-Appendix;
+    content: counter(h2-Appendix, upper-roman) "-" counter(h3-Appendix) "." counter(h4-Appendix) ". ";
+}
+
+h5.Appendix:before {
+    counter-increment: h5-Appendix;
+    content: counter(h2-Appendix, upper-roman) "-" counter(h3-Appendix) "." counter(h4-Appendix) "." counter(h5-Appendix) ". ";
+}
+
+h6.Appendix:before {
+    counter-increment: h6-Appendix;
+    content: counter(h2-Appendix, upper-roman) "-" counter(h3-Appendix) "." counter(h4-Appendix) "." counter(h5-Appendix) "." counter(h6-Appendix) ". ";
+}

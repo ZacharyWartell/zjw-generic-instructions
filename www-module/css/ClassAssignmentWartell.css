@@ -111,7 +111,7 @@ h5.Appendix:before {
     counter-increment: h5-Appendix;
     content: counter(h1-Appendix, upper-roman) "-" counter(h2-Appendix) "." counter(h3-Appendix) "." counter(h4-Appendix) "." counter(h5-Appendix) ". ";
 }
-/* END SHIT */
+
 
 /*   Shell Code Output  */
 .File_Name {
