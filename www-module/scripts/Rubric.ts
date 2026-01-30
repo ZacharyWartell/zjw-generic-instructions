@@ -258,7 +258,7 @@ export class Section
             this.sectionNumber =  number.toFixed(0);            
 
         // \todo [refactor] calculate id in this constructor instead
-        this.id = "Section_"+this.sectionNumber;        
+        this.id = "Section_"+this.sectionNumber.replace(/\./g,"_");        
 
         Section.sections.push(this);
     }
@@ -836,12 +836,15 @@ export class Instructions
     extractSectionsAndRubric(
             parent : Section,               // the Section who we will recursively search for sub-<section>
             sectionElement : HTMLElement,   // <section> corresponding the Section object 'parent'
-            level : number)                 // the depth of recursion into the DOM's nesting of <section> HTML elements
+            level : number,                 // the depth of recursion into the DOM's nesting of <section> HTML elements
+            topSectionHLevel : number = 1)
         {        
         /**
          *   <section> <h1>
          */
-        let hList = sectionElement.querySelectorAll(":scope section > h" + level.toFixed(0));  // headingList
+        let h2Fixup : number = (topSectionHLevel===1) ? 0 : 1;//(level > 2 ? 1 :0 ); /* cover switch from using common convention of h2 as top-level <section> number, instead of h1 */
+        const selector : string = ":scope section > h" + (level+h2Fixup).toFixed(0);
+        let hList = sectionElement.querySelectorAll(selector);  // headingList
         if (hList !== null && hList.length !== 0)
         {
             let hc = 1; // 'headingCount'
@@ -850,11 +853,12 @@ export class Instructions
             {
                 const sectionElement: HTMLElement = h.parentElement;
                 const sectionName : string = (<HTMLElement>h).innerText;            
-                console.log(`h${level}: `, sectionName );
+                console.log(`h${level+h2Fixup}: `, sectionName );
                 console.assert(sectionElement.tagName === "SECTION");
+
     
                 const section : Section = new Section(sectionName ,parent,hc);
-                if (level === 1)
+                if ((level+h2Fixup) === topSectionHLevel)
                 {
                     if (sectionElement.dataset['optionset'] !== undefined)
                     {
@@ -888,11 +892,11 @@ export class Instructions
                     section.instruction = ISectionParent1;
                     console.log(sectionElement.dataset.pointFraction);
                     console.log(parent);
-                    if (level === 1)
+                    if ((level+h2Fixup) === topSectionHLevel)
                         section.cumulativeFraction = parseFloat(sectionElement.dataset.pointFraction);                                            
                 }
                 this.collectInstructions(section,sectionElement, section.sectionNumber, ISectionParent1);
-                this.extractSectionsAndRubric(section,sectionElement,section.level+1);
+                this.extractSectionsAndRubric(section,sectionElement,section.level+1,topSectionHLevel);
     
                 if (h.className !== "nocount")
                     hc++;    
@@ -904,10 +908,10 @@ export class Instructions
      * @brief extractSectionsAndRubricAll traverses the DOM and all nested <section> elements and all nested <ol.Instruction> <li> elements, constructing 
      * a corresponding tree of Section objects and Instruction objects.
      **/
-    extractSectionsAndRubricAll(totalPoints:number, headingStartLevel : number = 1) 
+    extractSectionsAndRubricAll(totalPoints:number, topSectionHLevel : number = 1) 
     {        
         this.totalPoints = totalPoints;
-        this.extractSectionsAndRubric(null,document.body,headingStartLevel);
+        this.extractSectionsAndRubric(null,document.body,1,topSectionHLevel);
         /**
          *  compute points from fraction hierarchy
          */
