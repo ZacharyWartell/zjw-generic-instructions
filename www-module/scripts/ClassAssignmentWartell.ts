@@ -412,7 +412,8 @@ export async function main(totalPoints : number, editMenuDisable : boolean = tru
      **/
     ZxW_GUI.init();
     app = new App();
-    const toolbar = new ZxW_Toolbar.Toolbar(null,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
+    const wc = <HTMLElement>document.querySelector("header > div");
+    const toolbar = new ZxW_Toolbar.Toolbar(wc,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
     ZxW_Annotation.main(toolbar);
     ZxW_TextEditor.main(toolbar);
 

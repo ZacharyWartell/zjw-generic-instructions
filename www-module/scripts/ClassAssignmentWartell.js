@@ -339,7 +339,8 @@ export async function main(totalPoints, editMenuDisable = true, headingStartLeve
      **/
     ZxW_GUI.init();
     app = new App();
-    const toolbar = new ZxW_Toolbar.Toolbar(null, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
+    const wc = document.querySelector("header > div");
+    const toolbar = new ZxW_Toolbar.Toolbar(wc, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
     ZxW_Annotation.main(toolbar);
     ZxW_TextEditor.main(toolbar);
     /**
