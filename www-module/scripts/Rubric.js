@@ -508,6 +508,7 @@ export class BreadCrumbs {
 BreadCrumbs.singleton = new BreadCrumbs();
 /**
  * \author Zachary Wartell
+ * \brief Instructions is the set of all Instruction objects in the document.
  */
 export class Instructions {
     constructor() {

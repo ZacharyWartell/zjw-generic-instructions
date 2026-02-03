@@ -395,9 +395,10 @@ export function QandAModeHover(e : MouseEvent) : void
   * @param totalPoints - total points that the described assignment is worth
   * @param editMenuDisable  - whether to enable/disable editor menu
   * @param headingStartLevel - what HTML heading level (h1, h2, etc.) to start at when collecting instructions to build the rubric.
-  *         Note, originally, I used <h1> for all <section> elements.   However, it is apparently, consider best HTML practice to only use h1 for the title of a page and
-  *         then start with h2 for all <sections>'s.  I am migrating to this standard (of using h2), but for backward compabitility with older projects, I leave the default at h1.
-  *         Newer projects should call main with a value of 2 and use h2 for top level section headings.
+  *         Note, originally, I used <h1> for all top level <section> elements.   However, I later learned it best HTML practice to only use h1 for the title of a page and
+  *         then start with h2 for all top level <sections>'s.  I am migrating to the best-practice (of using h2), but for backward compabitility with older projects, 
+  *         I leave the rubric generation code assuming h1 is used for top level <section>'s.
+  *         New projects should call main with a value of 2 and use h2 for top level section headings.
   * @returns 
   */
 export async function main(totalPoints : number, editMenuDisable : boolean = true, headingStartLevel : number = 1)

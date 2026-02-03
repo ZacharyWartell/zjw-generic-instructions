@@ -651,14 +651,15 @@ BreadCrumbs.singleton = new BreadCrumbs();
 
 /**
  * \author Zachary Wartell
+ * \brief Instructions is the set of all Instruction objects in the document.
  */
 export class Instructions 
 {
-    instructions: Array<Instruction>;
-    optionSets: Array<OptionSet>;  // not used yet, just idea in planning
+    instructions: Array<Instruction>;  /* array of all Instruction's */
+    optionSets: Array<OptionSet>;      /* array of all OptionSet's */
 
-    totalPoints: number;
-    awardedPoints : number;
+    totalPoints: number;               /* total points assignment is worth */
+    awardedPoints : number;            /* number of points awards based on rubric checkboxes */
     constructor() {
         this.instructions = [];
         this.optionSets = [];
