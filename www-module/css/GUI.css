@@ -1,14 +1,48 @@
+:root
+{
+    /*
+    --stick-header-height: 2rem;
+    */
+    --sticky-header-height: 70px;
+    --required-shift: 5px;
+}
 body
 {        
-    overflow: hidden; 
+    overflow-y: hidden; 
     height: 100%;
+    margin: 0px;
 }
 
 div.window-container
 {    
-    height: 100%;
+    
+    
     /*
+    height: 100vh;  
+    height: 100%;
     width: fit-content;
+    */
+}
+
+div.Toolbar
+{
+    border: solid black 2px;
+    background-color: white;
+    top: 0px;
+    position: sticky;
+    z-index: 5;   
+}
+
+div#UserDocument
+{
+    overflow-y: scroll; 
+    height: calc(100vh - var(--sticky-header-height));
+    position: relative;
+    margin-top: var(--required-shift);
+    /*
+    height: min-content;
+    height : 100vh; 
+    height : 95vh; 
     */
 }
 
@@ -18,17 +52,21 @@ div.toolbar
     border: solid black 2px;    
     margin-top: 0px;    
     padding-top: 0px;
-    padding-bottom: 0px;        
+    padding-bottom: 0px;            
 }
 
 div.main-container
 {        
     display: flex;
-    flex-direction: row;
-    
+    flex-direction: row;    
+   
+    position: sticky;    
+    top: var(--sticky-header-height);    
+    margin-top: calc (0px - var(--required-shift));
 
     
     /*
+    top: var(--stick-header-height);
     display: inline;
     
     */
@@ -68,20 +106,15 @@ div.DocButton:hover span
 
 
 div#side-nav-bar
-{
-    border-color:black;    
-    border-width: 1px;
-    border-style: solid;
-    
-    padding-right: 0px;
-    padding-left: 0px;
-    padding-bottom: 10px;
-    margin-left: 0px;
-
-    color: black;    
-    font-weight: bold;
-        
-    height : 98vh; 
+{    
+    height: calc(100vh - var(--sticky-header-height));
+    /*
+    height: 100%;
+    top: var(--sticky-header-height);
+    top : 75px;
+    height : 100vh; 
+    height : 100vh; 
+    */
     flex-basis : initial ;           
     overflow-x: scroll;
     overflow-y: scroll;
@@ -96,6 +129,25 @@ div#side-nav-bar
     */    
     width: fit-content;
     resize: horizontal;    
+
+
+    border-color:black;    
+    border-width: 1px;
+    border-style: solid;
+    
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    /*
+    padding-bottom: 0px; 
+    */
+    
+    margin-left: 0px;
+
+    color: black;    
+    font-weight: bold;
+    
+    
 }
 
 div#side-nav-bar > div
@@ -121,8 +173,17 @@ div.side-read-bar
 }
 
 div.main-content
-{        
-    height: 90vh;    
+{    
+    max-height: calc(100vh - var(--sticky-header-height));
+    /*
+    height: 100%;
+    height: 100vh;     
+     height: 90vh;  
+     height: 100%;
+     overflow:auto;
+     */
+    
+    
     flex: auto;
     min-width: 0%;    
     
@@ -140,8 +201,9 @@ div.main-content > article
     padding-left: 10px;
 
     overflow-y: scroll;    
-    overflow-x: auto;           
-    height: 95vh;       
+    overflow-x: auto;          
+    position: sticky;     
+    /* height: 95vh; */
 }
 /*
  *   Toolbar and Menu classes
