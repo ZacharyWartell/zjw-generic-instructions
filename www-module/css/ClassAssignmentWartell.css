@@ -492,6 +492,14 @@ span.Function_Name {
     font-family: Courier, monospace;
 }
 
+span.GUI_Button {    
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px;
+    font-family: Arial, monospace;
+}
+
+
 /*
  *   Shell Coding Instructions
  */
