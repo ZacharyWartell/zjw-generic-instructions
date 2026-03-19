@@ -1,59 +1,384 @@
-<!DOCTYPE html>
-<!-- 
-@author Zachary Wartell-->
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><!-- zxw-editor BEGIN #1 --><!--
+        All code delimited by 
+            <!- - zxw-editor BEGIN -- !>
+        and
+            <!- - zxw-editor END -- !>
+        
+        are @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.         
+        - @git https://github.com/ZacharyWartell/zxw-editor
+        - @author Zachary Justin Wartell, 2026.
+    --><!-- 
+@author Zachary Justin Wartell, 2026.
+@license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+@git https://github.com/ZacharyWartell/zxw-editor
+
+VERSION: 0.1.56
+--><!-- zxw-editor END #1 --><head>
+    
+    
+    
+    <!-- zxw-editor BEGIN #2 -->
+    <!--
+         All code delimited by 
+             <!- - zxw-editor BEGIN -- !>
+         and
+             <!- - zxw-editor END -- !>
+         
+         are @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.         
+            - @git https://github.com/ZacharyWartell/zxw-editor
+            - @author Zachary Justin Wartell, 2026.
+     -->
+    <!-- zxw-editor BEGIN <STYLE> -->         
+    <style>
+        table {
+            border: solid 2px black;
+            border-collapse: collapse;
+            width: fit-content;
+        }
+
+        td {
+            border: solid 1px;
+        }
+
+        menu {
+            border: solid 2px black;
+            padding: 2px;
+        }
+
+        *.Redacted {
+            border: 1px dotted red;
+        }
+
+        *.Redacted::before {
+            content: "Redacted";
+            background-color: yellow;
+            color: red;
+        }
+        ul#GUI > li > span:first-child
+        {
+            border: 1px black solid;
+            border-radius: 0.25em;
+            margin-right: 1em;
+        }
+    </style>
+    <!-- zxw-editor END <STYLE> -->
+    <!-- zxw-editor END #2 -->
+    <!-- zxw-editor BEGIN #3 -->
+    <!--
+         All code delimited by 
+             <!- - zxw-editor BEGIN -- !>
+         and
+             <!- - zxw-editor END -- !>
+         
+         are @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.         
+            - @git https://github.com/ZacharyWartell/zxw-editor
+            - @author Zachary Justin Wartell, 2026.
+     -->
+    <!-- zxw-editor BEGIN <SCRIPT> -->
+    <script>
+        /**
+        Note On: "A Document that prints itself"
+        Note, the user of capitalization of SCRIPT and STYLE in the JavaScript comments and `` scripts is necessary to prevent 
+        the saveDOM function from split the DOM serialized string within JavaScript comments and `` strings.
+        */
+        let fileHandle = null;
+        let DOCS = "";
+
+        DOCS +=
+        `@##GUI
+        <span>Save</span>| Save the DOM to an .html file. 
+        If the DOM has not been saved during in this browser session, 
+        open <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker" target="_blank">showSaveFilePicker</a> dialog to select save file.
+            <p>
+                For \u003CSCRIPT\u003E elements the \u003CSCRIPT\u003E content, the save operation
+                avoids letting XMLSerializer convert operator characters to HTML entities (i.e. do not change > to "&amp;amp;gt;").
+                This is necessary since \u003CSCRIPT\u003E content is typically JavaScript text
+            </p>        
+        `;
+        /**
+         @brief saveDOM saves the current DOM to .html file whose file handle is 'handle' using XMLSerializer.
+         For <SCRIPT> and <SCRIPT> elements the content, avoid letting XMLSerializer convert operator characters 
+         to HTML entities (i.e. do not change > to "&amp;gt;")
+
+         Note the used of unicode escape sequences in some of the strings below are necessary to avoid
+         replacing characters in situations they should not be replaced.
+         */
+        async function saveDOM(handle) {
+            // Create a FileSystemWritableFileStream to write to.
+            const writable = await handle.createWritable();
+
+            /** create DocumentFragments that will temporarily hold and hide all data-non-saved-content HTMLElements 
+             *  this is seemingly a necessary complication of making a single-page, static .html file that can save itself.
+             */
+            const rs = document.querySelectorAll("*[data-non-saved-content]");
+            const rfs = []; // redactedFragments
+
+            for (let r of rs) {
+                const f = document.createDocumentFragment();
+                let n = r.children[0];
+                for (let n = r.children[0]; n !== null;) {                 
+                    const next = n.nextSibling;
+                    f.appendChild(n);
+                    n = next;
+                }
+                rfs.push(f);
+            }
+
+            // Write the contents of the file to the stream.
+            let wholeDoc = new XMLSerializer().serializeToString(document);
+            let splits = wholeDoc.split(/\u003C\u002Fscript\u003E|\u003Cscript\u003E/);
+            wholeDoc = "";
+            for (let i = 0; i < splits.length; i++) {
+                if (i % 2 == 0) {// odd members are not <SCRIPT> elements
+                    wholeDoc += splits[i];
+                }
+                else {// even members are <SCRIPT> elements, so undo XMLSerializer conversion of certain characters into htmt entities (i.e. > to &amp;amp;amp;amp;amp;gt; )
+                    /**
+                     *  \todo this list is incomplete, need to find listing inte HTML spec's page and convert it into code...
+                     */
+                    const fixup = splits[i].replaceAll("\u0026gt;", ">").replaceAll("\u0026lt;", "<");
+                    wholeDoc += "\u003Cscript\u003E" + fixup + "\u003C\u002Fscript\u003E";
+                }
+            }
+
+            splits = wholeDoc.split(/\u003C\u002Fstyle\u003E|\u003Cstyle\u003E/);
+            wholeDoc = "";
+            for (let i = 0; i < splits.length; i++) {
+                if (i % 2 == 0) {// odd members are not <STYLE> elements
+                    wholeDoc += splits[i];
+                }
+                else {// even members are <STYLE> elements, so undo XMLSerializer conversion of certain characters into htmt entities (i.e. > to &amp;amp;amp;amp;amp;gt; )
+                    /**
+                     *  \todo this list is incomplete, need to find listing inte HTML spec's page and convert it into code...
+                     */
+                    const fixup = splits[i].replaceAll("\u0026gt;", "\u003E").replaceAll("\u0026lt;", "\u003C");
+                    wholeDoc += "\u003Cstyle\u003E" + fixup + "\u003C\u002Fstyle\u003E";
+                }
+            }    
+            
+            /**
+             * these are needed/useful when zxw-edtior.html is server over http, but must be removed
+             * when saving to a local .html file that will later be openned from the local file system
+             * (CORS policy will not allow <link> to be loaded when a browser is opening a local file)
+             */
+            const removals=[
+            `<link rel="manifest" crossorigin="use-credentials" href="manifest.json" />`,
+            `<link rel="shortcut icon" type="image/png" href="icons/icon48.png" />`,
+            `<link rel="shortcut icon" type="image/png" href="icons/icon144.png" />`];
+            for (let r of removals)
+            {
+                const tmp = wholeDoc.replace(r,""); 
+                wholeDoc = tmp;
+            }
+
+            await writable.write(wholeDoc);
+            await writable.close();
+
+            /** put back all data-non-saved-content HTMLElements child nodes */
+            let i = 0;
+            for (let r of rs) {
+                for (let c of rfs[i].childNodes)
+                    r.appendChild(c);
+                i++;
+            }
+            console.log("saveDOM complete");
+        }
+        async function saveCallback() {
+            if (fileHandle !== null)
+                await saveDOM(fileHandle);
+            else {
+                const splits = document.documentURI.split("/");
+                //const dir = FileSystemDirectoryHandle.getDirectoryHandle(decodeURIComponent(document.documentURI).replace(/\/.*\.html/,""));
+                const options =
+                {
+                    //startIn: dir, //decodeURIComponent(document.documentURI),
+                    suggestedName: decodeURIComponent(splits[splits.length - 1])
+                };
+                await window.showSaveFilePicker(options).then(
+                    async (handle_) => {
+                        fileHandle = handle_;
+                        console.log(handle_);
+                        await saveDOM(fileHandle);
+                    });
+            }
+        }
+        /**
+         * @brief redactSaveCallback
+         */
+        DOCS +=
+        `@##GUI
+        <span>Redact &amp; Save</span> | Save DOM to the target .html file, but do not save any HTML element with class attribute called 'Redacted'.        
+        If the DOM has not been saved during in this browser session, 
+        open <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker" target="_blank">showSaveFilePicker</a> dialog to select save file.
+        `;
+        async function redactSaveCallback() {
+            const rs = document.querySelectorAll("*.Redacted");
+            const rfs = []; // redactedFragments
+
+            /** create DocumentFragments that will temporarily hold and hide all .Redacted HTMLElements */
+            for (let r of rs) {
+                const f = document.createDocumentFragment();
+                let n = r.children[0];
+                for (let n = r.children[0]; n !== null;) {
+                    //c.remove();
+                    const next = n.nextSibling;
+                    f.appendChild(n);
+                    n = next;
+                }
+
+                rfs.push(f);
+            }
+            console.log("redacted");
+            await saveCallback();
+            /** put back all .Redacted HTMLElements child nodes */
+            let i = 0;
+            for (let r of rs) {
+                for (let c of rfs[i].childNodes)
+                    r.appendChild(c);
+                i++;
+            }
+            console.log("unredacted");
+            return;
+        }
+        
+        function buildHelpDialog()
+        {                                                
+            const docSplit = DOCS.split("@#");
+            for (let s of docSplit)
+            {
+                let pair = s.split(/^(#[^\s]*)/);
+                if (pair.length == 3)
+                {
+                    let list = document.getElementById(pair[1].slice(1));
+                    const li = document.createElement("li");
+                    li.innerHTML = pair[2];
+                    list.appendChild(li);
+
+                }
+            }
+        }
+        DOCS +=
+        `@##GUI
+         <span>Edit Mode</span> | Toggle <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/contenteditable" target="_blank">contentedible</a>
+         on and off of all HTML elements with the contentedible attribute.
+
+         Chrome will only follow hyperlinks using the standard gestures, if Edit Mode is disabled.
+        `;        
+        function zxw_editor_main() {
+            let helpDialog = document.getElementById("HelpDialog");
+            //document.getElementById("OpenButton").addEventListener('click', openCallback);
+            document.getElementById("SaveButton").addEventListener('click', saveCallback);
+            document.getElementById("RedactSaveButton").addEventListener('click', redactSaveCallback);
+            try
+            {
+                buildHelpDialog();
+            }
+            catch(e)
+            {
+                console.log("zxw-editor: Unable to build complete User Guide document");
+            }
+            
+            window.helpDialog = helpDialog;
+
+            document.getElementById("EditMode").addEventListener('input',
+                (e)=>
+                {
+                    const ces = document.querySelectorAll("*[contenteditable]");
+                    for (let ce of ces)
+                    {
+                        ce.setAttribute("contenteditable", e.currentTarget.checked ? "true" : "false");
+                    }
+                }
+            )
+        }
+        window.zxw_editor_main = zxw_editor_main;                               
+        //window.helpDialog = helpDialog;
+    </script>
+    <!-- zxw-editor END <SCRIPT> -->
+    <!-- zxw-editor END #3 -->
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>ZJW Generic Instructions - User Manual</title>
-    <link href="../site/css/zjwgi/ClassAssignmentWartell.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
+    <link href="../site/css/zjwgi/ClassAssignmentWartell.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body onload="zxw_editor_main();" style="overflow: hidden;">
+    <!-- zxw-editor BEGIN #4 -->
+    <!--
+         All code delimited by 
+             <!- - zxw-editor BEGIN -- !>
+         and
+             <!- - zxw-editor END -- !>
+         
+         are @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.         
+            - @git https://github.com/ZacharyWartell/zxw-editor
+            - @author Zachary Justin Wartell, 2026.
+     -->
+    <!-- zxw-editor BEGIN <header> -->    
+    <header class="zxw-editor" style="border: 1px black solid; padding: 2px; resize: block; overflow: hidden; max-height: fit-content;">
+        <div style="border: 1px black solid; padding: 2px; text-align: center;">
+            <b><a target="_blank" href="https://github.com/ZacharyWartell/zxw-editor">zxw-editor</a></b> <sup><a target="_blank" href="https://github.com/ZacharyWartell/zxw-editor/commits/main/"><!--APPVERSION-->0.1.56</a><span>(α)</span></sup> | Author:
+            Zachary Wartell, License:
+            <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+                Commons
+                Attribution-NonCommercial-ShareAlike 4.0 International License</a>
+        </div>
+        <menu style="margin-bottom: 0px;">
+            <button disabled="" id="OpenButton">Open</button>
+            <button id="SaveButton">Save</button>
+            <button id="RedactSaveButton">Redact &amp; Save</button>                
+            <div style="border: 1px solid black; display: inline-block;">
+                <label for="EditMode">Edit Mode</label>
+                <input type="checkbox" id="EditMode" value="EditMode" checked="" />
+            </div>
+            <button id="HelpButton" onclick="window.helpDialog.showModal();">Help</button>
+        </menu>
+    </header>
+    <!-- zxw-editor EHD <header> -->    
+    <!-- zxw-editor END #4 -->    
+
+    <div contenteditable="false" style="overflow-y:scroll; height: 92vh;">          
     <div style="text-align: center;">
-      <h1 class="nocount">ZJW Generic Instructions - User Guide<br>
+      <h1 class="nocount">ZJW Generic Instructions - User Guide<br />
         <em>(Draft)</em></h1>
-      <strong>Author</strong>:<br>
-      Prof. Zachary Wartell, Ph.D. <br>
-      WWW: <a href="https://webpages.uncc.edu/zwartell/" target="_blank">
-        https://webpages.uncc.edu/zwartell/</a> <br>
-      <p>Git: <a href="https://gitlab.com/zwartell/zjw-generic-instructions">https://gitlab.com/zwartell/zjw-generic-instructions</a></p>
-      <p>Revised:&nbsp; 11/5/2025 - 11:08 am<br>
+      <strong>Author</strong>:<br />
+      Prof. Zachary Wartell, Ph.D. <br />
+      WWW: <a href="https://webpages.charlotte.edu/zwartell/" target="_blank">
+        https://webpages.charlotte.edu/zwartell/</a> <br />
+      <p>Git: <a target="_blank" href="https://github.com/ZacharyWartell/zjw-generic-instructions">https://github.com/ZacharyWartell/zjw-generic-instructions</a></p>
+      <p>Revised:  3/19/2026 <br />
       </p>
     </div>
-    <p><br>
+    <p><br />
     </p>
     <section>
       <h4>Deployed Examples:</h4>
-      <em> [links below updated 11/5/2025] </em>
+      <em> [links below updated 3/19/2026] </em>
       <ul>
         <ul>
         </ul>
-        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html"
-            target="_blank"><span style="color: #0000ee;">https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html</span></a>
+        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html" target="_blank"><span style="color: #0000ee;">https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html</span></a>
         </li>
-        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/ITCS%203120%20-%20VS%20Code%20Tutorial/"
-            target="_blank"><span style=" color: #0000ee;">https://webpages.charlotte.edu/zwartell/Teaching/ITCS%203120%20-%20VS%20Code%20Tutorial/
-              <br></span></a></li>
-        <li><span style="  color: #0000ee;"><a href="https://webpages.charlotte.edu/zwartell/Teaching/html-css-event-tutorial/"
-              target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/html-css-event-tutorial/</a></span></li>
-        <li><span style="   color: #0000ee;"><a href="https://webpages.charlotte.edu/%7Ezwartell/Teaching/javascript-tutorial/">https://webpages.charlotte.edu/%7Ezwartell/Teaching/javascript-tutorial/</a></span></li>
-        <li><span style="    color: #0000ee;"><a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/"
-              target="_top">https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/</a><br>
-          </span></li>
+        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/itcs-vs-code-tutorial/" target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/itcs-vs-code-tutorial/</a></li>
+        <li><span style="  color: #0000ee;"><a href="https://webpages.charlotte.edu/zwartell/Teaching/html-css-event-tutorial/" target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/html-css-event-tutorial/</a></span></li>
+        <li><a target="_blank" href="https://webpages.charlotte.edu/%7Ezwartell/Teaching/javascript-tutorial/">https://webpages.charlotte.edu/%7Ezwartell/Teaching/javascript-tutorial/</a></li>
+        <li><a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/" target="_blank">https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/</a></li>
       </ul>
       <h1 class="Section">Goals</h1>
       ZJW Generic Instruction (ZJW GI) provide a template for creating an HTML5
       document whose purpose is to describe written instructions for a computer
-      science assignment, tutorial or project. &nbsp;&nbsp; ZJW GI provides the
-      features below:<br>
+      science assignment, tutorial or project.    ZJW GI provides the
+      features below:<br />
       <ol class="Instruction">
-        <li><strong>CSS Formatting and &lt;templates&gt;</strong>:&nbsp; <br>
+        <li><strong>CSS Formatting and &lt;templates&gt;</strong>:  <br />
           <ol>
             <li>CSS files provide for &lt;span&gt; CSS classes that visually
-              designate&nbsp; content such as file names, code variable name,
+              designate  content such as file names, code variable name,
               function names, user input, etc.</li>
             <li>CSS files provide &lt;span&gt;,&lt;div&gt; and &lt;table&gt; CSS
               classes that designate structured content typically found in
-              instructions for programming projects such as:<br>
+              instructions for programming projects such as:<br />
               <ol>
                 <li>Shell script (CLI) code with annotations</li>
                 <li>Zoomable screen captures</li>
@@ -61,79 +386,72 @@
                   whose written steps each include a button that advanced the
                   video to the video segment illustrated that written step.</li>
               </ol>
-              <br>
+              <br />
               <ol>
               </ol>
             </li>
           </ol>
-          <strong> <u><em>Example</em></u></strong>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/modules/zjw-generic-instructions/html/Help.html"
-            target="_blank">Typographics Conventions</a></li>
+          <strong> <u><em>Example</em></u></strong>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/modules/zjw-generic-instructions/html/Help.html" target="_blank">Typographics Conventions</a></li>
         <li><strong>Rubric Generation</strong>: A ZJW GI based .html document
           can use HTML data- attributes to designate the points that each
-          instruction item is worth.&nbsp; ZJW GI automatically generates a
-          rubric &lt;table&gt; from these data- attribute values.&nbsp;&nbsp;
+          instruction item is worth.  ZJW GI automatically generates a
+          rubric &lt;table&gt; from these data- attribute values.  
           The data- attributes support options such as evenly distributing the
-          points from a instruction item across its component instruction items.<br>
-          <strong> <u><em>Example</em></u></strong>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#Section_8"
-            target="_blank">Rubric</a></li>
-        <li><strong>Gradable Rubric:</strong>&nbsp; The ZJW GI generated rubric
-          has a TA grading mode.&nbsp; When enabled, the grader can click check
+          points from a instruction item across its component instruction items.<br />
+          <strong> <u><em>Example</em></u></strong>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#Section_8" target="_blank">Rubric</a></li>
+        <li><strong>Gradable Rubric:</strong>  The ZJW GI generated rubric
+          has a TA grading mode.  When enabled, the grader can click check
           boxes for each item in the rubric table that a student completed and
-          add a text comment for each item. &nbsp; The grader can export the
+          add a text comment for each item.   The grader can export the
           rubric table to a static .html file that can be forwarded to the
-          student.<em></em><em><br>
-            <strong><u>Example</u></strong></em>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#Section_8"
-            target="_blank">Rubric<span style="color: black;"> </span></a>and
-          TA Instructions <a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/modules/zjw-generic-instructions/html/Help.html"
-            target="_blank">Typographics Conventions</a></li>
+          student.<em></em><em><br />
+            <strong><u>Example</u></strong></em>: See <a href="https://webpages.charlotte.edu/zwartell/Teaching/Git%20Tutorial/Git%20Tutorial.html#Section_8" target="_blank">Rubric<span style="color: black;"> </span></a>and
+          TA Instructions <a href="https://webpages.charlotte.edu/zwartell/Teaching/webgl-2d-drawing/modules/zjw-generic-instructions/html/Help.html" target="_blank">Typographics Conventions</a></li>
         <li><strong>Document Variables</strong>: A ZJW GI provide custom HTML
           data- attributes that support automatic string replacement of named <em>document
-            variables</em> in the document text.&nbsp;&nbsp; For example, an
+            variables</em> in the document text.   For example, an
           instruction document may have shell CLI example code that displays
-          various path names.&nbsp;&nbsp; The path name's text often is specific
+          various path names.   The path name's text often is specific
           the assignment name. The path names can be written to refer to a named
-          <em>document variable</em>.&nbsp;&nbsp; When rendered, the document
+          <em>document variable</em>.   When rendered, the document
           variable will be replaced by a string whose value is set in the .html
           file meta data. This eases document maintenance when one changes the
           document's project name, project number, active semester, etc.</li>
-        <li><strong>Static Web Page</strong>:&nbsp; A ZJW GI document is
-          generally a static web page.&nbsp; The .html document writer can
+        <li><strong>Static Web Page</strong>:  A ZJW GI document is
+          generally a static web page.  The .html document writer can
           include any HTML5 content -- SVG, WebGL, etc. -- in the .html
-          page.&nbsp;&nbsp; This is unlike a Content Management System, but it
+          page.   This is unlike a Content Management System, but it
           requires the document writer develop their page using a HTML code
-          editor.<strong></strong></li>
-        <li><strong>Straight HTML</strong>:&nbsp; A ZJW GI modules are written
-          in vanilla HTML5.&nbsp;&nbsp; No libraries such as jQuery, React, Vue,
-          etc. are used.<br>
+          editor.   However, at present ZJW-GI documents have a simple built in WYSYWIG HTML editor from my zxw-mvc project.  The editor only edits the local DOM but can save the DOM to a local file which the web master can upload to the public website.<strong></strong></li>
+        <li><strong>Straight HTML</strong>:  A ZJW GI modules are written
+          in vanilla HTML5.   No libraries such as jQuery, React, Vue,
+          etc. are used.<br />
           <strong></strong></li>
-        <li><strong>Using ZJW GI</strong>:&nbsp; A separate .git repository <a
-            href="https://gitlab.com/zwartell/zjw-generic-instructions-template/"
-            target="_blank">https://gitlab.com/zwartell/zjw-generic-instructions-template/</a>
-          provides template for creating a ZJW GI based .html document. <br>
-          <strong></strong><br>
-          <br>
-          <hr> <strong></strong></li>
+        <li><strong>Using ZJW GI</strong>:  A separate .git repository <a href="https://gitlab.com/zwartell/zjw-generic-instructions-template/" target="_blank">https://gitlab.com/zwartell/zjw-generic-instructions-template/</a>
+          provides template for creating a ZJW GI based .html document. <br />
+          <strong></strong><br />
+          <br />
+          <hr /> <strong></strong></li>
         <li><strong>Q&amp;A Feature </strong>[7/15/2025: experimental; code is
           deployed, but disabled by default] - see<strong> </strong>notes below</li>
-        <li><strong>Progressive Web App</strong>:&nbsp; [experimental; not
+        <li><strong>Progressive Web App</strong>:  [experimental; not
           deployed] Support a ZJW GI derived webpage as progressive web app that
           a student can download (i.e. install) on their computer, so they do
-          not need to be online to read a ZJW GI derived .html document. <br>
-          <br>
+          not need to be online to read a ZJW GI derived .html document. <br />
+          <br />
         </li>
         <li><strong>[FUTURE]:</strong>
           <ol>
             <li>[Work in Progress] Integrate a simple builtin HTML5 editor into
               ZJW GI which can insert ZJW GI &lt;template&gt;'s into the DOM and
               initialize them so ZJW GI will setup required eventListeners that
-              implement their interactive features.&nbsp;&nbsp; Use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker"
-                target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker</a>
+              implement their interactive features.   Use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker</a>
               to save the DOM changes to an .html file on the local file system.</li>
             <li><span style="text-decoration: line-through;"><span style="text-decoration: line-through;">[Abandoned]
                   </span>Investigate way to provide plugins for common HTML5
                 code editors such as BlueGriffon that will instantiate the ZJW
                 GI provided &lt;template&gt; rather than the document writer
-                having to copy and paste HTML code.<br>
+                having to copy and paste HTML code.<br />
               </span></li>
           </ol>
         </li>
@@ -142,19 +460,19 @@
           <ol>
             <li><strong>Only tested on the Chrome browser:</strong> All my
               courses HTML5 based projects require the student verify their
-              project code runs in Chrome.&nbsp; This is the target browser the
-              TA uses for testing all assignments.&nbsp; Neither I, nor students
+              project code runs in Chrome.  This is the target browser the
+              TA uses for testing all assignments.  Neither I, nor students
               in most CS courses, have time to address all the madness of
-              cross-browser compatibility.&nbsp; That type of code development
+              cross-browser compatibility.  That type of code development
               requirement is typically only appropriate in specialized courses
               in "Web Application Developement" or perhaps "Software
-              Engineering".&nbsp;&nbsp; Give that all students must install
+              Engineering".   Give that all students must install
               Chrome on their computers for my courses, it is reasonable to for
               the ZJW GI code and components to only target and be tested using
-              the Chrome browser.&nbsp;&nbsp; (The only alternative is to build
+              the Chrome browser.   (The only alternative is to build
               the ZJWGI template ontop of a yet-another-layer API for cross
               browser compability, and I don't have the person-power resources
-              to do that.&nbsp; TA's don't work during summers when I don't
+              to do that.  TA's don't work during summers when I don't
               teach classes which is when I can develop ZJW GI).</li>
           </ol>
           <ol>
@@ -169,17 +487,17 @@
             precise about moving to particular location in page)</li>
           <li>see class BreadCrumbs in Rubric.ts</li>
         </ol>
-        <li>[Q&amp;A Feature] <br>
-          Status:&nbsp; feature is disabled by default;&nbsp; experimental,
+        <li>[Q&amp;A Feature] <br />
+          Status:  feature is disabled by default;  experimental,
           in-progress</li>
         <ol>
-          <li>Make a minimal attempt at the type of functionality that&nbsp;
+          <li>Make a minimal attempt at the type of functionality that 
             hypothesis.is would support (if UNCC were to install hypothesis.is
             within our Canvas LMS).</li>
           <li>In particular, allow user to select a part of the assignment
             document, click a button, and then launch browser tab with Gmail
             mail compose window address to the class google group and initiated
-            with a copy of the selected document text.&nbsp;&nbsp; Thus allowing
+            with a copy of the selected document text.   Thus allowing
             posting of a question regarding the selected part of assignment
             document.</li>
         </ol>
@@ -188,15 +506,15 @@
       </ol>
       <h1 class="Section">Notes</h1>
       <section>
-        <h2 class="Section">Q&amp;A Feature</h2>
-        <p>UNCC IT security&nbsp; policy makes it pretty much impossible to (1)
+        <h2 class="Section">Q&amp;A Feature </h2>
+        <p><b>Status:  [Experimental - Deployed - Only Activated under "Beta" Mode, Not Currently Used or Advertised to Students]</b></p><p><b><br /></b>UNCC IT security  policy makes it pretty much impossible to (1)
           run you own www server on campus and (2) get permission from UNCC
           services such as Gmail to accept XMLRequests [<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">^</a>]
-          from your own off-campus server.&nbsp; The only mechanism I have found
+          from your own off-campus server.  The only mechanism I have found
           to allow a static www page launch a email to a UNCC Google Group is
           via the mailto URI scheme (elaborated on below).</p>
         <p>The mailto URI scheme appears to disallow the pre-composed email body
-          to have anything other than plain text.&nbsp; Possibly the static www
+          to have anything other than plain text.  Possibly the static www
           page could copy content to the browser clipboard and then the user
           could paste it into the launched Gmail compose browser tab in order to
           transfer an exact visual representation of the text the user selected
@@ -209,12 +527,12 @@
               <ul>
                 <li>
                   <blockquote>The "body" pseudo header field is primarily
-                    intended for&nbsp;&nbsp; the generation of short text
-                    messages for automatic processing (such&nbsp;&nbsp; as
+                    intended for   the generation of short text
+                    messages for automatic processing (such   as
                     "subscribe" messages for mailing lists), not for general
-                    MIME &nbsp;&nbsp; bodies.&nbsp; Except for the encoding of
-                    characters based on UTF-8 and&nbsp;&nbsp; percent-encoding,
-                    no additional encoding (such as e.g., base64 or&nbsp;
+                    MIME    bodies.  Except for the encoding of
+                    characters based on UTF-8 and   percent-encoding,
+                    no additional encoding (such as e.g., base64 or 
                     quoted-printable; see [RFC2045]) is used for the "body"
                     field value. </blockquote>
                   <cite><a href="https://www.rfc-editor.org/rfc/rfc6068" target="_blank">https://www.rfc-editor.org/rfc/rfc6068</a></cite>
@@ -222,20 +540,19 @@
               </ul>
             </li>
           </ul>
-          <li>formatting innerText |&nbsp; [PRIORITY = LOW]<br>
+          <li>formatting innerText |  [PRIORITY = LOW]<br />
             <ul>
-              <li>Goal:&nbsp;&nbsp; auto-indent (akka pretty-print) the selected
+              <li>Goal:   auto-indent (akka pretty-print) the selected
                 HTML as best as possible after conversion to plain text
                 (.innerText extraction) .</li>
-              <li><br>
+              <li><br />
               </li>
               <li>References</li>
               <ul>
                 <li><a href="https://github.com/Sanchithasharma/htmlToText" target="_blank">https://github.com/Sanchithasharma/htmlToText</a>
                   - nodejs module. last active update 3 years ago.</li>
-                <li><a href="https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8"
-                    target="_blank">https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8
-                    </a>- article<br>
+                <li><a href="https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8" target="_blank">https://dev.to/sanchithasr/3-ways-to-convert-html-text-to-plain-text-52l8
+                    </a>- article<br />
                   <ul>
                     <li>f gg</li>
                   </ul>
@@ -243,7 +560,7 @@
               </ul>
             </ul>
           </li>
-          <li>capture image of rendering of a part of&nbsp; a webpage |&nbsp;
+          <li>capture image of rendering of a part of  a webpage | 
             [PRIORITY = LOW]</li>
           <ul>
             <li>It possibleI found various references when Googleing how to do
@@ -254,25 +571,112 @@
       <h1 class="Section">Using ZJW GI</h1>
       <section>
         <h2 class="Section">Version "(git tag) master"</h2>
-        <p><em>[... this section is has not been updated ... need to copy,paste,
-            modify &amp; update the text from earlier versions below]</em></p>
-        <h2 class="Section"></h2>
-        <h2 class="Section">Version "(git tag) version4"</h2>
-        <p>[version 4 is has integrated into the master branch]</p>
-        <h2 class="Section"></h2>
-        <h2 class="Section">Version "(git tag) version3"</h2>
-        <ul>
+        <p><ul><li>my-project/     | this is the directory structure of a project description page that <u>uses</u> ZJW-GI<ul><li>*/*       | files and directories of my-project stuff that should not be transferred to the published website<br /><br /></li><li>scripts           | developer scripts.  Many are populated by the git submodules by the submodule install scripts</li><li>git-modules     | git submodules required for development and deployment of my-project (a zjw-gi project description).</li><li>git-modules/zjw-generic-instructions.git  |  the ZJW-GI git repo</li><li>git-modules/* | other require git-modules are documented in the .git-modules git file<br /><br /></li><li>./www-site                      | contents that are published and transferred to WWW site</li><li>./www-site/index.html    | main page.  Note this main page is generally a boilerplate page ZJW-GI.   The detailed project description is contained in a file with suffix .zxw-doc.html which is HTTP Fetched by .index.html.   The fetch mechanism is a component of the zxw-mvc library and the zxw-mvc library's ZxW_TextEditor<br /><br /></li><li>./www-site/html         | contains additional my-project .html files</li><li>./www-site/modules   | directory symlinks to components of git submodules found in ./git-modules.  The <a href="#section_www_deployment">WWW Deployment</a>  publication script makes a recursive copy of the contents on these symlinked directories when uploading to the target WWW site</li><li>./www-site/images     | contains my-project .image files</li><li>./www-site/icons</li><li>./www-site/videos<br /><br /></li><li>./www-site/videos/zjwgi<br /><br /></li><li>./www-site/scripts    | contains my-project scripts (typically JS or TypeScript)</li><li>./www-site/css         | css files<br /><br /></li></ul></li></ul></p>
+        <hr />
+<div style="border : solid 2px red;" <ul="">
+              <li><br /></li><li>\todo OLD TEXT integrate into new structure above</li><li><br /></li><li><br /></li><li>index.html        | project
+                specific index.html that is initiated with a <u>copy</u> of
+                ./git_modules/zjwgi/site/index.html </li>
+              <li>html/          
+                  | additional my-project .html if applicable files </li>
+              <ul>
+                <li>zjwgi/         |
+                  symlink to ../git_modules/zjwgi/site/html/zjwji</li>
+              </ul>
+              <li>images/          
+                  | contains my-project .image files </li>
+              <ul>
+                <li>zjwgi/         |
+                  symlink to ../git_modules/zjwgi/site/images/zjwji</li>
+              </ul>
+              <li>videos/</li>
+              <ul>
+                <li>zjwgi/         |
+                  symlink to ../git_modules/zjwgi/site/videos/zjwji</li>
+              </ul>
+              <li>scripts             
+                | contains my-project .js and .ts files </li>
+              <ul>
+                <li>/zjwgi/         |
+                  symlink to ../git_modules/zjwgi/site/scripts/zjwji</li>
+              </ul>
+              <li>css/                  
+                | contains my-project specific .css files </li>
+              <ul>
+                <li>zjwgi/         
+                  | symlink to ../git_modules/zjwgi/site/csszjwji</li>
+              </ul>
+              <li>git_modules/</li>
+              <ul>
+                <li>zjwgi/            
+                  git submodule that comes from
+                  https://gitlab.com/zwartell/zjw-generic-instructions.git</li>
+                <ul>
+                  <li>scripts/     | scripts used for
+                    publishing and managing published to web such as sftp
+                    uploads, checking for broken hyperlinks, etc.</li>
+                  <li>docs/        |
+                    documentations on using the ZJW GI template</li>
+                  <li>site/<br />
+                    Note:  The extra /zjwgi subdirectory structures below
+                    allow the template index.html's path names to scripts, css
+                    files, etc. to work correctly when the index.html is copied
+                    to my-projects/index.html as an initial template</li>
+                  <ul>
+                    <li>scripts/zjwgi/    |  ZJWGI .js and
+                      .ts. files</li>
+                    <li>css/zjwgi/         
+                      | ZJWGI .css files</li>
+                    <li>images/zjwgi/   |  ZJWGI images files</li>
+                    <li>videos/zjwgi/    |  ZJWGI videos
+                      files</li>
+                    <li>index.html       
+                      |  template .html file to be <u>copied</u> your
+                      my-project/index.html to as a starting template for you
+                      project</li>
+                    <li>zjwgi/              
+                      |  extra pages meant for distribution to ZJW GI based
+                      websites</li>
+                    <ul>
+                      <li>help.html       |
+                        end-user documentation of the typo graphic font
+                        conventions and UI features provided in ZJW GI based
+                        assignment pages</li>
+                    </ul>
+                  </ul>
+                </ul>
+              </ul>
+            <li>site/          
+              | this contains files that are published to the web</li><ul>
+    
+</ul>
+</div>
+
+<section>
+<h2 class="Section"></h2></section>
+        <section>
+          <h3 id="section_www_deployment" class="Section">WWW deployment</h3>
+          <p>See script "scripts/zjwp/zjwp-publish-www" and config file scripts/publish.config"</p>
+          <p>Previously I used GitLab pages and a CI/CD script .gitlab-ci.yml,
+            but GitLab.com stopped being free, and circa 2023 cci-git does not
+            appear to have the GitLab pages feature enabled, so I went back to sftp.</p>
+          <p><br />
+          </p>
+        </section><section><br /><h2 class="Section">Version "(git tag) version4"</h2><p>[version 4 is has integrated into the master branch]</p></section>
+
+        
+        <section><br /><h2 class="Section"></h2><h2 class="Section">Version "(git tag) version3"</h2><ul>
         </ul>
         [version 3 is deprecated]
         <ul>
           <li>Integrating my other code modules.</li>
           <ul>
-            <li>List<br>
+            <li>List<br />
               <strong></strong></li>
             <ul>
-              <li><strong>zxw-mvc</strong>|&nbsp;
+              <li><strong>zxw-mvc</strong>| 
                 https://gitlab.com/zachary-wartell/zxw-mvc.git</li>
-              <li><strong>zjw-pwa-template</strong>&nbsp; |
+              <li><strong>zjw-pwa-template</strong>  |
                 https://gitlab.com/zachary-wartell-public/zjw-pwa-template.git</li>
               <li><strong>zxw-git-modules |</strong></li>
             </ul>
@@ -292,101 +696,95 @@
               <li>Harder Part:</li>
               <ul>
                 <li>integrate scirpts from new modules replacing those in zjwgi</li>
-                <li><br>
+                <li><br />
                 </li>
               </ul>
             </ul>
             <li>Replace zjwgi scripts that have better counter parts in these
               modules</li>
           </ul>
-          <li><br>
+          <li><br />
           </li>
-        </ul>
-        <strong> </strong>
-        <h3 class="Section">Directory Structure </h3>
-        <p>Status:&nbsp; [under revision; below is a duplicated of version2]</p>
-        <p>Note the file organization for a assignment description page using
-          ZJW GI uses symbolic links.&nbsp;&nbsp; These are ubiquitous on all
+        </ul><strong> </strong><h3 class="Section">Directory Structure </h3><p>Status:  [under revision; below is a duplicated of version2]</p><p>Note the file organization for a assignment description page using
+          ZJW GI uses symbolic links.   These are ubiquitous on all
           OS's forever -- except MS Windows which eventually supported them (see
-          mklink /D).&nbsp;&nbsp; </p>
-        <p>The directory structure of an assignment description that uses ZJW GI
-          is as follows:</p>
-        <ul>
+          mklink /D).   </p><p>The directory structure of an assignment description that uses ZJW GI
+          is as follows:</p><ul>
           <li>my-project/</li>
           <ul>
-            <li>*/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | files and directories of
+            <li>*/*       | files and directories of
               my-project stuff that should not be transferred to the published
               website</li>
-            <li>scripts/zjwgi&nbsp;&nbsp;&nbsp;&nbsp; | symlink to
+            <li>scripts/zjwgi     | symlink to
               ./site/git_modules/zjwgi/scripts/zjwji</li>
-            <li>site/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <li>site/          
               | this contains files that are published to the web</li>
             <ul>
-              <li>index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | project
+              <li>index.html        | project
                 specific index.html that is initiated with a <u>copy</u> of
                 ./git_modules/zjwgi/site/index.html </li>
-              <li>html/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                &nbsp; | additional my-project .html if applicable files </li>
+              <li>html/          
+                  | additional my-project .html if applicable files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/html/zjwji</li>
               </ul>
-              <li>images/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                &nbsp; | contains my-project .image files </li>
+              <li>images/          
+                  | contains my-project .image files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/images/zjwji</li>
               </ul>
               <li>videos/</li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/videos/zjwji</li>
               </ul>
-              <li>scripts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li>scripts             
                 | contains my-project .js and .ts files </li>
               <ul>
-                <li>/zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>/zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/scripts/zjwji</li>
               </ul>
-              <li>css/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                | contains my-project specific .css files&nbsp;</li>
+              <li>css/                  
+                | contains my-project specific .css files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li>zjwgi/         
                   | symlink to ../git_modules/zjwgi/site/csszjwji</li>
               </ul>
               <li>git_modules/</li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li>zjwgi/            
                   git submodule that comes from
                   https://gitlab.com/zwartell/zjw-generic-instructions.git</li>
                 <ul>
-                  <li>scripts/&nbsp;&nbsp;&nbsp;&nbsp; | scripts used for
+                  <li>scripts/     | scripts used for
                     publishing and managing published to web such as sftp
                     uploads, checking for broken hyperlinks, etc.</li>
-                  <li>docs/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                  <li>docs/        |
                     documentations on using the ZJW GI template</li>
-                  <li>site/<br>
-                    Note:&nbsp; The extra /zjwgi subdirectory structures below
+                  <li>site/<br />
+                    Note:  The extra /zjwgi subdirectory structures below
                     allow the template index.html's path names to scripts, css
                     files, etc. to work correctly when the index.html is copied
                     to my-projects/index.html as an initial template</li>
                   <ul>
-                    <li>scripts/zjwgi/&nbsp;&nbsp;&nbsp; |&nbsp; ZJWGI .js and
+                    <li>scripts/zjwgi/    |  ZJWGI .js and
                       .ts. files</li>
-                    <li>css/zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li>css/zjwgi/         
                       | ZJWGI .css files</li>
-                    <li>images/zjwgi/&nbsp;&nbsp; |&nbsp; ZJWGI images files</li>
-                    <li>videos/zjwgi/&nbsp;&nbsp;&nbsp; |&nbsp; ZJWGI videos
+                    <li>images/zjwgi/   |  ZJWGI images files</li>
+                    <li>videos/zjwgi/    |  ZJWGI videos
                       files</li>
-                    <li>index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      |&nbsp; template .html file to be <u>copied</u> your
+                    <li>index.html       
+                      |  template .html file to be <u>copied</u> your
                       my-project/index.html to as a starting template for you
                       project</li>
-                    <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      |&nbsp; extra pages meant for distribution to ZJW GI based
+                    <li>zjwgi/              
+                      |  extra pages meant for distribution to ZJW GI based
                       websites</li>
                     <ul>
-                      <li>help.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                      <li>help.html       |
                         end-user documentation of the typo graphic font
                         conventions and UI features provided in ZJW GI based
                         assignment pages</li>
@@ -396,103 +794,103 @@
               </ul>
             </ul>
           </ul>
-        </ul>
-        <section>
-          <h3 class="Section">WWW deployment</h3>
-          <p>See zjwgi/scripts/zjwgi/publishWWW.&nbsp;&nbsp; Currently they
-            deploy using sftp.</p>
-          <p>Previously I used GitLab pages and a CI/CD script .gitlab-ci.yml,
-            but GitLab.com stopped being free, and circa 2023 cci-git does not
-            appear to have the GitLab pages feature enabled.</p>
-          <p><br>
-          </p>
-        </section>
+        </ul></section>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
       </section>
       <section>
         <h2 class="Section">Version "(git tag) version2"</h2>
         <h3 class="Section">Directory Structure</h3>
         <p>Note the file organization for a assignment description page using
-          ZJW GI uses symbolic links.&nbsp;&nbsp; These are ubiquitous on all
+          ZJW GI uses symbolic links.   These are ubiquitous on all
           OS's forever -- except MS Windows which eventually supported them (see
-          mklink /D).&nbsp;&nbsp; </p>
+          mklink /D).   </p>
         <p>The directory structure of an assignment description that uses ZJW GI
           is as follows:</p>
         <ul>
           <li>my-project/</li>
           <ul>
-            <li>*/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | files and directories of
+            <li>*/*       | files and directories of
               my-project stuff that should not be transferred to the published
               website</li>
-            <li>scripts/zjwgi&nbsp;&nbsp;&nbsp;&nbsp; | symlink to
+            <li>scripts/zjwgi     | symlink to
               ./site/git_modules/zjwgi/scripts/zjwji</li>
-            <li>site/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <li>site/          
               | this contains files that are published to the web</li>
             <ul>
-              <li>index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | project
+              <li>index.html        | project
                 specific index.html that is initiated with a <u>copy</u> of
                 ./git_modules/zjwgi/site/index.html </li>
-              <li>html/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                &nbsp; | additional my-project .html if applicable files </li>
+              <li>html/          
+                  | additional my-project .html if applicable files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/html/zjwji</li>
               </ul>
-              <li>images/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                &nbsp; | contains my-project .image files </li>
+              <li>images/          
+                  | contains my-project .image files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/images/zjwji</li>
               </ul>
               <li>videos/</li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/videos/zjwji</li>
               </ul>
-              <li>scripts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <li>scripts             
                 | contains my-project .js and .ts files </li>
               <ul>
-                <li>/zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                <li>/zjwgi/         |
                   symlink to ../git_modules/zjwgi/site/scripts/zjwji</li>
               </ul>
-              <li>css/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                | contains my-project specific .css files&nbsp;</li>
+              <li>css/                  
+                | contains my-project specific .css files </li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li>zjwgi/         
                   | symlink to ../git_modules/zjwgi/site/csszjwji</li>
               </ul>
               <li>git_modules/</li>
               <ul>
-                <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <li>zjwgi/            
                   git submodule that comes from
                   https://gitlab.com/zwartell/zjw-generic-instructions.git</li>
                 <ul>
-                  <li>scripts/&nbsp;&nbsp;&nbsp;&nbsp; | scripts used for
+                  <li>scripts/     | scripts used for
                     publishing and managing published to web such as sftp
                     uploads, checking for broken hyperlinks, etc.</li>
-                  <li>docs/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                  <li>docs/        |
                     documentations on using the ZJW GI template</li>
-                  <li>site/<br>
-                    Note:&nbsp; The extra /zjwgi subdirectory structures below
+                  <li>site/<br />
+                    Note:  The extra /zjwgi subdirectory structures below
                     allow the template index.html's path names to scripts, css
                     files, etc. to work correctly when the index.html is copied
                     to my-projects/index.html as an initial template</li>
                   <ul>
-                    <li>scripts/zjwgi/&nbsp;&nbsp;&nbsp; |&nbsp; ZJWGI .js and
+                    <li>scripts/zjwgi/    |  ZJWGI .js and
                       .ts. files</li>
-                    <li>css/zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li>css/zjwgi/         
                       | ZJWGI .css files</li>
-                    <li>images/zjwgi/&nbsp;&nbsp; |&nbsp; ZJWGI images files</li>
-                    <li>videos/zjwgi/&nbsp;&nbsp;&nbsp; |&nbsp; ZJWGI videos
+                    <li>images/zjwgi/   |  ZJWGI images files</li>
+                    <li>videos/zjwgi/    |  ZJWGI videos
                       files</li>
-                    <li>index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      |&nbsp; template .html file to be <u>copied</u> your
+                    <li>index.html       
+                      |  template .html file to be <u>copied</u> your
                       my-project/index.html to as a starting template for you
                       project</li>
-                    <li>zjwgi/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      |&nbsp; extra pages meant for distribution to ZJW GI based
+                    <li>zjwgi/              
+                      |  extra pages meant for distribution to ZJW GI based
                       websites</li>
                     <ul>
-                      <li>help.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+                      <li>help.html       |
                         end-user documentation of the typo graphic font
                         conventions and UI features provided in ZJW GI based
                         assignment pages</li>
@@ -505,64 +903,61 @@
         </ul>
         <section>
           <h3 class="Section">WWW deployment</h3>
-          <p>See zjwgi/scripts/zjwgi/publishWWW.&nbsp;&nbsp; Currently they
+          <p>See zjwgi/scripts/zjwgi/publishWWW.   Currently they
             deploy using sftp.</p>
           <p>Previously I used GitLab pages and a CI/CD script .gitlab-ci.yml,
             but GitLab.com stopped being free, and circa 2023 cci-git does not
             appear to have the GitLab pages feature enabled.</p>
-          <p><br>
+          <p><br />
           </p>
         </section>
       </section>
       <section>
         <h2 class="Section">Version "April" <em>[Being Retired]</em></h2>
-        <p><strong>This version is deprecated.&nbsp; Although may (?) still be
-            in use by some of my tutorials and assignments....<br>
+        <p><strong>This version is deprecated.  Although may (?) still be
+            in use by some of my tutorials and assignments....<br />
           </strong></p>
         <ol class="Instruction">
-          <li>Create an empty repo on gitlab.&nbsp;&nbsp; Assume repo's clone
+          <li>Create an empty repo on gitlab.   Assume repo's clone
             URL is <span class="User_Input">Your-Repo</span> </li>
           <li>Clone and lightweight fork
             https://gitlab.com/zwartell/zjw-generic-instructions-template into a
-            new repo for you new assignment.<br>
-            <table class="Code_Example" id="Code_Example1" style="width: 100%;"
-              border="1">
+            new repo for you new assignment.<br />
+            <table class="Code_Example" id="Code_Example1" style="width: 100%;" border="1">
               <tbody>
                 <tr>
                   <td> <button>▽</button> </td>
                   <td>
                     <div> <code class="Shell_Code_Input">$ git clone
                         https://gitlab.com/zwartell/zjw-generic-instructions-template
-                        <span class="User_Input">Your-Repo-Directory</span> </code><br>
+                        <span class="User_Input">Your-Repo-Directory</span> </code><br />
                       <code class="Shell_Code_Input">$ git remote rename origin
-                        upstream <span class="User_Input">Your-Repo</span></code><br>
-                      <code class="Shell_Code_Input">$ git push origin</code><br>
+                        upstream <span class="User_Input">Your-Repo</span></code><br />
+                      <code class="Shell_Code_Input">$ git push origin</code><br />
                       <code class="Shell_Code_Input">$ git submodule update
-                        --remote zjw-generic-instructions<br>
+                        --remote zjw-generic-instructions<br />
                       </code><code class="Shell_Code_Input"><span class="User_Input"></span></code>
                     </div>
                     <code class="Shell_Code_Input"> </code></td>
                 </tr>
               </tbody>
             </table>
-            <figure> <img style="border: solid black 1px;" src="images/file-organization.png"
-                alt="images/file-organization.png" title="images/file-organization.png">
+            <figure> <img style="border: solid black 1px;" src="images/file-organization.png" alt="images/file-organization.png" title="images/file-organization.png" />
               <figcaption>File Organization</figcaption> </figure>
           </li>
-          <li>Customize the following standard components of the ./index.html<br>
+          <li>Customize the following standard components of the ./index.html<br />
             <ol>
               <li>&lt;title&gt;&lt;/title&gt;</li>
             </ol>
           </li>
-          <li>Customize the following standard elements of the ./content.html<br>
+          <li>Customize the following standard elements of the ./content.html<br />
             <ol>
-              <li>&lt;div id="AssignmentName" class="Data"z<br>
-                Documentationfor each field is in the class AssignmentName in <a
-                  href="../ClassAssignmentWartell.ts">../ClassAssignmentWartell.ts</a></li>
+              <li>&lt;div id="AssignmentName" class="Data"z<br />
+                Documentationfor each field is in the class AssignmentName in <a href="../ClassAssignmentWartell.ts">../ClassAssignmentWartell.ts</a></li>
             </ol>
           </li>
           <li>Develop your new assignments specific content in content.html
-            using the following protocol:<br>
+            using the following protocol:<br />
             <ol>
               <li>
                 <div class="Comment">\todo elaborate</div>
@@ -570,7 +965,7 @@
             </ol>
           </li>
           <li>If you make updates, bug fixes, improvements relevant to shared
-            subodule, zjw-generic-instructions, use following protocol<br>
+            subodule, zjw-generic-instructions, use following protocol<br />
             <ol>
               <li>
                 <div class="Comment">\todo elaborate</div>
@@ -584,28 +979,25 @@
         <h2 class="Section">Version "March" <em>[Being Retired]</em></h2>
         <ol class="Instruction">
           <li>Fork https://gitlab.com/zwartell/zjw-generic-instructions to
-            project repository.<br>
+            project repository.<br />
             <ul>
-              <li>ZJW:&nbsp; <a href="https://gitlab.com/gitlab-org/gitlab-foss/-/issues/25805"
-                  target="_blank">https://gitlab.com/gitlab-org/gitlab-foss/-/issues/25805</a></li>
-              <li>Anyone else: <a href="https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork"
-                  target="_blank">https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork</a></li>
+              <li>ZJW:  <a href="https://gitlab.com/gitlab-org/gitlab-foss/-/issues/25805" target="_blank">https://gitlab.com/gitlab-org/gitlab-foss/-/issues/25805</a></li>
+              <li>Anyone else: <a href="https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork" target="_blank">https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork</a></li>
             </ul>
             <!--
           See <br>          <br>          <table class="Code_Example" id="Code_Example1" style="width: 100%;" border="1">            <tbody>              <tr>                <td> <button>▽</button> </td>                <td>                  <div style="height: 100px;"><code class="Shell_Code_Input">$                      git clone                      https://gitlab.com/zwartell/zjw-generic-instructions.git<br>                      $ cd </code><code class="Shell_Code_Input"><code class="Shell_Code_Input">zjw-generic-instructions</code>                    </code><code class="Shell_Code_Input"><span data-project-number-long-dir="Project_2"></span></code>2<br>                    <code class="Shell_Code_Input">$ git remote rename origin                      upstream<br>                      $ git branch <span class="User_Input">new-project</span><br>                    </code></div>                  <div style="height: 100px;"><code class="Shell_Code_Input"><br>                    </code></div>                </td>              </tr>            </tbody>          </table>-->
           </li>
           <li>In clone the forked repo and setup a new branch as follows::
-            <table class="Code_Example" id="Code_Example1" style="width: 100%;"
-              border="1">
+            <table class="Code_Example" id="Code_Example1" style="width: 100%;" border="1">
               <tbody>
                 <tr>
                   <td> <button>▽</button> </td>
                   <td>
-                    <div> <code class="Shell_Code_Input">$ git clone <span class="User_Input">Your-Forked-Repo</span></code><br>
+                    <div> <code class="Shell_Code_Input">$ git clone <span class="User_Input">Your-Forked-Repo</span></code><br />
                       <code class="Shell_Code_Input">$ git remote add upstream
-                        https://gitlab.com/zwartell/zjw-generic-instructions</code><br>
-                      <code class="Shell_Code_Input">$ git branch <span class="User_Input">Programming-Language-Tutorial-XYZ</span></code><br>
-                      <code class="Shell_Code_Input">$ git checkout <span class="User_Input">Programming-Language-Tutorial-XY</span></code><br>
+                        https://gitlab.com/zwartell/zjw-generic-instructions</code><br />
+                      <code class="Shell_Code_Input">$ git branch <span class="User_Input">Programming-Language-Tutorial-XYZ</span></code><br />
+                      <code class="Shell_Code_Input">$ git checkout <span class="User_Input">Programming-Language-Tutorial-XY</span></code><br />
                       <code class="Shell_Code_Input">$ </code><code class="Shell_Code_Input">git
                         push --set-upstream origin <span class="User_Input">rogramming-Language-Tutorial-XYZ</span></code>
                     </div>
@@ -613,21 +1005,19 @@
                 </tr>
               </tbody>
             </table>
-            <br>
+            <br />
           </li>
-          <li>Modify the .gitlab-ci.yml file replacing the line <br>
-            <pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:12.0pt;"><span
-style="color:#cc7832;">only</span>:<br>  - master</pre>
-            with <br>
-            <pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:12.0pt;"><span
-style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
+          <li>Modify the .gitlab-ci.yml file replacing the line <br />
+            <pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:12.0pt;"><span style="color:#cc7832;">only</span>:<br />  - master</pre>
+            with <br />
+            <pre style="background-color:#2b2b2b;color:#a9b7c6;font-family:'JetBrains Mono',monospace;font-size:12.0pt;"><span style="color:#cc7832;">only</span>:<br />  - Your-Forked-Repo-Branch-Name</pre>
           </li>
-          <li>Customize the following standard components of the index.html<br>
+          <li>Customize the following standard components of the index.html<br />
             <ol>
               <li>&lt;title&gt;&lt;/title&gt;</li>
               <li>In function onload_Body() modify string names in Object
                 project</li>
-              <li>? other stuff ?&nbsp; <br>
+              <li>? other stuff ?  <br />
                 <ol>
                   <li>check for \todo items in index.html</li>
                 </ol>
@@ -656,17 +1046,16 @@ style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
       </ul>
       <p></p>
     </section>
-    <blockquote><br>
+    <blockquote><br />
     </blockquote>
-    <blockquote><br>
+    <blockquote><br />
     </blockquote>
     <section>
       <h1 class="Section">References</h1>
       <ol class="References">
         <li class="reference-www"><span>6.2 GitHub - Contributing to a Project</span>,
           <span>Source</span> 4/19/2021<span>[Online].</span> <span>Available:</span>
-          <span><a href="https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project"
-              target="_blank">https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project</a></span></li>
+          <span><a href="https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project" target="_blank">https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project</a></span></li>
         <li> .</li>
       </ol>
     </section>
@@ -675,14 +1064,14 @@ style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
       <h1 class="Section">Revamp</h1>
       <ol class="Instruction">
         <li class="Instruction">Reorganize to put all zjw-generic-instruction
-          stuff into a git submodule.&nbsp;&nbsp; </li>
-        <li>All project instruction will link to the submodule<br>
+          stuff into a git submodule.   </li>
+        <li>All project instruction will link to the submodule<br />
           <ol>
             <li>submodule can be tied to fix version if necessary</li>
           </ol>
         </li>
         <li>zjw-generic-instruction becomes more of an app that loads, save a
-          project specific .html file that contains the projects instructions<br>
+          project specific .html file that contains the projects instructions<br />
           <ol>
             <li>leverage the design pattern in my project "ZaW Presentation"</li>
             <li>but the distributed version of a specific project should not
@@ -691,9 +1080,9 @@ style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
           </ol>
         </li>
       </ol>
-      <p><br>
+      <p><br />
       </p>
-      <p><br>
+      <p><br />
       </p>
       <p></p>
       <ol class="References">
@@ -703,5 +1092,82 @@ style="color:#cc7832;">only</span>:<br>  - Your-Forked-Repo-Branch-Name</pre>
       <li class="reference-www"><span>Title</span>, <span>Source</span>, <span>Date</span>
         <span>[Online].</span> <span>Available:</span> <span><a href="http:">http</a></span></li>
     </template>
-  </body>
-</html>
+
+
+    </div>
+
+    <!-- zxw-editor BEGIN #5 -->
+    <!--
+         All code delimited by 
+             <!- - zxw-editor BEGIN -- !>
+         and
+             <!- - zxw-editor END -- !>
+         
+         are @license Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.         
+            - @git https://github.com/ZacharyWartell/zxw-editor
+            - @author Zachary Justin Wartell, 2026.
+     -->
+    <!-- zxw-editor BEGIN <dialog> -->    
+    <div class="zxw-editor">
+        <dialog id="HelpDialog">
+            <h1 style="text-align: center;">User Guide</h1>
+
+            <section>
+                <h2>Overview</h2>
+                <div style="text-align: center;">
+                    α-<span><!--APPVERSION-->0.1.56</span>
+                </div>                
+            <p>
+            zxw-editor is an experimental 'in-place' HTML editor.
+            </p>
+            <ul>
+                <li>zxw-editor.html can be saved to a local file in Chrome.  The resulting saved local .html file
+                    can be openned directly in Chrome and further edited in Chrome.  The saved local .html embeds
+                    the zxw-editor code itself.  Therefore once saved, the saved .html is completely standalone and editable.                    
+                    <ul>
+                        <li>zxw-editor is a single page, <a href="https://en.wikipedia.org/wiki/Static_web_page" target="_blank">static webpage</a>.</li>
+                        <li>zxw-editor does <em>not</em> communicate to any server.</li>
+                    </ul>
+                </li>
+                <li>
+                    zxw-editor neither requires nor uses any 3rd party framework (React, Vue, Angular). 
+                </li>
+                <li>
+                    zxw-editor leverages <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/contenteditable" target="_blank">contentedible</a>
+                    and 
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker" target="_blank">showSaveFilePicker</a>
+                    to save edits to the webpage (i.e. the local DOM) to a local file.
+                </li>
+            </ul>
+            Caveats:
+            <ul>
+                <li> zxw-editor assumes the user is comfortable and familiar with using the 
+                    <a href="https://developer.chrome.com/docs/devtools/dom" target="_blank">Chrome Inspector </a>
+                    
+                    to edit the DOM in addition to editing the contentedible &lt;div&gt; directly using the browser's inherent
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/contenteditable" target="_blank">contentedible</a>
+                    editing features.
+                </li>
+                <li>zxw-editor is only tested on the Chrome browser.</li>
+                <li>zxw-editor is α software.  A common Computer Science 101 programming assignment at universities
+                    like MIT is to write a program that prints out an exact replica of itself.  This is tricky.
+                    The more complicated the programming language being used, the trickier it is.
+                    Undoubtedly, the zxw-editor 'save-itself-to-a-file' algorithm still does not handle all situations.
+                </li>
+            </ul>
+            </section>
+            <section>
+                <h2>GUI</h2>
+                <hr />
+                <ul id="GUI" data-non-saved-content="">
+                </ul>
+                <hr />                
+            </section>
+            <button commandfor="HelpDialog" command="close">Close</button>
+        </dialog>
+    </div>
+    <!-- zxw-editor END <dialog> -->    
+    <!-- zxw-editor END #5 -->    
+
+
+</body></html>
