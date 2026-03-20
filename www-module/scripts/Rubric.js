@@ -332,15 +332,31 @@ export class Instruction {
             </tbody>
         </table>
         */
-        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.parentElement.nextElementSibling.children[0]; tr !== null; tr = tr.nextElementSibling) {
-            //let percentage : string;
-            const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
-            if (percentage <= 101)
-                tr.children[2].innerText = percentage.toFixed(1) + "%";
-            else
-                tr.children[2].innerText = "-";
-            tr.children[2].setAttribute("contenteditable", "true");
+        const ap = document.querySelector('*[id="AwardedPoints"]');
+        if (ap.dataset.version !== undefined) {
+            if (ap.dataset.version == "1.1.0") {
+                for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement; tr !== null; tr = tr.nextElementSibling) {
+                    //let percentage : string;
+                    const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
+                    const cell = tr.children[2];
+                    if (percentage <= 101)
+                        cell.firstElementChild.innerText = percentage.toFixed(1) + "%";
+                    else
+                        cell.firstElementChild.innerText = "-";
+                    cell.firstElementChild.setAttribute("contenteditable", "true");
+                }
+            }
         }
+        else
+            for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.parentElement.nextElementSibling.children[0]; tr !== null; tr = tr.nextElementSibling) {
+                //let percentage : string;
+                const percentage = instructions.awardedPoints / parseFloat((tr.children[1]).innerText) * 100;
+                if (percentage <= 101)
+                    tr.children[2].innerText = percentage.toFixed(1) + "%";
+                else
+                    tr.children[2].innerText = "-";
+                tr.children[2].setAttribute("contenteditable", "true");
+            }
         //percentages += "]";
         /*
         for (let os of instructions.optionSets)
