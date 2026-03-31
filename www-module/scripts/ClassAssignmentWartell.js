@@ -17,6 +17,8 @@ import { Instruction } from "./Rubric.js";
 export class App extends ZxW_GUI.DefaultApplication {
     constructor() {
         super();
+        this.totalPoints = 0;
+        this.headingStartLevel = 0;
     }
     postUserDocumentLoadCallback() {
         /**
@@ -350,6 +352,22 @@ export async function main(totalPoints, editMenuDisable = true, headingStartLeve
     app = new App();
     const wc = document.querySelector("header > div");
     const toolbar = new ZxW_Toolbar.Toolbar(wc, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
+    app.totalPoints = totalPoints;
+    app.headingStartLevel = headingStartLevel;
+    toolbar.reload.removeEventListener('click', toolbar.defaultReloadEventListener);
+    toolbar.reload.addEventListener('click', (e) => {
+        const dynamics = document.querySelectorAll("*[data-zxw-mvc]");
+        for (let d of dynamics) {
+            const e = d;
+            if (e.dataset.zxwMvc !== undefined) {
+                if (e.dataset.zxwMvc == "dynamic-content")
+                    e.innerHTML = "";
+                else if (e.dataset.zxwMvc == "dynamic-content-self")
+                    e.remove();
+            }
+        }
+        onload(app.totalPoints, app.headingStartLevel);
+    });
     ZxW_Annotation.main(toolbar);
     ZxW_TextEditor.main(toolbar);
     /**

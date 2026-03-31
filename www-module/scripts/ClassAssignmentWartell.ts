@@ -22,6 +22,10 @@ import {Instruction, Instructions} from "./Rubric.js";
 
 export class App extends ZxW_GUI.DefaultApplication
 {
+
+    totalPoints : number=0;
+    headingStartLevel : number=0;
+    
     constructor()
     {
         super();
@@ -400,6 +404,7 @@ export function QandAModeHover(e : MouseEvent) : void
           });
  }
 
+
  /**
   * 
   * @param totalPoints - total points that the described assignment is worth
@@ -424,6 +429,27 @@ export async function main(totalPoints : number, editMenuDisable : boolean = tru
     app = new App();
     const wc = <HTMLElement>document.querySelector("header > div");
     const toolbar = new ZxW_Toolbar.Toolbar(wc,app,null,{includedMenubarItems:["help"],useUserGuideFile: true});
+
+    app.totalPoints = totalPoints;
+    app.headingStartLevel = headingStartLevel;
+    toolbar.reload.removeEventListener('click',toolbar.defaultReloadEventListener);
+    toolbar.reload.addEventListener('click', (e: MouseEvent) => 
+        {
+            const dynamics=document.querySelectorAll("*[data-zxw-mvc]");
+            for (let d of dynamics)
+            {
+                const e = <HTMLElement>d;
+                if (e.dataset.zxwMvc !== undefined)
+                {
+                    if (e.dataset.zxwMvc == "dynamic-content")
+                        e.innerHTML="";
+                    else if (e.dataset.zxwMvc == "dynamic-content-self")
+                        e.remove();
+                }
+            }
+
+            onload(app.totalPoints,app.headingStartLevel);
+        });
     ZxW_Annotation.main(toolbar);
     ZxW_TextEditor.main(toolbar);
 
@@ -791,7 +817,7 @@ export async function main(totalPoints : number, editMenuDisable : boolean = tru
 
     /**
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
-     */
+     */    
     onload(totalPoints,headingStartLevel);  
     return
     /**

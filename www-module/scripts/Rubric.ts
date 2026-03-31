@@ -428,17 +428,38 @@ export class Instruction {
             </tbody>
         </table>          
         */
-        for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.parentElement.nextElementSibling.children[0]; tr !== null; tr = tr.nextElementSibling)
-        {            
-            //let percentage : string;
-            const percentage = instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100;
-            if ( percentage <= 101)
-                (<HTMLTableCellElement>tr.children[2]).innerText = percentage.toFixed(1) + "%";                        
-            else
-                (<HTMLTableCellElement>tr.children[2]).innerText = "-";
-            
-            (<HTMLTableCellElement>tr.children[2]).setAttribute("contenteditable","true");
+        const ap = <HTMLElement>document.querySelector('*[id="AwardedPoints"]');
+        if (ap.dataset.version !== undefined)
+            {
+            if (ap.dataset.version == "1.1.0")
+            {
+                for (let tr = <HTMLTableRowElement> document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement; tr !== null; tr = <HTMLTableRowElement>tr.nextElementSibling)
+                {            
+                    //let percentage : string;
+                    const percentage = instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100;
+                    const cell = (<HTMLTableCellElement>tr.children[2]);
+                    if ( percentage <= 101)
+                        (<HTMLSpanElement>cell.firstElementChild).innerText = percentage.toFixed(1) + "%";                        
+                    else
+                        (<HTMLSpanElement>cell.firstElementChild).innerText = "-";
+                    
+                    (<HTMLSpanElement>cell.firstElementChild).setAttribute("contenteditable","true");
+                }
+            }
         }
+        else
+            for (let tr = document.querySelector('*[id="AwardedPoints"]').parentElement.parentElement.parentElement.nextElementSibling.children[0]; tr !== null; tr = tr.nextElementSibling)
+            {            
+                //let percentage : string;
+                const percentage = instructions.awardedPoints/parseFloat((<HTMLTableCellElement>(tr.children[1])).innerText)*100;
+                if ( percentage <= 101)
+                    (<HTMLTableCellElement>tr.children[2]).innerText = percentage.toFixed(1) + "%";                        
+                else
+                    (<HTMLTableCellElement>tr.children[2]).innerText = "-";
+                
+                (<HTMLTableCellElement>tr.children[2]).setAttribute("contenteditable","true");
+            }
+
         //percentages += "]";
         
         /*
