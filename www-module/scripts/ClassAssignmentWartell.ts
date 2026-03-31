@@ -20,7 +20,7 @@ import {Instruction, Instructions} from "./Rubric.js";
 
 
 
-class App extends ZxW_GUI.DefaultApplication
+export class App extends ZxW_GUI.DefaultApplication
 {
     constructor()
     {
@@ -28,6 +28,16 @@ class App extends ZxW_GUI.DefaultApplication
     }
     postUserDocumentLoadCallback(): void 
     {
+        /**
+         * due to explicit fetch in zxw-doc of UserDocument, an explicit scroll into view is needed if the URL contains a bookmark
+         */
+        const link = document.URL.match(/#(.*)$/);
+        if(link !== null)
+        {
+            const le = document.getElementById(link[1]); // 'linkElement'
+            if (le !== null)
+                le.scrollIntoView();
+        }
     }
 }
 
