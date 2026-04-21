@@ -38,7 +38,7 @@ AUTO_DOC["Instruction Category"] =
         </li>  
         <li> Instruction_Git_Commit - the li element will is tagged as a git commit operation
         </li>        
-        <li> Instruction_NonRubric - the li element will be ignored by the Rubric generation algorithm
+        <li> Instruction_NonRubric - the li, ol or ul element will be ignored by the Rubric generation algorithm
         </li>        
     </ol>
  `;
@@ -608,6 +608,9 @@ export class Instructions {
         let lic = 1;
         for (let ol of olList) {
             let category = getCategoryFromClass(ol, false);
+            if (category === Category.NON_RUBRIC)
+                // skip entire list if the list is a Category.NON_RUBRIC
+                continue;
             const li1List = ol.querySelectorAll(":scope > li");
             /*
             count number of items that contribute points to the rubric
@@ -619,6 +622,9 @@ export class Instructions {
                 if (tmp !== Category.NON_RUBRIC)
                     rubricItems++;
             }
+            /*
+            computer per li fraction if we equally subdivide points amont all li elements (with !Category.NON_RUBRIC)
+            */
             let equalFraction1;
             if (parent !== null && parent.category === Category.OPTION_SET)
                 equalFraction1 = 100;
