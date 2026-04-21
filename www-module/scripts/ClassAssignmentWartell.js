@@ -14,13 +14,22 @@ import * as ZxW_TextEditor from "ZxW_TextEditor";
 import * as Rubric from "./Rubric.js";
 //import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
 import { Instruction } from "./Rubric.js";
-class App extends ZxW_GUI.DefaultApplication {
+export class App extends ZxW_GUI.DefaultApplication {
     constructor() {
         super();
         this.totalPoints = 0;
         this.headingStartLevel = 0;
     }
     postUserDocumentLoadCallback() {
+        /**
+         * due to explicit fetch in zxw-doc of UserDocument, an explicit scroll into view is needed if the URL contains a bookmark
+         */
+        const link = document.URL.match(/#(.*)$/);
+        if (link !== null) {
+            const le = document.getElementById(link[1]); // 'linkElement'
+            if (le !== null)
+                le.scrollIntoView();
+        }
     }
 }
 let app;
