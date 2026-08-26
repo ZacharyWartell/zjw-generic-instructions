@@ -929,7 +929,7 @@ function onload(totalPoints : number, headingStartLevel : number = 1)
     }
 
     /**
-     ** Hide Staff_Only sections
+     ** Add table.Code_Example button eventListeners
      */
     elements = document.querySelectorAll('table.Code_Example button');
     for (let e of elements)
