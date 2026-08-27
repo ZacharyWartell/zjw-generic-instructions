@@ -739,6 +739,17 @@ export async function main(totalPoints, editMenuDisable = true, headingStartLeve
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
     onload(totalPoints, headingStartLevel);
+    /**
+     *  Many HTMLElements ids are constructed by the client side javascripts, therefore when the page is first
+     *  visited, if the URL contains a #ID_STRING suffix, the ID_STRING may not exist in the page
+     *  Therefore, after the page is fully constructed reparse the URL, extract any #ID_STRING suffix and update page location.
+     */
+    const target = document.location.href.split(/#/);
+    console.log("TARGET:", target);
+    if (target.length == 2) {
+        const element = document.getElementById(target[1]);
+        element.scrollIntoView();
+    }
     return;
     /**
      * trick below weren't good enough, because neither  <object> nor <embed> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
