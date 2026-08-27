@@ -983,7 +983,12 @@ function onload(totalPoints : number, headingStartLevel : number = 1)
     for (let e of elements)
     {
         if ( e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
-            (<HTMLElement>e).innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  <span>" + (<HTMLElement>e).innerText;
+        {
+            let storedHTML = (<HTMLElement>e).innerHTML;
+            if (storedHTML == null || storedHTML == "")
+                storedHTML = (<HTMLElement>e).innerText;
+            (<HTMLElement>e).innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b> </span>" + storedHTML;
+        }            
     }
 
     /**

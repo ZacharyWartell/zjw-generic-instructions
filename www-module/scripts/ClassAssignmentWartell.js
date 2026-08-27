@@ -763,7 +763,7 @@ export function onload(totalPoints, headingStartLevel = 1) {
         e.hidden = true;
     }
     /**
-     ** Hide Staff_Only sections
+     ** Add table.Code_Example button eventListeners
      */
     elements = document.querySelectorAll('table.Code_Example button');
     for (let e of elements) {
@@ -807,8 +807,12 @@ export function onload(totalPoints, headingStartLevel = 1) {
      */
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements) {
-        if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
-            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  <span>" + e.innerText;
+        if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null) {
+            let storedHTML = e.innerHTML;
+            if (storedHTML == null || storedHTML == "")
+                storedHTML = e.innerText;
+            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>SHIT  </span>" + storedHTML;
+        }
     }
     /**
      *  insert "copy to clipboard" button after span.Git_Commit_Message elements.
