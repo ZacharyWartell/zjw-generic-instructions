@@ -107,6 +107,74 @@ export class AssignmentName {
     }
 }
 /**
+ * These are various function exported to the Brower console, intended for use by the app developer by calling them from the console.
+ */
+export class Console {
+    /**
+     *  collect and list all HTML 'ins' elements on the console.
+     */
+    static listInsDelElements() {
+        const insList = document.querySelectorAll("ins");
+        var updates = [];
+        for (let u of insList) {
+            let r, note_ = (r = u.querySelector(":scope span.Updated_Text_Popup_Note")) == null ? "" : r.innerText;
+            let parentID = u.parentElement;
+            for (; parentID != undefined && parentID != null && parentID.getAttribute("id") == null; parentID = parentID.parentElement)
+                ;
+            const update = {
+                date: Date.parse(u.getAttribute('datetime')),
+                note: note_,
+                fullText: u.innerText,
+                parent: parentID
+            };
+            //console.log(update);
+            updates.push(update);
+        }
+        updates.sort((a, b) => { return b.date - a.date; });
+        let html = "";
+        for (let u of updates) {
+            html +=
+                `
+                <div>
+                    <hr>
+                    <!-- Date: ${new Date(u.date).toUTCString()}<br> -->
+                    Comment: ${u.note}<br>
+                    Section: <a href='#${u.parent.getAttribute("id")}'>${u.parent.getAttribute("id")}</a><br>
+                    Text: ${u.fullText}<br>
+                </div>
+            `;
+        }
+        console.log(html);
+        let dialog = document.getElementById("DocumentUpdatesDialog");
+        if (dialog == null) {
+            dialog = document.createElement("dialog");
+            //dialog.addEventListener('click',(e)=>{(<HTMLDialogElement>e.target).close();});
+            document.body.appendChild(dialog);
+            dialog.setAttribute("id", "DocumentUpdatesDialog");
+            dialog.style.padding = "5px";
+            dialog.style.overflow = "hidden";
+            dialog.style.height = "50%";
+            dialog.style.resize = "both";
+        }
+        dialog.innerHTML =
+            `                
+                <div style="display: flex; flex-direction: column; padding: 0.5em; overflow:hidden; height: 100%;">
+                    <div style='margin:5px; padding: 5px; background-color: lightgrey; text-align:center; border: 1px solid black;'><b>List of Document Updates</b></div>
+                    <div style="padding: 0.5em; border: 1px solid black; overflow-y:scroll; height: 100%;">
+                        ${html}
+                    </div>            
+                    <div style="background-color: lightgrey; margin:5px; padding: 5px; border: 1px solid black;">
+                        <button onclick="this.parentElement.parentElement.parentElement.close();">Close</button>                
+                    </div>                    
+                </div>
+            `;
+        //dialog.style.display="flex";
+        dialog.showModal();
+        //confirm(html);
+        return updates;
+    }
+}
+/**
  *  @author Zachary Wartell
  *  @brief toggle the "hidden" attribute of all elements of class "Class"
  *  @param {String} - name of class
