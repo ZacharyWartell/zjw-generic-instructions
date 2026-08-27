@@ -811,7 +811,7 @@ export function onload(totalPoints, headingStartLevel = 1) {
             let storedHTML = e.innerHTML;
             if (storedHTML == null || storedHTML == "")
                 storedHTML = e.innerText;
-            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>SHIT  </span>" + storedHTML;
+            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b> </span>" + storedHTML;
         }
     }
     /**
