@@ -14,11 +14,22 @@ import * as ZxW_TextEditor from "ZxW_TextEditor";
 import * as Rubric from "./Rubric.js";
 //import {cssNumber} from "./third-party/jquery-3.5.1.min.js";
 import { Instruction } from "./Rubric.js";
-class App extends ZxW_GUI.DefaultApplication {
+export class App extends ZxW_GUI.DefaultApplication {
     constructor() {
         super();
+        this.totalPoints = 0;
+        this.headingStartLevel = 0;
     }
     postUserDocumentLoadCallback() {
+        /**
+         * due to explicit fetch in zxw-doc of UserDocument, an explicit scroll into view is needed if the URL contains a bookmark
+         */
+        const link = document.URL.match(/#(.*)$/);
+        if (link !== null) {
+            const le = document.getElementById(link[1]); // 'linkElement'
+            if (le !== null)
+                le.scrollIntoView();
+        }
     }
 }
 let app;
@@ -93,6 +104,74 @@ export class AssignmentName {
         for (let e of elements) {
             e.setAttribute("class", "");
         }
+    }
+}
+/**
+ * These are various function exported to the Brower console, intended for use by the app developer by calling them from the console.
+ */
+export class Console {
+    /**
+     *  collect and list all HTML 'ins' elements on the console.
+     */
+    static listInsDelElements() {
+        const insList = document.querySelectorAll("ins");
+        var updates = [];
+        for (let u of insList) {
+            let r, note_ = (r = u.querySelector(":scope span.Updated_Text_Popup_Note")) == null ? "" : r.innerText;
+            let parentID = u.parentElement;
+            for (; parentID != undefined && parentID != null && parentID.getAttribute("id") == null; parentID = parentID.parentElement)
+                ;
+            const update = {
+                date: Date.parse(u.getAttribute('datetime')),
+                note: note_,
+                fullText: u.innerText,
+                parent: parentID
+            };
+            //console.log(update);
+            updates.push(update);
+        }
+        updates.sort((a, b) => { return b.date - a.date; });
+        let html = "";
+        for (let u of updates) {
+            html +=
+                `
+                <div>
+                    <hr>
+                    <!-- Date: ${new Date(u.date).toUTCString()}<br> -->
+                    Comment: ${u.note}<br>
+                    Section: <a href='#${u.parent.getAttribute("id")}'>${u.parent.getAttribute("id")}</a><br>
+                    Text: ${u.fullText}<br>
+                </div>
+            `;
+        }
+        console.log(html);
+        let dialog = document.getElementById("DocumentUpdatesDialog");
+        if (dialog == null) {
+            dialog = document.createElement("dialog");
+            //dialog.addEventListener('click',(e)=>{(<HTMLDialogElement>e.target).close();});
+            document.body.appendChild(dialog);
+            dialog.setAttribute("id", "DocumentUpdatesDialog");
+            dialog.style.padding = "5px";
+            dialog.style.overflow = "hidden";
+            dialog.style.height = "50%";
+            dialog.style.resize = "both";
+        }
+        dialog.innerHTML =
+            `                
+                <div style="display: flex; flex-direction: column; padding: 0.5em; overflow:hidden; height: 100%;">
+                    <div style='margin:5px; padding: 5px; background-color: lightgrey; text-align:center; border: 1px solid black;'><b>List of Document Updates</b></div>
+                    <div style="padding: 0.5em; border: 1px solid black; overflow-y:scroll; height: 100%;">
+                        ${html}
+                    </div>            
+                    <div style="background-color: lightgrey; margin:5px; padding: 5px; border: 1px solid black;">
+                        <button onclick="this.parentElement.parentElement.parentElement.close();">Close</button>                
+                    </div>                    
+                </div>
+            `;
+        //dialog.style.display="flex";
+        dialog.showModal();
+        //confirm(html);
+        return updates;
     }
 }
 /**
@@ -341,6 +420,22 @@ export async function main(totalPoints, editMenuDisable = true, headingStartLeve
     app = new App();
     const wc = document.querySelector("header > div");
     const toolbar = new ZxW_Toolbar.Toolbar(wc, app, null, { includedMenubarItems: ["help"], useUserGuideFile: true });
+    app.totalPoints = totalPoints;
+    app.headingStartLevel = headingStartLevel;
+    toolbar.reload.removeEventListener('click', toolbar.defaultReloadEventListener);
+    toolbar.reload.addEventListener('click', (e) => {
+        const dynamics = document.querySelectorAll("*[data-zxw-mvc]");
+        for (let d of dynamics) {
+            const e = d;
+            if (e.dataset.zxwMvc !== undefined) {
+                if (e.dataset.zxwMvc == "dynamic-content")
+                    e.innerHTML = "";
+                else if (e.dataset.zxwMvc == "dynamic-content-self")
+                    e.remove();
+            }
+        }
+        onload(app.totalPoints, app.headingStartLevel);
+    });
     ZxW_Annotation.main(toolbar);
     ZxW_TextEditor.main(toolbar);
     /**
@@ -644,6 +739,17 @@ export async function main(totalPoints, editMenuDisable = true, headingStartLeve
      *  finish initialization the DOM inserting computer point annotations, creating the Rubric table, etc.
      */
     onload(totalPoints, headingStartLevel);
+    /**
+     *  Many HTMLElements ids are constructed by the client side javascripts, therefore when the page is first
+     *  visited, if the URL contains a #ID_STRING suffix, the ID_STRING may not exist in the page
+     *  Therefore, after the page is fully constructed reparse the URL, extract any #ID_STRING suffix and update page location.
+     */
+    const target = document.location.href.split(/#/);
+    console.log("TARGET:", target);
+    if (target.length == 2) {
+        const element = document.getElementById(target[1]);
+        element.scrollIntoView();
+    }
     return;
     /**
      * trick below weren't good enough, because neither  <object> nor <embed> element is not accessible by DOM operations, so it can't be found to add event listeners to it's elements (AFAIK)
@@ -736,7 +842,7 @@ export function onload(totalPoints, headingStartLevel = 1) {
         e.hidden = true;
     }
     /**
-     ** Hide Staff_Only sections
+     ** Add table.Code_Example button eventListeners
      */
     elements = document.querySelectorAll('table.Code_Example button');
     for (let e of elements) {
@@ -780,8 +886,12 @@ export function onload(totalPoints, headingStartLevel = 1) {
      */
     elements = document.querySelectorAll('span.Updated_Text_Popup_Note');
     for (let e of elements) {
-        if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null)
-            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b>  <span>" + e.innerText;
+        if (e.parentElement !== null && e.parentElement.getAttribute('datetime') != null) {
+            let storedHTML = e.innerHTML;
+            if (storedHTML == null || storedHTML == "")
+                storedHTML = e.innerText;
+            e.innerHTML = "<span data-zxw-mvc='dynamic-content-self'> &nwArr;<b>" + e.parentElement.getAttribute('datetime') + ":</b> </span>" + storedHTML;
+        }
     }
     /**
      *  insert "copy to clipboard" button after span.Git_Commit_Message elements.

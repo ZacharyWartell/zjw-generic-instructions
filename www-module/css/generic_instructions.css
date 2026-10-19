@@ -26,42 +26,43 @@ table.Hide_Code_Example:target
 }
 */
 
+/*
+ *  Code Example
+ */
 /*   Code Examples are put in small 1x1 table */
-table.Code_Example
-{
+table.Code_Example {
     width: 100%;
     background-color: black;
+    border: black 1px solid;
+}
+
+
+/*  Code Example Table Cell that contains expand button
+*/
+table.Code_Example > tbody > tr > td:first-child {
+    vertical-align: text-top;
+    text-align: left;
+    width: 25px;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
 }
 
 /*  Code Example Expand style when displaying at full height, instead of with scroll bar
 */
-table.Expanded_Code_Example > tbody > tr > td > div
-{
+table.Code_Example_Expand > tbody > tr > td > div {
     width: 100%;
-    height: 100% !important;
-    /* overflow-y: scroll; */
-}            
-
-/*  Code Example Table Cell that contains expand button
-*/
-table.Code_Example > tbody > tr > td:first-child
-{
-    vertical-align:text-top;
-    text-align : left;
-    width: 25px;
-    background-color: transparent;
-    padding:0;
-    margin:0;
-}            
-
-/* Code Example Expand style when displaying code in compact, scrollable mode.               
-*/
-table.Code_Example > tbody > tr > td > div
-{
-    width: 100%;
-    overflow-y: scroll;
+    height: fit-content;
+    overflow-y:hidden;
 }
 
+/* Code Example Expand style when displaying code in compact, scrollable mode.
+*/
+table.Code_Example:not(.Code_Example_Expand) > tbody > tr > td > div {
+    width: 100%;
+    height: calc-size(max-content,max(size / 2,min(3em,size)));
+    overflow-y: scroll;        
+}
 /*   Shell Code Input */
 code.Shell_Code_Input
 {
